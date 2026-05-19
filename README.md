@@ -1,5 +1,5 @@
 # CqrlogImproved
-Improved clone from Cqrlog (by Petr, OK2CQR & Martin OK1RR)
+Improved clone from Cqrlog (by Petr, OK2CQR & Martin OK1RR) (development branch)
 
 This is a version of Cqrlog that I have modified to meet my own needs and simply because programming is fun. Despite Petr's suggestion, I am not going to rename this project. My version includes hundreds of additions, fixes, and improvements compared to the original Cqrlog 2.5.2, but Petr remains the owner of this product, and I have no intention of 'stealing' it by renaming it.
 

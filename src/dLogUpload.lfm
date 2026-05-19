@@ -1,0 +1,55 @@
+object dmLogUpload: TdmLogUpload
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 245
+  HorizontalOffset = 367
+  VerticalOffset = 237
+  Width = 331
+  object Q: TSQLQuery
+    FieldDefs = <>
+    BeforeOpen = QBeforeOpen
+    Transaction = trQ
+    Params = <>
+    Macros = <>
+    Left = 224
+    Top = 24
+  end
+  object trQ: TSQLTransaction
+    Active = False
+    Action = caNone
+    Left = 272
+    Top = 24
+  end
+  object trQ1: TSQLTransaction
+    Active = False
+    Action = caNone
+    Left = 272
+    Top = 88
+  end
+  object Q1: TSQLQuery
+    FieldDefs = <>
+    BeforeOpen = Q1BeforeOpen
+    Transaction = trQ1
+    Params = <>
+    Macros = <>
+    ParseSQL = False
+    Left = 224
+    Top = 88
+  end
+  object Q2: TSQLQuery
+    FieldDefs = <>
+    BeforeOpen = Q2BeforeOpen
+    Transaction = trQ2
+    Params = <>
+    Macros = <>
+    Left = 224
+    Top = 146
+  end
+  object trQ2: TSQLTransaction
+    Active = False
+    Action = caNone
+    Left = 272
+    Top = 146
+  end
+end

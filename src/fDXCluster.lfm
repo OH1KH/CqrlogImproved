@@ -1,0 +1,795 @@
+object frmDXCluster: TfrmDXCluster
+  Left = 116
+  Height = 428
+  Top = 118
+  Width = 716
+  HelpType = htKeyword
+  HelpKeyword = 'help/h21.html#ah19'
+  Caption = 'DXCluster'
+  ClientHeight = 428
+  ClientWidth = 716
+  Icon.Data = {
+    BE0C00000000010001002020000001001800A80C000016000000280000002000
+    0000400000000100180000000000000C00006400000064000000000000000000
+    0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCCCCCFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBBBCCCCCCFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEEEEEEFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBBBCCCCCCEEEEEEFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFDDDDDDCCCCCCFFFFFFFFFFFFFFFFFFDDDDDDFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBBBCCCCCCEEEEEEFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFEEEEEEFFFFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBFFFFFFCCCCCCBBBB
+    BBFFFFFFFFFFFFFFFFFFFFFFFFBBBBBBCCCCCCEEEEEEFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFDDDDDDCCCCCCFFFFFFFFFFFFFFFFFFFFFFFFBBBBBBFFFFFFBBBB
+    BBBBBBBBFFFFFFFFFFFFBBBBBBCCCCCCEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBFFFFFFFFFFFFBBBBBBBBBBBBFFFF
+    FFBBBBBBFFFFFFBBBBBBCCCCCCEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8888888888888888888888888888888888
+    88888888888888CCCCCCEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFF888888888888888888AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AABBBBBBCCCCCCBBBBBBBBBBBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    EEEEEEEEEEEEEEEEEECCCCCCAAAAAACCCCCCCCCCCCCCCCCCCCCCCCEEEEEEAAAA
+    AAEEEEEECCCCCCBBBBBBFFFFFFBBBBBBBBBBBBBBBBBBFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF888888888888
+    AAAAAAAAAAAA888888CCCCCCCCCCCCDDDDDDDDDDDDDDDDDDEEEEEEAAAAAAEEEE
+    EEDDDDDDFFFFFFBBBBBBBBBBBBFFFFFFFFFFFFBBBBBBBBBBBBFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF888888AAAAAAAAAAAA
+    CCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEBBBBBBEEEEEEDDDD
+    DDFFFFFFBBBBBBFFFFFFBBBBBBFFFFFFFFFFFFFFFFFFCCCCCCDDDDDDFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF888888AAAAAACCCCCCCCCCCC
+    CCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEBBBBBBFFFFFFDDDDDDDDDD
+    DDBBBBBBFFFFFFFFFFFFBBBBBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEEEEEEFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF888888AAAAAACCCCCC6699CC6699CC
+    DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEBBBBBBFFFFFFDDDDDDDDDDDDDDDD
+    DDBBBBBBBBBBBBBBBBBBCCCCCCDDDDDDEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBBB7777770033663366993366996699CC
+    6699CCDDDDDDDDDDDDDDDDDDEEEEEEBBBBBBFFFFFFDDDDDDDDDDDDDDDDDDDDDD
+    DDBBBBBBFFFFFFCCCCCCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFF777777555555003366000033336699336699
+    DDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFFFFDDDDDDDDDDDDDDDDDDDDDDDDBBBB
+    BBBBBBBBFFFFFFDDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFF000000003366000000003366000000336699DDDDDD
+    DDDDDDDDDDDDDDDDDDBBBBBBEEEEEEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDBBBB
+    BBFFFFFFFFFFFFFFFFFFEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFF000000003366000000003366000000003366336699DDDDDD
+    DDDDDDDDDDDDBBBBBBEEEEEECCCCCCDDDDDDDDDDDDDDDDDDDDDDDDBBBBBBBBBB
+    BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFF003366000000003366000000003366000000336699DDDDDD
+    EEEEEEBBBBBBEEEEEECCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFF003366000000003366000000003366000000003366000000003366
+    6699CCEEEEEE6699CCDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFF000000003366000000003366000000003366000000003366003366
+    3333336699CC003366BBBBBBDDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFF003366000000003366000000003366000000003366000000333333
+    000000003366003366DDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF003366000000003366000000003366000000003366000000333333000000
+    003366000000003366DDDDDDDDDDDDDDDDDDDDDDDDBBBBBBFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000003366000000003366000000003366000000333333000000003366
+    000000003366000000FFFFFFBBBBBB336699BBBBBBFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF003366000000003366000000003366000000333333000000003366000000
+    003366000000003366000000003366000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000003366000000003366000000333333000000003366000000003366
+    003366003366000000003366000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF003366000000003366000000333366000000003366000000003366000000
+    003366000000003366000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000003366000000003366000000003366000000003366000000003366
+    000000003366000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF003366000000003366000000003366000000003366000000003366000000
+    003366FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000003366000000003366000000003366000000003366000000003366
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000000000003366000000003366000000003366000000FFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFF000000000000003366000000000000FFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFDFFFFFFF3FFFBEFE3FFFCEFC7FFEE278FFFF3D31FFFF8CA3FFFFE
+    007FFFF0007FFFC0008FFF000267FE000573FC00237DF800401FF00082FFF001
+    02FFE000077FC00007FFC0000FFF80001FFF80001FFF80003FFF00003FFF0004
+    7FFF0000FFFF0001FFFF0003FFFF0007FFFF001FFFFF003FFFFF00FFFFFF83FF
+    FFFF
+  }
+  KeyPreview = True
+  LCLVersion = '4.4.0.0'
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyUp = FormKeyUp
+  OnShow = FormShow
+  object pgDXCluster: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 0
+    Height = 428
+    Top = 0
+    Width = 716
+    ActivePage = tabWeb
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object tabWeb: TTabSheet
+      AnchorSideLeft.Control = pgDXCluster
+      AnchorSideTop.Control = pgDXCluster
+      AnchorSideRight.Control = pgDXCluster
+      AnchorSideBottom.Control = pgDXCluster
+      Caption = 'Web'
+      ClientHeight = 397
+      ClientWidth = 706
+      object Panel4: TPanel
+        Left = 0
+        Height = 36
+        Top = 361
+        Width = 706
+        Align = alBottom
+        ClientHeight = 36
+        ClientWidth = 706
+        TabOrder = 0
+        object lblInfo: TLabel
+          Left = 10
+          Height = 1
+          Top = 15
+          Width = 1
+          ParentColor = False
+        end
+        object btnWebConnect: TButton
+          AnchorSideTop.Control = Panel4
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = Panel4
+          AnchorSideRight.Side = asrBottom
+          Left = 615
+          Height = 25
+          Top = 6
+          Width = 84
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 6
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Connect'
+          TabOrder = 0
+          OnClick = btnWebConnectClick
+        end
+        object btnClear: TButton
+          AnchorSideLeft.Control = btnWebUrl
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Panel4
+          AnchorSideTop.Side = asrCenter
+          Left = 491
+          Height = 25
+          Top = 6
+          Width = 84
+          BorderSpacing.Left = 6
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Clear'
+          TabOrder = 1
+          OnClick = btnClearClick
+        end
+        object btnHelp: TButton
+          AnchorSideTop.Control = Panel4
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = btnFont
+          Left = 221
+          Height = 25
+          Top = 6
+          Width = 84
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 6
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Help'
+          TabOrder = 2
+          OnClick = btnHelpClick
+        end
+        object btnFont: TButton
+          AnchorSideLeft.Control = Panel4
+          AnchorSideLeft.Side = asrCenter
+          AnchorSideTop.Control = Panel4
+          AnchorSideTop.Side = asrCenter
+          Left = 311
+          Height = 25
+          Top = 6
+          Width = 84
+          Action = acFont
+          BorderSpacing.InnerBorder = 4
+          TabOrder = 3
+        end
+        object btnWebUrl: TButton
+          AnchorSideLeft.Control = btnFont
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Panel4
+          AnchorSideTop.Side = asrCenter
+          Left = 401
+          Height = 25
+          Top = 6
+          Width = 84
+          BorderSpacing.Left = 6
+          Caption = 'WebURL'
+          TabOrder = 4
+          OnClick = btnWebUrlClick
+        end
+      end
+      object pnlWeb: TPanel
+        AnchorSideLeft.Control = tabWeb
+        AnchorSideTop.Control = tabWeb
+        AnchorSideRight.Control = tabWeb
+        AnchorSideBottom.Control = tabWeb
+        Left = 0
+        Height = 361
+        Top = 0
+        Width = 706
+        Align = alClient
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        BevelOuter = bvLowered
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 12
+        Font.Name = 'DejaVu Sans Mono 12'
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+    object tabTelnet: TTabSheet
+      AnchorSideLeft.Control = pgDXCluster
+      AnchorSideTop.Control = pgDXCluster
+      AnchorSideRight.Control = pgDXCluster
+      AnchorSideBottom.Control = pgDXCluster
+      Caption = 'Telnet'
+      ClientHeight = 397
+      ClientWidth = 706
+      OnMouseWheel = tabTelnetMouseWheel
+      object pnlBottom: TPanel
+        Left = 0
+        Height = 34
+        Top = 363
+        Width = 706
+        Align = alBottom
+        BevelOuter = bvNone
+        ClientHeight = 34
+        ClientWidth = 706
+        TabOrder = 0
+        object lblCommand: TLabel
+          AnchorSideTop.Control = pnlBottom
+          AnchorSideTop.Side = asrCenter
+          Left = 6
+          Height = 17
+          Top = 9
+          Width = 71
+          Caption = 'Command:'
+          ParentColor = False
+        end
+        object edtCommand: TEdit
+          AnchorSideLeft.Control = lblCommand
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = pnlBottom
+          AnchorSideTop.Side = asrCenter
+          Left = 79
+          Height = 34
+          Top = 0
+          Width = 266
+          BorderSpacing.Left = 2
+          TabOrder = 0
+          OnKeyPress = edtCommandKeyPress
+        end
+        object btnHlp: TButton
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideRight.Control = pnlBottom
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Control = pnlBottom
+          AnchorSideBottom.Side = asrCenter
+          Left = 615
+          Height = 25
+          Top = 4
+          Width = 85
+          Anchors = [akRight, akBottom]
+          BorderSpacing.Right = 6
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Help'
+          TabOrder = 1
+          OnClick = btnHelpClick
+        end
+        object btnHiddenTest: TButton
+          AnchorSideTop.Control = pnlBottom
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = btnHlp
+          Left = 539
+          Height = 25
+          Top = 5
+          Width = 70
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 6
+          Caption = 'btnHiddenTest'
+          TabOrder = 2
+          Visible = False
+          OnClick = btnHiddenTestClick
+        end
+        object trChatSize: TTrackBar
+          AnchorSideLeft.Control = edtCommand
+          AnchorSideTop.Control = pnlBottom
+          AnchorSideTop.Side = asrCenter
+          AnchorSideBottom.Side = asrBottom
+          Left = 79
+          Height = 52
+          Top = -9
+          Width = 263
+          Max = 100
+          Min = 2
+          Position = 20
+          ScalePos = trLeft
+          OnChange = trChatSizeChange
+          TabOrder = 3
+          Visible = False
+          OnClick = trChatSizeClick
+          OnMouseWheel = trChatSizeMouseWheel
+        end
+      end
+      object pnlTop: TPanel
+        Left = 0
+        Height = 40
+        Top = 0
+        Width = 706
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 706
+        TabOrder = 1
+        object edtTelAddress: TEdit
+          AnchorSideLeft.Control = pnlTop
+          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Side = asrCenter
+          Left = 6
+          Height = 34
+          Top = 3
+          Width = 189
+          BorderSpacing.Left = 6
+          BorderSpacing.Top = 3
+          TabOrder = 0
+        end
+        object btnSelect: TButton
+          AnchorSideLeft.Control = edtTelAddress
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Side = asrCenter
+          Left = 207
+          Height = 25
+          Top = 8
+          Width = 75
+          BorderSpacing.Left = 12
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Select'
+          TabOrder = 1
+          OnClick = btnSelectClick
+        end
+        object btnTelConnect: TButton
+          AnchorSideLeft.Control = btnSelect
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Side = asrCenter
+          Left = 288
+          Height = 25
+          Top = 8
+          Width = 87
+          BorderSpacing.Left = 6
+          BorderSpacing.InnerBorder = 4
+          Caption = 'Connect'
+          TabOrder = 2
+          OnClick = btnTelConnectClick
+        end
+        object btnPreferences: TButton
+          AnchorSideLeft.Control = btnTelConnect
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Side = asrCenter
+          Left = 381
+          Height = 25
+          Top = 8
+          Width = 104
+          BorderSpacing.Left = 6
+          Caption = 'Preferences'
+          TabOrder = 3
+          OnClick = btnPreferencesClick
+        end
+      end
+      object pnlTelnet: TPanel
+        Left = 0
+        Height = 323
+        Top = 40
+        Width = 706
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 323
+        ClientWidth = 706
+        ParentColor = False
+        TabOrder = 2
+        object pnlChat: TPanel
+          Left = 0
+          Height = 2
+          Top = 0
+          Width = 706
+          Align = alTop
+          BevelOuter = bvNone
+          ParentColor = False
+          TabOrder = 0
+        end
+      end
+    end
+    object tabFkeys: TTabSheet
+      AnchorSideLeft.Control = pgDXCluster
+      AnchorSideTop.Control = pgDXCluster
+      AnchorSideRight.Control = pgDXCluster
+      AnchorSideBottom.Control = pgDXCluster
+      Caption = 'F-keys'
+      ClientHeight = 397
+      ClientWidth = 706
+      OnShow = tabFkeysShow
+      object lblF1: TLabel
+        AnchorSideLeft.Control = tabFkeys
+        AnchorSideTop.Control = edtF1
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 32
+        Width = 24
+        BorderSpacing.Left = 12
+        BorderSpacing.Top = 12
+        Caption = 'F1 :'
+        ParentColor = False
+      end
+      object lblF2: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF2
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 66
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F2 :'
+        ParentColor = False
+      end
+      object lblF3: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF3
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 100
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F3 :'
+        ParentColor = False
+      end
+      object lblF4: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF4
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 134
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F4 :'
+        ParentColor = False
+      end
+      object lblF5: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF5
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 168
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F5 :'
+        ParentColor = False
+      end
+      object lblF6: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF6
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 202
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F6 :'
+        ParentColor = False
+      end
+      object lblF7: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF7
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 236
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F7 :'
+        ParentColor = False
+      end
+      object lblF8: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF8
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 270
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F8 :'
+        ParentColor = False
+      end
+      object lblF9: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF9
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 304
+        Width = 24
+        BorderSpacing.Top = 6
+        Caption = 'F9 :'
+        ParentColor = False
+      end
+      object lblF10: TLabel
+        AnchorSideLeft.Control = lblF1
+        AnchorSideTop.Control = edtF10
+        AnchorSideTop.Side = asrCenter
+        Left = 12
+        Height = 17
+        Top = 338
+        Width = 32
+        BorderSpacing.Top = 6
+        Caption = 'F10 :'
+        ParentColor = False
+      end
+      object edtF1: TEdit
+        AnchorSideLeft.Control = lblF1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = lblShift
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 23
+        Width = 500
+        BorderSpacing.Left = 12
+        BorderSpacing.Top = 3
+        TabOrder = 0
+        OnExit = edtFExit
+      end
+      object edtF2: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF1
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 57
+        Width = 500
+        TabOrder = 1
+        OnExit = edtFExit
+      end
+      object edtF3: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF2
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 91
+        Width = 500
+        TabOrder = 2
+        OnExit = edtFExit
+      end
+      object edtF4: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF3
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 125
+        Width = 500
+        TabOrder = 3
+        OnExit = edtFExit
+      end
+      object edtF5: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF4
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 159
+        Width = 500
+        TabOrder = 4
+        OnExit = edtFExit
+      end
+      object edtF6: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF5
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 193
+        Width = 500
+        TabOrder = 5
+        OnExit = edtFExit
+      end
+      object edtF7: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF6
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 227
+        Width = 500
+        TabOrder = 6
+        OnExit = edtFExit
+      end
+      object edtF8: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF7
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 261
+        Width = 500
+        TabOrder = 7
+        OnExit = edtFExit
+      end
+      object edtF9: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF8
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 295
+        Width = 500
+        TabOrder = 8
+        OnExit = edtFExit
+      end
+      object edtF10: TEdit
+        AnchorSideLeft.Control = edtF1
+        AnchorSideTop.Control = edtF9
+        AnchorSideTop.Side = asrBottom
+        Left = 48
+        Height = 34
+        Top = 329
+        Width = 500
+        TabOrder = 9
+      end
+      object lblShift: TLabel
+        AnchorSideLeft.Control = tabFkeys
+        AnchorSideTop.Control = tabFkeys
+        Left = 3
+        Height = 17
+        Top = 3
+        Width = 41
+        BorderSpacing.Left = 3
+        BorderSpacing.Top = 3
+        Caption = 'Shift+'
+        ParentColor = False
+      end
+    end
+  end
+  object tmrSpots: TTimer
+    Enabled = False
+    Interval = 20000
+    OnTimer = tmrSpotsTimer
+    Left = 384
+    Top = 240
+  end
+  object dlgDXfnt: TFontDialog
+    MinFontSize = 0
+    MaxFontSize = 0
+    Left = 456
+    Top = 304
+  end
+  object tmrAutoConnect: TTimer
+    Enabled = False
+    Interval = 3000
+    OnTimer = tmrAutoConnectTimer
+    Left = 520
+    Top = 304
+  end
+  object popPreferences: TPopupMenu
+    Left = 592
+    Top = 304
+    object mnuCallalert: TMenuItem
+      Caption = 'Callsign alert enabled'
+      Checked = True
+      ShowAlwaysCheckable = True
+      OnClick = mnuCallalertClick
+    end
+    object MenuItem1: TMenuItem
+      Action = acCallAlert
+    end
+    object MenuItem2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem6: TMenuItem
+      Action = acChatSize
+      Caption = 'Chat Size'
+    end
+    object MenuItem3: TMenuItem
+      Action = acFont
+    end
+    object MenuItem8: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'CW Skimmer'
+      object mnuSkimAllowFreq: TMenuItem
+        Caption = 'Allow Set Frequency'
+        Checked = True
+        ShowAlwaysCheckable = True
+        OnClick = mnuSkimAllowFreqClick
+      end
+      object mnuSkimQSLCheck: TMenuItem
+        Caption = 'Send QSL State to Skimmer'
+        Checked = True
+        ShowAlwaysCheckable = True
+        OnClick = mnuSkimQSLCheckClick
+      end
+    end
+    object MenuItem4: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem5: TMenuItem
+      Action = acProgPref
+    end
+  end
+  object acPreferences: TActionList
+    Left = 656
+    Top = 304
+    object acFont: TAction
+      Caption = 'Font'
+      OnExecute = acFontExecute
+    end
+    object acCallAlert: TAction
+      Caption = 'List of alerted callsigns'
+      OnExecute = acCallAlertExecute
+    end
+    object acProgPref: TAction
+      Caption = 'Preferences'
+      OnExecute = acProgPrefExecute
+    end
+    object acChatSize: TAction
+      Caption = 'acChatSize'
+      OnExecute = acChatSizeExecute
+    end
+  end
+  object tmrStopScroll: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = tmrStopScrollTimer
+    Left = 384
+    Top = 304
+  end
+  object tmrKeepAlive: TTimer
+    OnTimer = tmrKeepAliveTimer
+    Left = 456
+    Top = 240
+  end
+end

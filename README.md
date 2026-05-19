@@ -12,3 +12,5 @@ If you like to keep your old workhorse Cqrlog 2.5.2 but also try this you can re
 Then, if you "save your logs to local machine", you just need to copy your ~/.config/cqrlog folder to ~/.config/cqrlog2 and start the cqrlog2.  Then you have separated logs and you do not need to run the "make install" at all.
 If you do not copy new help files to /usr/share/cqrlog it's contents does not change and can be used by both versions.
 
+MariaDB log databases may differ a bit, but they should be backwards compatible so far. DB version numbers are higher than originals, so when ever the original Cqrlog modifies it's DB version numbers the compatibility will break.
+

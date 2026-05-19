@@ -1,12 +1,12 @@
-# CqrlogAlpha is a clone based on the work of OK2CQR & OK1RR.
+# CqrlogImproved is a clone based on the work of OK2CQR & OK1RR.
 ## It has over 570 smaller or bigger differences to official Cqrlog.
 ### I am maintaining this software mainly for my own use, but feel free to use/modify it for your own needs by the rules of Open software licence and HamSprit rules.
-### Alpha version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogALpha/blob/main/src/changelog.html)  
+### Improved version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html)  
 ### Some Cqrlog related videos can be found from  <https://www.youtube.com/channel/UC3yPCVYmfeBzDSwTosOe2fQ>
 ----------------------------------------------------------------------------------------------------
 
-This folder holds ready compiled binary files of CqrlogAlpha that I am using myself daily.
-I call it Alpha version, but that does not mean it is somehow under construction (a testing version).
+This folder holds ready compiled binary files of CqrlogImproved that I am using myself daily.
+I call it Improved version, but that does not mean it is somehow under construction (a testing version).
 Compiled binary versions are released after it seems that biggest bugs are found and fixed.
 
 It is mostly compatible with official Cqrlog. Depending what happens to official Cqrlog development it may not be so in future.
@@ -29,14 +29,14 @@ If you do not want to do that you can compile this source (see parent folder) wi
 
 ## ABOUT THESE BINARY FILES:
 
- Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CarlogAlpha versions.
+ Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CarlogImproved versions.
  
- To see updates in this alpha version look at <https://github.com/OH1KH/cqrlog/commits/loc_testing>
+ To see updates in this Improved version look at <https://github.com/OH1KH/cqrlog/commits/loc_testing>
 
  To read about UTF8 special charcters in logs read file UTF8_logs.md
  
  
-Alpha BINARIES:
+Improved BINARIES:
 ---------
   - **cqr2.zip  holds binary for  64bit systems compiled for GTK2 widgets**
   - **cqr3.zip  holds binary for  32bit systems compiled for GTK2 widgets**
@@ -61,7 +61,7 @@ Alpha BINARIES:
    If you use script-install (see below) it makes backups for you.
    Otherwise see "manual-install (below).
    
-   In some cases it has happen that Alpha compiled using Fedora Linux may not run flawlessly with Ubuntu derivates.
+   In some cases it has happen that Improved compiled using Fedora Linux may not run flawlessly with Ubuntu derivates.
    if you start to get mysterious errors it might be the reason.
    
 -----------YOU HAVE BEEN WARNED!------------
@@ -163,26 +163,26 @@ For getting source code there are two ways:
 
 clone my whole Git reporsitory using command terminal:
 
-	git clone https://github.com/OH1KH/CqrlogAlpha.git
+	git clone https://github.com/OH1KH/CqrlogImproved.git
 
-If you start this command from your user home directory it creates CqrlogAlpha directory to your home directory.
+If you start this command from your user home directory it creates CqrlogImproved directory to your home directory.
 
 Or go to address:
 
-	https://github.com/OH1KH/CqrlogAlpha
+	https://github.com/OH1KH/CqrlogImproved
 
 and find green "Code" button. Press it and select "Download ZIP". Using this way you have to extract downloaded zip to somewhere on your computer.
 
 Difference with "git clone" and "Download ZIP" is that cloning downloads full history and also all branches where ZIP gives just the currently open view to source.
 
-Change your command console to CqrlogAlpha folder. If you used "git clone" you can change branch with checkout command.
+Change your command console to CqrlogImproved folder. If you used "git clone" you can change branch with checkout command.
 
 	git checkout main
 	git checkout devel
 
 Main holds the latest release. Devel holds coming next release, but may be unstable.
 
-Good side with "git clone" is that on next time you like to upgrade you just open command console and change directory to "CqrlogAlpha" ("cd CqrlogAlpha") and issue command "git pull" and new updates are applied and you are ready to compile and install again.
+Good side with "git clone" is that on next time you like to upgrade you just open command console and change directory to "CqrlogImproved" ("cd CqrlogImproved") and issue command "git pull" and new updates are applied and you are ready to compile and install again.
 
 Other way is to download just the current version's source with web browser  as ZIP
 How ever you can not do new uptates later with "git pull". You have to download the ZIP file web browser again.
@@ -225,7 +225,7 @@ With some OS "make" result errors. Then usually using the lazarus-ide works.
 Start lazarus-ide typing that to command terminal, or start from startup menu icon "lazarus".
 At first start it goes through some settings. If all Tabs show OK you are ready to continue.
 
-Lazarus starts first to empty form. Use top menu "Project/Open Project" and navigate to your "CqrlogAlpha" source folder. There you see subfolder "src". Navigate to that folder and you see "cqrlog.lpi".  Open that.
+Lazarus starts first to empty form. Use top menu "Project/Open Project" and navigate to your "CqrlogImproved" source folder. There you see subfolder "src". Navigate to that folder and you see "cqrlog.lpi".  Open that.
 
 Once opened select top menu "View/Messages" to see compiler messages. Then select top menu "Run/Compile".
 Wait and finally you should see a green line on Messages window. It means that compile is over.
@@ -233,7 +233,7 @@ Wait and finally you should see a green line on Messages window. It means that c
 You find new cqrlog from folder "src" as file "cqrlog"
 You can now try command terminal:
 
-	cd CqrlogAlpha  (this is the source root folder, as before)
+	cd CqrlogImproved  (this is the source root folder, as before)
 	sudo make install
 
 If succeeded you have new version with new help installed. If not, you can just copy file "cqrlog" from folder "src" to "/usr/bin"
@@ -246,7 +246,7 @@ You need "sudo" for this copy.
 
 
 
-### Alpha version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogAlpha/blob/main/src/changelog.html) 
+### Improved version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html) 
  
 ### Some Cqrlog related videos can be found from  <https://www.youtube.com/channel/UC3yPCVYmfeBzDSwTosOe2fQ>
 

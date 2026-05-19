@@ -1,4 +1,4 @@
-# CqrlogAlpha is a clone based on the work of OK2CQR & OK1RR.
+# CqrlogImproved is a clone based on the work of OK2CQR & OK1RR.
 ## It has over 500 smaller or bigger differences to official Cqrlog.
 ### I am maintaining this software mainly for my own use, but feel free to use/modify it for your own needs by the rules of Open software licence and HamSprit rules.
 ----------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ Running build with Docker
 
 If you do not want to install the dependencies into your main machine, you can do the build
 in a Docker container.  You need to mount into that Docker container this directory and
-also the target directory where you want to put the alpha version of `cqrlog` you are
+also the target directory where you want to put the improved version of `cqrlog` you are
 building.
 
 This also helps if you want to build, e.g., on a Debian Stretch machine.  Attempts at
@@ -64,10 +64,10 @@ host that is guaranteed to not exist.)
 
 Then, run the build itself with
 
-    sudo mkdir -p /usr/local/cqrlog-alpha && sudo chown $SUDO_USER /usr/local/cqrlog-alpha &&
+    sudo mkdir -p /usr/local/cqrlogimproved && sudo chown $SUDO_USER /usr/local/cqrlogimproved &&
     docker run -ti -u root -v $(pwd):/home/cqrlog/build \
-      -v /usr/local/cqrlog-alpha:/usr/local/cqrlog-alpha this.registry.is.invalid/cqrlog-build
+      -v /usr/local/cqrlogimproved:/usr/local/cqrlogimproved this.registry.is.invalid/cqrlog-build
 
 To use your build, make sure that you have no instance of `cqrlog` running, backup
 `$HOME/.config/cqrlog` (if you ever used `cqrlog` before), add
-`/usr/local/cqrlog-alpha/usr/bin` to your `$PATH` and start `cqrlog` from there.
+`/usr/local/cqrlogimproved/usr/bin` to your `$PATH` and start `cqrlog` from there.

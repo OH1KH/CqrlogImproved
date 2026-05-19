@@ -125,7 +125,7 @@ type
     chkRotControlDebug: TCheckBox;
     chkUseRigPwr: TCheckBox;
     chkHamClock: TCheckBox;
-    chkNewAlpha: TCheckBox;
+    chkNewImproved: TCheckBox;
     chkCompressBackup1: TCheckBox;
     chkNFname: TCheckBox;
     chkBlenByQso: TCheckBox;
@@ -1306,7 +1306,7 @@ begin
 
   if  edtWebBrowser.Text = '' then  edtWebBrowser.Text:= dmUtils.MyDefaultBrowser; //may not be empty string
   cqrini.WriteString('Program', 'WebBrowser', edtWebBrowser.Text);
-  cqrini.WriteBool('Program', 'CheckAlpha', chkNewAlpha.Checked);
+  cqrini.WriteBool('Program', 'CheckImproved', chkNewImproved.Checked);
   cqrini.WriteBool('Program', 'CheckDXCCTabs', chkNewDXCCTables.Checked);
   cqrini.WriteBool('Program', 'ShowDeleted', chkShowDeleted.Checked);
   cqrini.WriteBool('Program', 'SunUTC', chkSunUTC.Checked);
@@ -3313,7 +3313,7 @@ begin
   chkBlenByQso.Checked := cqrini.ReadBool('xplanet', 'BeamArcLen', False); //these tied together
 
   edtWebBrowser.Text := cqrini.ReadString('Program', 'WebBrowser', dmUtils.MyDefaultBrowser);
-  chkNewAlpha.Checked := cqrini.ReadBool('Program', 'CheckAlpha', True);
+  chkNewImproved.Checked := cqrini.ReadBool('Program', 'CheckImproved', True);
   chkNewDXCCTables.Checked := cqrini.ReadBool('Program', 'CheckDXCCTabs', True);
   chkShowDeleted.Checked := cqrini.ReadBool('Program', 'ShowDeleted', False);
   chkSunUTC.Checked := cqrini.ReadBool('Program', 'SunUTC', False);

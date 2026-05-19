@@ -15,7 +15,6 @@ type
   TfrmAbout = class(TForm)
     Bevel1 : TBevel;
     Bevel2: TBevel;
-    btnChangelog : TButton;
     btnChangelog1: TButton;
     btnClose : TButton;
     btnClose1: TButton;
@@ -23,26 +22,27 @@ type
     Image2: TImage;
     Label1 : TLabel;
     Label10: TLabel;
+    Label11: TLabel;
     Label2 : TLabel;
     Label3 : TLabel;
     Label4: TLabel;
     Label5 : TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
     lblLink : TLabel;
     lblLink1: TLabel;
     lblLink2: TLabel;
     lblLink3: TLabel;
-    lblVerze : TLabel;
     lblVerze1: TLabel;
+    lblVerze: TLabel;
     PageControl1 : TPageControl;
     sgContributors: TStringGrid;
     tabAbout : TTabSheet;
     tabContributors : TTabSheet;
     tabUpgrade: TTabSheet;
     procedure btnChangelog1Click(Sender: TObject);
-    procedure btnChangelogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lblLinkClick(Sender: TObject);
@@ -74,11 +74,6 @@ end;
 procedure TfrmAbout.lblLinkClick(Sender: TObject);
 begin
   dmUtils.OpenInApp((Sender as TLabel).Caption);
-end;
-
-procedure TfrmAbout.btnChangelogClick(Sender: TObject);
-begin
-   showChangelog;
 end;
 
 procedure TfrmAbout.btnChangelog1Click(Sender: TObject);
@@ -116,8 +111,8 @@ end;
 
 procedure TfrmAbout.FormShow(Sender: TObject);
 begin
-  lblVerze.Caption := cVERSION + '  ' + cBUILD_DATE;
-  lblVerze1.Caption := lblVerze.Caption;
+  lblVerze.Caption := '2.5.2';
+  lblVerze1.Caption := cVERSION +'  '+ cBUILD_DATE;
 end;
 
 end.

@@ -10,7 +10,7 @@ object frmNewQSO: TfrmNewQSO
   VertScrollBar.Increment = 58
   VertScrollBar.Page = 613
   AutoScroll = True
-  Caption = 'New QSO ... (CqrlogAlpha for Linux)'
+  Caption = 'New QSO ... (CqrlogImproved for Linux)'
   ClientHeight = 619
   ClientWidth = 1007
   Constraints.MinHeight = 200

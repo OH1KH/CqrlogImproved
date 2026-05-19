@@ -691,7 +691,7 @@ type
     procedure CheckForDOKTablesUpdate;
     procedure CheckForQslManagersUpdate;
     procedure CheckForMembershipUpdate;
-    procedure CheckForAlphaVersion;
+    procedure CheckForImprovedVersion;
 
     procedure SelTextFix(Edit : TEdit; var Key : Char);
 
@@ -8131,7 +8131,7 @@ begin
   CheckForDOKTablesUpdate;
   CheckForQslManagersUpdate;
   CheckForMembershipUpdate;
-  CheckForAlphaVersion
+  CheckForImprovedVersion
 end;
 
 procedure TfrmNewQSO.CheckForDXCCTablesUpdate;
@@ -8175,16 +8175,16 @@ begin
   if cqrini.ReadBool('Clubs', 'CheckForUpdate', False) then
     dmMembership.CheckForMembershipUpdate
 end;
-procedure TfrmNewQSO.CheckForAlphaVersion;
+procedure TfrmNewQSO.CheckForImprovedVersion;
 var
   VerNr,
   VerAvailNr : integer;
   data:string;
 Begin
-  if not cqrini.ReadBool('Program', 'CheckAlpha', True) then exit;
+  if not cqrini.ReadBool('Program', 'CheckImproved', True) then exit;
   if not (TryStrToInt(ExtractWord(2,cVersionBase,['(',')']),VerNr)) then exit;
   VerAvailNr:=0;
-   if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogAlpha/refs/heads/main/compiled/version.txt', data) then
+   if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogImproved/refs/heads/main/compiled/version.txt', data) then
   begin
     if (pos('NOT FOUND',upcase(data))<>0) then exit;
     if not (TryStrToInt(ExtractWord(2,data,['(',')']),VerAvailNr)) then exit;
@@ -8194,7 +8194,7 @@ Begin
         frmAbout:= TfrmAbout.Create(Application);
         frmAbout.PageControl1.ActivePage := frmAbout.tabUpgrade;
         frmAbout.lblVerze1.Caption := cVERSION + '  ' + cBUILD_DATE;
-        frmAbout.Label8.Caption:='There is CqrlogAlpha version '+IntToStr(VerAvailNr)+' available!';
+        frmAbout.Label8.Caption:='There is CqrlogImproved version '+IntToStr(VerAvailNr)+' available!';
         frmAbout.IsNewVersion:=True;
         frmAbout.btnChangelog1.Font.Color:=clRed;
         frmAbout.btnChangelog1.Font.Style:=[fsBold];

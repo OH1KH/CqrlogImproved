@@ -209,7 +209,7 @@ object frmPreferences: TfrmPreferences
       end
       object chkNewDXCCTables: TCheckBox
         AnchorSideLeft.Control = gbInternet
-        AnchorSideTop.Control = chkNewAlpha
+        AnchorSideTop.Control = chkNewImproved
         AnchorSideTop.Side = asrBottom
         Left = 6
         Height = 23
@@ -717,7 +717,7 @@ object frmPreferences: TfrmPreferences
         Caption = 'Color'
         Color = clDefault
       end
-      object chkNewAlpha: TCheckBox
+      object chkNewImproved: TCheckBox
         AnchorSideLeft.Control = gbInternet
         AnchorSideTop.Control = gbInternet
         AnchorSideTop.Side = asrBottom
@@ -726,7 +726,7 @@ object frmPreferences: TfrmPreferences
         Top = 135
         Width = 428
         BorderSpacing.Top = 3
-        Caption = 'Check for newer version of CqrlogAlpha after program startup'
+        Caption = 'Check for newer version of CqrlogImproved after program startup'
         TabOrder = 13
       end
     end

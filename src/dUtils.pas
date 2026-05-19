@@ -3571,8 +3571,11 @@ begin
       paramList.Free;
     if LocalDbg then
      Writeln('AProcess.Executable: ',AProcess.Executable,' Parameters: ',AProcess.Parameters.Text);
-    if FileExists(AProcess.Executable) then AProcess.Execute
-      else if LocalDbg then writeln(AProcess.Executable,' not found!');
+    if FileExists(AProcess.Executable) then
+                                       AProcess.Execute
+      else
+          if LocalDbg then
+                          writeln(AProcess.Executable,' not found!');
   finally
     AProcess.Free
   end;
@@ -4276,7 +4279,7 @@ var
 begin
   Result := capt + ' (log:';
   if dmData.LogName <> '' then logname:=dmData.LogName;
-    Result := Result + logname+ ') CqrlogAlpha for Linux' ;
+    Result := Result + logname+ ') CqrlogImproved for Linux' ;
 end;
 
 procedure TdmUtils.FillBandCombo(cmb: TComboBox);

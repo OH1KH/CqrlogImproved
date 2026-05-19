@@ -39,7 +39,7 @@ uses dData, dUtils;
 
 Procedure TfrmChangelog.ViewChangelog;
 Begin
-  Self.Caption:='CqrlogAlpha - Changelog';
+  Self.Caption:='CqrlogImproved - Changelog';
   IpHtmlPanel1.OpenURL(expandLocalHtmlFileName(dmData.ShareDir+'changelog.html'));
 end;
 
@@ -57,7 +57,7 @@ var
 '<P>'+
 'It seems that you have <strong>not set Station CALLSIGN</strong> for this log.<BR>'+
 '<BR>'+
-'CqrlogAlpha has <strong>own settings for every log</strong>.<BR>'+
+'CqrlogImproved has <strong>own settings for every log</strong>.<BR>'+
 'You can copy settings between logs using window:<BR>'+
 '<UL><LI>Database Connect/Utils/settings/import<->export using an external file when logs are not open.</LI>'+
 '<LI>Copy settings from existing log at new log creation phase.</LI></UL>'+
@@ -67,7 +67,7 @@ var
 '<P><UL><LI style="list-style: square;text-align:left; color: green;" >'+
 'PROGRAM:</LI>'+
 '<UL><LI style="text-align:left; color: brown;">'+
-'Basic settings how CqrlogAlpha works with this log</LI></UL>'+
+'Basic settings how CqrlogImproved works with this log</LI></UL>'+
 '<LI style="list-style: square;text-align:left; color: green;" >'+
 'STATION:</LI>'+
 '<UL><LI style="text-align:left; color: brown;">'+
@@ -75,19 +75,19 @@ var
 '<LI style="list-style: square;text-align:left; color: green;" >'+
 'BANDS:</LI>'+
 '<UL><LI style="text-align:left; color: brown;"> '+
-'By default CqrlogAlpha uses Region1 band settings.<BR>'+
+'By default CqrlogImproved uses Region1 band settings.<BR>'+
 'If you are in other region please check bands/frequencies<BR>'+
 'to set correct band start and end frequencies.<BR>'+
-'This will affect to all CqrlogAlpha operations.</LI></UL>'+
+'This will affect to all CqrlogImproved operations.</LI></UL>'+
 '<LI style="list-style: square;text-align:left; color: green;" >'+
 'TRX CONTROL:</LI>'+
 '<UL><LI style="text-align:left; color: brown;">'+
-'Settings if you want CqrlogAlpha to communicate with<BR>'+
+'Settings if you want CqrlogImproved to communicate with<BR>'+
 'your rig using CAT control.</LI></UL>'+
 '<LI style="list-style: square;text-align:left; color: green;" >'+
 'EXTERNAL VIEWERS:</LI>'+
 '<UL><LI style="text-align:left; color: brown;"> '+
-'Programs that CqrlogAlpha uses for viewing various documents</LI></UL>'+
+'Programs that CqrlogImproved uses for viewing various documents</LI></UL>'+
 '</UL></P>'+
 '<P>'+
 'For other Preferences/Tabs: Set their values by your needs.'+
@@ -106,10 +106,10 @@ procedure TfrmChangelog.ViewNewChangeLog;
 var
     data : String;
 Begin
-     if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogAlpha/refs/heads/main/src/changelog.html', data) then
+     if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogImproved/refs/heads/main/src/changelog.html', data) then
       begin
         if (pos('NOT FOUND',upcase(data))<>0) then exit;
-        Self.Caption:='CqrlogAlpha - New version changelog';
+        Self.Caption:='CqrlogImproved - New version changelog';
         IpHtmlPanel1.SetHtmlFromStr(data);
       end;
 end;

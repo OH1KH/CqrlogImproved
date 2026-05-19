@@ -514,7 +514,7 @@ begin
   Writeln(f,'</TD></TR></TABLE>');
 
   Writeln(f,'<BR> <BR>');
-  Writeln(f,'<H5 ALIGN=CENTER> <A HREF="https://github.com/OH1KH/CqrlogAlpha">CQRLOG' + dmData.VersionString  + ' </A></H5>');
+  Writeln(f,'<H5 ALIGN=CENTER> <A HREF="https://github.com/OH1KH/CqrlogImproved">CQRLOG' + dmData.VersionString  + ' </A></H5>');
   Writeln(f,'</BODY>');
   Writeln(f,'</HTML>');
 

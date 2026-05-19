@@ -1,0 +1,176 @@
+object frmReminder: TfrmReminder
+  Left = 691
+  Height = 147
+  Top = 202
+  Width = 609
+  Caption = 'Reminder'
+  ClientHeight = 147
+  ClientWidth = 609
+  Constraints.MinHeight = 50
+  Constraints.MinWidth = 100
+  LCLVersion = '4.6.0.0'
+  OnClose = FormClose
+  OnHide = FormHide
+  OnKeyUp = FormKeyUp
+  OnShow = FormShow
+  object RemiMemo: TMemo
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = RemindUThour
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 6
+    Height = 37
+    Top = 103
+    Width = 597
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 6
+    BorderSpacing.Top = 3
+    BorderSpacing.Right = 6
+    MaxLength = 255
+    TabOrder = 0
+    OnKeyPress = RemiMemoLimit
+    OnKeyUp = FormKeyUp
+  end
+  object chRemi: TCheckBox
+    AnchorSideLeft.Control = chUTRemi
+    AnchorSideTop.Control = RemindTimeSet
+    AnchorSideTop.Side = asrCenter
+    Left = 131
+    Height = 23
+    Top = 38
+    Width = 155
+    Caption = 'Remind again after '
+    TabOrder = 1
+    OnChange = chRemiChange
+  end
+  object lblRemi2: TLabel
+    AnchorSideLeft.Control = RemiMemo
+    AnchorSideBottom.Control = RemiMemo
+    Left = 6
+    Height = 17
+    Top = 83
+    Width = 113
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Bottom = 2
+    Caption = 'Remember to:'
+    Font.Height = 14
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object btClose: TButton
+    AnchorSideRight.Control = RemiMemo
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = RemiMemo
+    Left = 496
+    Height = 25
+    Top = 75
+    Width = 107
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Bottom = 3
+    Caption = 'Save && Close'
+    TabOrder = 2
+    OnClick = btCloseClick
+  end
+  object lblRemi3: TLabel
+    AnchorSideLeft.Control = RemindTimeSet
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = RemindTimeSet
+    AnchorSideTop.Side = asrCenter
+    Left = 356
+    Height = 17
+    Top = 41
+    Width = 53
+    BorderSpacing.Left = 6
+    Caption = 'minutes'
+    ParentColor = False
+  end
+  object chUTRemi: TCheckBox
+    AnchorSideLeft.Control = lblRemi2
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = RemindUThour
+    AnchorSideTop.Side = asrCenter
+    Left = 131
+    Height = 23
+    Top = 72
+    Width = 155
+    BorderSpacing.Left = 12
+    Caption = 'Remind time (UTC) '
+    TabOrder = 3
+    OnChange = chUTRemiChange
+  end
+  object lblRemi1: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 29
+    Top = 0
+    Width = 609
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = False
+    BorderSpacing.CellAlignHorizontal = ccaCenter
+    BorderSpacing.CellAlignVertical = ccaCenter
+    Caption = 'Sitting is killing you!  Take a short walk!'
+    Color = clRed
+    Font.Color = clYellow
+    Font.Height = -24
+    Font.Style = [fsBold, fsItalic]
+    Layout = tlCenter
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
+  end
+  object RemindTimeSet: TEdit
+    AnchorSideLeft.Control = chRemi
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = lblRemi1
+    AnchorSideTop.Side = asrBottom
+    Left = 286
+    Height = 34
+    Hint = 'Set next remind time in minutes'
+    Top = 32
+    Width = 64
+    Alignment = taRightJustify
+    BorderSpacing.Top = 3
+    MaxLength = 3
+    NumbersOnly = True
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 4
+    OnEnter = RemindTimeSetEnter
+    OnExit = RemindTimeSetExit
+  end
+  object RemindUThour: TEdit
+    AnchorSideLeft.Control = RemindTimeSet
+    AnchorSideTop.Control = RemindTimeSet
+    AnchorSideTop.Side = asrBottom
+    Left = 286
+    Height = 34
+    Hint = 'Enter UTC time as HHMM'
+    Top = 66
+    Width = 64
+    Alignment = taRightJustify
+    AutoSize = False
+    AutoSelect = False
+    MaxLength = 4
+    NumbersOnly = True
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 5
+    OnEnter = RemindUThourEnter
+    OnExit = RemindUThourExit
+  end
+  object tmrRemi: TTimer
+    Enabled = False
+    Interval = 1800000
+    OnTimer = tmrRemiTimer
+    Left = 75
+    Top = 216
+  end
+end

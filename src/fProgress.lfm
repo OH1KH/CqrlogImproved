@@ -1,0 +1,48 @@
+object frmProgress: TfrmProgress
+  Left = 400
+  Height = 91
+  Top = 400
+  Width = 340
+  Caption = 'US state table update'
+  ClientHeight = 91
+  ClientWidth = 340
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poWorkAreaCenter
+  LCLVersion = '3.8.0.0'
+  Visible = True
+  object p: TProgressBar
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = lblInfo
+    AnchorSideTop.Side = asrBottom
+    Left = 70
+    Height = 30
+    Top = 29
+    Width = 200
+    BorderSpacing.Top = 6
+    Max = 40
+    Smooth = True
+    TabOrder = 0
+  end
+  object lblInfo: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    Left = 135
+    Height = 17
+    Top = 6
+    Width = 70
+    Alignment = taCenter
+    BorderSpacing.Top = 6
+    Caption = 'Working....'
+    ParentColor = False
+  end
+  object tmrUSDB: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = tmrUSDBTimer
+    Left = 305
+    Top = 48
+  end
+end

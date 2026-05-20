@@ -538,6 +538,10 @@ var
    loc          : String;
 begin
   lblQSOCount.Caption := IntToStr(dmData.GetQSOCount);
+  if dmData.IsFilter then
+                       lblQSOInLog.Caption:='Filtered QSOs:'
+                     else
+                       lblQSOInLog.Caption:='QSOs in log:';
   lblDXCC.Caption     := IntToStr(dmDXCC.DXCCCount);
   lblDXCCCmf.Caption  := IntToStr(dmDXCC.DXCCCmfCount);
   if pnlDistance.Visible then

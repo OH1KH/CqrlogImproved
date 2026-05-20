@@ -1170,7 +1170,12 @@ begin
     upHrdLog  : begin
                   case ParseHrdLogOutput(Response,Result) of
                     200:Begin
-                         Result := 'OK';
+                         if (Response<>'') then Result := 'OK'
+                                           else
+                                               Begin
+                                                  Result := 'Empty response !';
+                                                  ErrorCode := 4;
+                                               end;
                          if pos('<INSERT>0',UpperCase(Response))>0 then  //duplicate qso
                             Begin
                               Result:='Duplicate qso!';

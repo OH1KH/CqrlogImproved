@@ -455,7 +455,8 @@ begin
                           dmData.trCQRLOG.Rollback;
                         dmData.trCQRLOG.StartTransaction;
                         dmData.qCQRLOG.Open;
-                        dmData.qCQRLOG.Last
+                        dmData.qCQRLOG.Last;
+                        dmData.qCQRLOG.First
                       end
                       else
                        //It was empty, clear (S+F12) the view

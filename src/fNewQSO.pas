@@ -106,6 +106,7 @@ type
     cbSplitTX: TCheckBox;
     cbSpotRX: TCheckBox;
     cbTxLo: TCheckBox;
+    cbRetain: TCheckBox;
     chkAutoMode: TCheckBox;
     cmbFreq: TComboBox;
     cmbIOTA: TComboBox;
@@ -415,6 +416,7 @@ type
     procedure acPropExecute(Sender: TObject);
     procedure btnCancelExit(Sender: TObject);
     procedure btnClearSatelliteClick(Sender : TObject);
+    procedure cbRetainClick(Sender: TObject);
     procedure cbRxLoChange(Sender: TObject);
     procedure cbSplitTXChange(Sender: TObject);
     procedure cbTxLoChange(Sender: TObject);
@@ -1830,6 +1832,7 @@ begin
      NewLogSplash;
 
    dmUtils.UpdateCallBookcnf;  //renames old user and pass of ini file
+   cbRetain.Checked := cqrini.ReadBool('NewQSO', 'RetainPropagation', False);
    FirstClose:=True;
 end;
 
@@ -2262,7 +2265,8 @@ begin
         if (mode <> '') and (freq <> empty_freq) then
         begin
           band := dmUtils.GetBandFromFreq(freq);
-          if (band <> old_t_band) then btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+          if (band <> old_t_band) then
+                   if not cbRetain.Checked then  btnClearSatelliteClick(nil); //if band changes sat and prop cleared
           if (mode <> old_t_mode) or (band <> old_t_band) then
           begin
             old_t_mode := mode;
@@ -2737,7 +2741,8 @@ begin
                if (dmUtils.GetBandFromFreq(cmbFreq.Text) <> old_t_band) then
                  Begin
                   old_t_band := dmUtils.GetBandFromFreq(cmbFreq.Text);
-                  btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+                  if not cbRetain.Checked then
+                                          btnClearSatelliteClick(nil); //if band changes sat and prop cleared
                  end;
               end;
            end  //band changes
@@ -4818,6 +4823,11 @@ begin
   cmbSatelliteChange(nil)
 end;
 
+procedure TfrmNewQSO.cbRetainClick(Sender: TObject);
+begin
+   cqrini.WriteBool('NewQSO', 'RetainPropagation', cbRetain.Checked);
+end;
+
 procedure TfrmNewQSO.cbRxLoChange(Sender: TObject);
 begin
   cqrini.WriteBool('NewQSO', 'UseRXLO', cbRxLo.Checked);
@@ -4974,7 +4984,8 @@ begin
   band := dmUtils.GetBandFromFreq(cmbFreq.Text);
   if (band <> old_t_band) then
      Begin
-      btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+      if not cbRetain.Checked then
+                              btnClearSatelliteClick(nil); //if band changes sat and prop cleared
        old_t_band := band;
      end;
 end;

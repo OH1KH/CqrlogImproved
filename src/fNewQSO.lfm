@@ -1,18 +1,18 @@
 object frmNewQSO: TfrmNewQSO
   Left = 285
-  Height = 619
+  Height = 594
   Top = 33
-  Width = 1007
+  Width = 994
   HelpType = htKeyword
   HelpKeyword = 'help/index.html'
   HorzScrollBar.Increment = 97
   HorzScrollBar.Page = 967
   VertScrollBar.Increment = 58
-  VertScrollBar.Page = 613
+  VertScrollBar.Page = 594
   AutoScroll = True
   Caption = 'New QSO ... (CqrlogImproved for Linux)'
-  ClientHeight = 619
-  ClientWidth = 1007
+  ClientHeight = 594
+  ClientWidth = 994
   Constraints.MinHeight = 200
   Constraints.MinWidth = 420
   Icon.Data = {
@@ -2150,9 +2150,9 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlAll
     Left = 0
-    Height = 56
+    Height = 50
     Top = 0
-    Width = 1005
+    Width = 992
     Anchors = [akTop, akLeft, akRight, akBottom]
     Color = clWindow
     Columns = <>
@@ -2172,8 +2172,8 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideBottom.Control = sbNewQSO
     Left = 2
     Height = 535
-    Top = 56
-    Width = 1003
+    Top = 50
+    Width = 990
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Left = 2
     BorderSpacing.Right = 2
@@ -2182,7 +2182,7 @@ object frmNewQSO: TfrmNewQSO
     BorderWidth = 1
     BorderStyle = bsSingle
     ClientHeight = 533
-    ClientWidth = 1001
+    ClientWidth = 988
     Color = clActiveBorder
     ParentBackground = False
     ParentColor = False
@@ -3879,11 +3879,11 @@ object frmNewQSO: TfrmNewQSO
       Height = 135
       Top = 396
       Width = 525
-      ActivePage = tabDXCCStat
+      ActivePage = tabSatellite
       Anchors = [akLeft, akRight, akBottom]
       BorderSpacing.Bottom = 1
       ParentFont = False
-      TabIndex = 0
+      TabIndex = 2
       TabOrder = 30
       OnChange = pgDetailsChange
       object tabDXCCStat: TTabSheet
@@ -3947,8 +3947,8 @@ object frmNewQSO: TfrmNewQSO
           TitleStyle = tsNative
           OnPrepareCanvas = sgrdCallStatisticPrepareCanvas
           ColWidths = (
-            257
             256
+            255
           )
         end
       end
@@ -4039,15 +4039,16 @@ object frmNewQSO: TfrmNewQSO
           OnExit = edtRXFreqExit
         end
         object btnClearSatellite: TButton
-          AnchorSideLeft.Control = edtRXFreq
+          AnchorSideLeft.Control = cbRetain
+          AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = cmbPropagation
           AnchorSideTop.Side = asrCenter
-          Left = 284
+          Left = 363
           Height = 33
           Top = 74
           Width = 70
           AutoSize = True
-          BorderSpacing.Right = 10
+          BorderSpacing.Left = 15
           Caption = 'Clear all'
           TabOrder = 4
           OnClick = btnClearSatelliteClick
@@ -4079,6 +4080,16 @@ object frmNewQSO: TfrmNewQSO
           ParentFont = False
           TabOrder = 3
           OnChange = cbSpotRXChange
+        end
+        object cbRetain: TCheckBox
+          AnchorSideLeft.Control = cbSpotRX
+          Left = 284
+          Height = 23
+          Top = 81
+          Width = 64
+          Caption = 'retain'
+          TabOrder = 5
+          OnClick = cbRetainClick
         end
       end
       object tabLOConfig: TTabSheet
@@ -4883,8 +4894,8 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideBottom.Side = asrBottom
     Left = 2
     Height = 25
-    Top = 594
-    Width = 1003
+    Top = 588
+    Width = 990
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False

@@ -4279,7 +4279,7 @@ var
 begin
   Result := capt + ' (log:';
   if dmData.LogName <> '' then logname:=dmData.LogName;
-    Result := Result + logname+ ') CqrlogImproved for Linux' ;
+    Result := Result + logname+ ') Cqrlog_Improved for Linux' ;
 end;
 
 procedure TdmUtils.FillBandCombo(cmb: TComboBox);

@@ -9,7 +9,7 @@ object frmMain: TfrmMain
   VertScrollBar.Page = 301
   ActiveControl = pnlCounts
   AutoScroll = True
-  Caption = 'CqrlogImproved for Linux'
+  Caption = 'Cqrlog_Improved for Linux'
   ClientHeight = 391
   ClientWidth = 912
   Constraints.MinHeight = 148

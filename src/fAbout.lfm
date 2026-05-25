@@ -4,7 +4,7 @@ object frmAbout: TfrmAbout
   Top = 58
   Width = 453
   BorderStyle = bsDialog
-  Caption = 'About CqrlogImproved'
+  Caption = 'About Cqrlog_Improved'
   ClientHeight = 294
   ClientWidth = 453
   Position = poWorkAreaCenter
@@ -1996,7 +1996,7 @@ object frmAbout: TfrmAbout
         Height = 17
         Top = 145
         Width = 252
-        Caption = 'CqrlogImproved by Saku, OH1KH'
+        Caption = 'Cqrlog_Improved by Saku, OH1KH'
         Font.Color = clRed
         Font.Style = [fsBold]
         ParentColor = False

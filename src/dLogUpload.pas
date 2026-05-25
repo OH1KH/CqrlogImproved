@@ -156,7 +156,7 @@ begin
     HTTP.UserName  := cqrini.ReadString('Program','User','');
     HTTP.Password  := cqrini.ReadString('Program','Passwd','');
     if pos('QRZ.COM',UpCase(Url))>0 then  //QRZlog wants program name/version as UserAgent
-                     HTTP.UserAgent := 'CqrlogImproved/'+cVersion;
+                     HTTP.UserAgent := 'Cqrlog_Improved/'+cVersion;
 
 
     for i:=0 to data.Count-1 do

@@ -381,7 +381,7 @@ object frmDOKStat: TfrmDOKStat
       AnchorSideRight.Side = asrBottom
       Left = 614
       Height = 23
-      Hint = 'Re/Set "Green Bar paper" in this grid without change to other CqrlogImproved grids'#10'(what "preferences/Fonts/Green bar paper" does) '
+      Hint = 'Re/Set "Green Bar paper" in this grid without change to other Cqrlog_Improved grids'#10'(what "preferences/Fonts/Green bar paper" does) '
       Top = 9
       Width = 124
       Anchors = [akTop, akRight]

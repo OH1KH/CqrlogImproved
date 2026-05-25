@@ -8205,7 +8205,7 @@ Begin
         frmAbout:= TfrmAbout.Create(Application);
         frmAbout.PageControl1.ActivePage := frmAbout.tabUpgrade;
         frmAbout.lblVerze1.Caption := cVERSION + '  ' + cBUILD_DATE;
-        frmAbout.Label8.Caption:='There is CqrlogImproved version '+IntToStr(VerAvailNr)+' available!';
+        frmAbout.Label8.Caption:='There is Cqrlog_Improved version '+IntToStr(VerAvailNr)+' available!';
         frmAbout.IsNewVersion:=True;
         frmAbout.btnChangelog1.Font.Color:=clRed;
         frmAbout.btnChangelog1.Font.Style:=[fsBold];

@@ -19,7 +19,6 @@ so whenever the original Cqrlog modifies its database structure, compatibility m
 ----------------------------------------------------------------------------------------------------
 
 This folder holds ready compiled binary files of CqrlogImproved that I am using myself daily.
-I call it Alpha version, but that does not mean it is somehow under construction (a testing version).
 Compiled binary versions are released after it seems that biggest bugs are found and fixed.
 
 It is mostly compatible with official Cqrlog. Depending what happens to official Cqrlog development it may not be so in future.
@@ -42,13 +41,13 @@ If you do not want to do that you can compile this source (see parent folder) wi
 
 ## ABOUT THESE BINARY FILES:
 
- Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CarlogAlpha versions.
+ Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CqrlogImproved versions.
  
  To see updates in this alpha version look at [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html)  
  To read about UTF8 special charcters in logs read file UTF8_logs.md
  
  
-Alpha BINARIES:
+Improved BINARIES:
 ---------
   - **cqr2.zip  holds binary for  64bit systems compiled for GTK2 widgets**
   - **cqr3.zip  holds binary for  32bit systems compiled for GTK2 widgets**
@@ -73,7 +72,7 @@ Alpha BINARIES:
    If you use script-install (see below) it makes backups for you.
    Otherwise see "manual-install (below).
    
-   In some cases it has happen that Alpha compiled using Fedora Linux may not run flawlessly with Ubuntu derivates.
+   In some cases it has happen that Improved compiled using Fedora Linux may not run flawlessly with Ubuntu derivates.
    if you start to get mysterious errors it might be the reason.
    
 -----------YOU HAVE BEEN WARNED!------------
@@ -258,7 +257,7 @@ You need "sudo" for this copy.
 
 
 
-### Alpha version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html) 
+### Improved version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html) 
  
 ### Some Cqrlog related videos can be found from  <https://www.youtube.com/channel/UC3yPCVYmfeBzDSwTosOe2fQ>
 

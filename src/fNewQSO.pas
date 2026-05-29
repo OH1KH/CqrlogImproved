@@ -613,51 +613,52 @@ type
     procedure tmrUploadAllTimer(Sender: TObject);
     procedure tmrWsjtxTimer(Sender: TObject);
   private
-    StartUpCount : integer;
-    StartRun    : Boolean;
-    old_stat_adif : Word;
-    TabUsed     : Boolean;
-    old_cmode   : String;
-    old_ccall   : String;
-    old_cfreq   : String;
+    StartUpCount       : integer;
+    StartRun           : Boolean;
+    old_stat_adif      : Word;
+    TabUsed            : Boolean;
+    old_cmode          : String;
+    old_ccall          : String;
+    old_cfreq          : String;
 
-    old_prof   : Integer;
-//    old_pfx    : String;
-    old_adif   : Word;
-    old_date   : TDateTime;
-    old_mode   : String;
-    old_freq   : String;
-    old_qslr   : String;
-    old_sat    : String;
-    old_prop   : String;
-    old_rxfreq : String;
-    posun      : String;
+    old_prof           : Integer;
+//    old_pfx          : String;
+    old_adif           : Word;
+    old_date           : TDateTime;
+    old_mode           : String;
+    old_freq           : String;
+    old_qslr           : String;
+    old_sat            : String;
+    old_prop           : String;
+    old_rxfreq         : String;
+    posun              : String;
 
-    old_time   : String;
-    old_rsts   : String;
-    old_rstr   : String;
-    ChangeDXCC : Boolean;
-    StartTime  : TDateTime;
-    Running    : Boolean;
-    idcall     : String;
-    old_t_mode : String;
-    lotw_qslr  : String;
-    fromNewQSO : Boolean;
-    FreqBefChange : Double;
-    adif : Word;
-    WhatUpNext : TWhereToUpload;
-    UploadAll  : Boolean;
+    old_time           : String;
+    old_rsts           : String;
+    old_rstr           : String;
+    ChangeDXCC         : Boolean;
+    StartTime          : TDateTime;
+    Running            : Boolean;
+    idcall             : String;
+    old_t_mode         : String;
+    lotw_qslr          : String;
+    fromNewQSO         : Boolean;
+    FreqBefChange      : Double;
+    adif               : Word;
+    WhatUpNext         : TWhereToUpload;
+    UploadAll          : Boolean;
     WsjtxDecodeRunning : boolean;
     DiffCalls          : byte;
-    RememberAutoMode : Boolean;
-    IsJS8Callrmt     : Boolean; //way to isolate adif from JS8's JSON
+    RememberAutoMode   : Boolean;
+    IsJS8Callrmt       : Boolean; //way to isolate adif from JS8's JSON
     QSLcfm,
     eQSLcfm,
-    LoTWcfm    : String;
+    LoTWcfm            : String;
     UsrAssignedProfile : String;
     EditId             : longint;     //id_cqrlog_main of qso in edit mode
-    DetailsCMBColorDone : string;     //changes done for DXCCdetails column color by currently used call+mode+band
-    FirstClose          : boolean;    //When close button is clicked first time wit call in call column.
+    DetailsCMBColorDone: string;     //changes done for DXCCdetails column color by currently used call+mode+band
+    FirstClose         : boolean;    //When close button is clicked first time wit call in call column.
+    multicast          : boolean;
 
     procedure showDOK(stat:boolean);
     procedure ShowDXCCInfo(ref_adif : Word = 0);
@@ -805,7 +806,6 @@ var
   frmNewQSO    : TfrmNewQSO;
 
   EscFirstPressDone : Boolean = True;
-  multicast    : boolean = false;
 
   c_callsign  : String;
   c_nick      : String;
@@ -2562,7 +2562,10 @@ begin
 
     MsgType :=  ui32Buf(index);
     if dmData.DebugLevel>=1 then Write(' Message type:', MsgType,' ');
-    cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType);   //changed to see last received msgtype
+    if multicast then
+                cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType)+', multicast'
+           else
+                cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType);
 
     tmpindex := index;
     RemoteName := StrBuf(index);       //read remote name to get index point to RepHead end
@@ -7875,8 +7878,11 @@ var
   run  : Boolean = False;
   path : String = '';
   tries: integer = 10;
+  Mcast: integer;
+  dot  : integer;
 
 begin
+  multicast := false;
   cqrini.WriteInteger('Pref', 'ActPageIdx', 20);  //set fldigi/wsjt tab active.
   dmUtils.SaveDBGridInForm(frmNewQSO) ;
   case RemoteType of
@@ -7913,7 +7919,6 @@ begin
                   mnuRemoteModeWsjt.Checked := True;
                   AnyRemoteOn := True;
                   WsjtxDecodeRunning        := false;
-                  cbOffline.Caption         := 'Wsjtx remote';
                   path                      := cqrini.ReadString('wsjt','path','');
                   run                       := cqrini.ReadBool('wsjt','run',False);
 
@@ -7924,15 +7929,23 @@ begin
 
                   frmTRXControl.DisableRitXit; //wsjtx does not do this, so we have to ...
 
-                  //multicast is 239.0.0.0/8
-                  multicast:=pos('239.',cqrini.ReadString('wsjt','ip','127.0.0.1'))=1; //check multicast
+                  //multicast is 224.0.0.0 - 239.255.255.255
+                  Dot:=pos('.',cqrini.ReadString('wsjt','ip','127.0.0.1'));
+                  Mcast:=StrToInt(copy(cqrini.ReadString('wsjt','ip','127.0.0.1'),1,Dot-1));
+                  multicast:=((Mcast>=224) and (Mcast <= 239)); //check multicast
+
                   if multicast then
                    Begin
                       WsjtxSockS := TUDPBlockSocket.Create;
-                      if dmData.DebugLevel>=1 then Writeln('Multicast sendsocket created!');
+                      if dmData.DebugLevel>=1 then
+                         Writeln('Multicast sendsocket created!');
                       WsjtxSockS.EnableReuse(true);
-                      if dmData.DebugLevel>=1 then Writeln('Reuse enabled!');
-                   end;
+                      if dmData.DebugLevel>=1 then
+                         Writeln('Reuse enabled!');
+                      cbOffline.Caption         := 'Wsjtx remote, multicast';
+                   end
+                  else
+                      cbOffline.Caption         := 'Wsjtx remote';
 
                   // start UDP server  http://synapse.ararat.cz/doc/help/blcksock.TBlockSocket.html
                   WsjtxSock := TUDPBlockSocket.Create;

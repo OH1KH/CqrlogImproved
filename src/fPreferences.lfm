@@ -1,18 +1,18 @@
 object frmPreferences: TfrmPreferences
   Left = 158
-  Height = 796
+  Height = 783
   Top = 0
-  Width = 1050
+  Width = 1037
   HelpType = htKeyword
   HelpKeyword = 'help/h1.html'
-  HorzScrollBar.Page = 1050
-  VertScrollBar.Page = 796
+  HorzScrollBar.Page = 1037
+  VertScrollBar.Page = 783
   ActiveControl = lbPreferences
   AutoScroll = True
   BorderIcons = [biSystemMenu]
   Caption = 'Preferences'
-  ClientHeight = 796
-  ClientWidth = 1050
+  ClientHeight = 783
+  ClientWidth = 1037
   Constraints.MinHeight = 200
   Constraints.MinWidth = 300
   Position = poMainFormCenter
@@ -724,7 +724,7 @@ object frmPreferences: TfrmPreferences
         Left = 6
         Height = 23
         Top = 135
-        Width = 428
+        Width = 460
         BorderSpacing.Top = 3
         Caption = 'Check for newer version of Cqrlog_Improved after program startup'
         TabOrder = 13
@@ -9063,7 +9063,7 @@ object frmPreferences: TfrmPreferences
           AnchorSideRight.Side = asrBottom
           Left = 595
           Height = 34
-          Hint = 'IP adress used for WSJT-X broadcasts.'#10'Must be same also in WSJT-X settings.'#10'Via this IP all possible functions and features are available.'#10'This is used as default.'#10#10'If you need multicast (you have also other listener programs than Cqrlog)'#10'you should use IP address starting 239.xxx.xxx.xxx in all programs.'#10'From 239 Cqrlog knows that user wants to enable multicast UDP.'
+          Hint = 'IP adress used for WSJT-X broadcasts.'#10'Must be same also in WSJT-X settings.'#10'Via this IP all possible functions and features are available.'#10'This is used as default.'#10#10'If you need multicast (you have also other listener programs than Cqrlog)'#10'you should use same multicast IP address with all programs.'#10'Cqrlog knows that user wants to enable multicast UDP if IP addess is between'#10'224.0.0.0 - 239.255.255.255'
           Top = 79
           Width = 81
           Anchors = [akTop, akRight]
@@ -9648,7 +9648,7 @@ object frmPreferences: TfrmPreferences
         BorderSpacing.Left = 6
         BorderSpacing.Top = 6
         Caption = ' Callbook search '
-        ClientHeight = 142
+        ClientHeight = 158
         ClientWidth = 648
         TabOrder = 0
         object rbHamQTH: TRadioButton
@@ -10223,7 +10223,7 @@ object frmPreferences: TfrmPreferences
         Width = 650
         BorderSpacing.Left = 12
         Caption = ' HamQTH '
-        ClientHeight = 132
+        ClientHeight = 148
         ClientWidth = 648
         TabOrder = 0
         object chkHaUpEnabled: TCheckBox
@@ -10375,7 +10375,7 @@ object frmPreferences: TfrmPreferences
         Width = 650
         BorderSpacing.Top = 3
         Caption = ' ClubLog '
-        ClientHeight = 200
+        ClientHeight = 216
         ClientWidth = 648
         TabOrder = 1
         object chkClUpEnabled: TCheckBox
@@ -10569,7 +10569,7 @@ object frmPreferences: TfrmPreferences
         Width = 650
         BorderSpacing.Top = 3
         Caption = ' HRDLog.net '
-        ClientHeight = 132
+        ClientHeight = 148
         ClientWidth = 648
         TabOrder = 2
         object chkHrUpEnabled: TCheckBox
@@ -10768,7 +10768,7 @@ object frmPreferences: TfrmPreferences
         Width = 650
         BorderSpacing.Top = 3
         Caption = 'UDP Log Messages'
-        ClientHeight = 119
+        ClientHeight = 135
         ClientWidth = 648
         TabOrder = 3
         object chkUdUpEnabled: TCheckBox
@@ -10871,7 +10871,7 @@ object frmPreferences: TfrmPreferences
         Width = 650
         BorderSpacing.Top = 3
         Caption = 'QRZ.com Logbook'
-        ClientHeight = 149
+        ClientHeight = 165
         ClientWidth = 648
         TabOrder = 4
         object chkQrzUpEnabled: TCheckBox

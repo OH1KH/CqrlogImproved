@@ -1,12 +1,24 @@
 # CqrlogImproved is a clone based on the work of OK2CQR & OK1RR.
-## It has over 570 smaller or bigger differences to official Cqrlog.
+This is a version of Cqrlog that I have modified to meet my own needs and simply because programming is fun. Despite Petr's suggestion, I am not going to rename this project.
+My version includes hundreds of additions, fixes, and improvements compared to the original Cqrlog 2.5.2, but Petr remains the owner of this product, and I have no intention
+of 'stealing' it by renaming it.
+
+Because the previous name 'CqrlogAlpha' caused confusion, I now call this 'CqrlogImproved'. The concept is similar to how Uwe (DG2YCB) manages his version of the original WSJT-X.
+Like Uwe's version, which features numerous improvements over the original WSJT-X while remaining compatible with its origin, my version follows the same philosophy.
+
+You are free to use and modify this according to the rules of the open-source license. If you wish to keep your original Cqrlog 2.5.2 installation but also try this version,
+you can copy the binary (src/cqrlog) and rename it (e.g., to /usr/bin/cqrlog2). Simply run make, make cqrlog_qt5, or make cqrlog_qt6—do not run make install. 
+If you store your logs locally, you just need to copy your ~/.config/cqrlog folder to ~/.config/cqrlog2 and start cqrlog2. This way, you have separate logs and do not need to run make install at all. As long as you do not copy the new help files to /usr/share/cqrlog, the original contents will remain unchanged and can be used by both versions.
+
+MariaDB log databases may differ slightly, but they should be backward compatible for now. The database version numbers are higher than the originals,
+so whenever the original Cqrlog modifies its database structure, compatibility may break.
+
 ### I am maintaining this software mainly for my own use, but feel free to use/modify it for your own needs by the rules of Open software licence and HamSprit rules.
-### Improved version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html)  
+### Version changes can be found from [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html)  
 ### Some Cqrlog related videos can be found from  <https://www.youtube.com/channel/UC3yPCVYmfeBzDSwTosOe2fQ>
 ----------------------------------------------------------------------------------------------------
 
 This folder holds ready compiled binary files of CqrlogImproved that I am using myself daily.
-I call it Improved version, but that does not mean it is somehow under construction (a testing version).
 Compiled binary versions are released after it seems that biggest bugs are found and fixed.
 
 It is mostly compatible with official Cqrlog. Depending what happens to official Cqrlog development it may not be so in future.
@@ -29,10 +41,9 @@ If you do not want to do that you can compile this source (see parent folder) wi
 
 ## ABOUT THESE BINARY FILES:
 
- Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CarlogImproved versions.
+ Binaries (cqr2,cqr3,cqr5,cqr6 zips) include latest CqrlogImproved versions.
  
- To see updates in this Improved version look at <https://github.com/OH1KH/cqrlog/commits/loc_testing>
-
+ To see updates in this alpha version look at [Changelog](https://htmlpreview.github.io/?https://github.com/OH1KH/CqrlogImproved/blob/main/src/changelog.html)  
  To read about UTF8 special charcters in logs read file UTF8_logs.md
  
  

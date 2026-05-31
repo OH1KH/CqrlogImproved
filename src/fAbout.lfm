@@ -1,7 +1,7 @@
 object frmAbout: TfrmAbout
-  Left = 495
+  Left = 489
   Height = 294
-  Top = 58
+  Top = 60
   Width = 453
   BorderStyle = bsDialog
   Caption = 'About Cqrlog_Improved'
@@ -874,21 +874,22 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Control = Bevel1
         AnchorSideTop.Side = asrBottom
         Left = 6
-        Height = 17
+        Height = 34
         Top = 145
-        Width = 58
-        Caption = 'Authors: '
+        Width = 119
+        Caption = 'Origin information'#10'Authors: '
         ParentColor = False
       end
       object Label3: TLabel
-        AnchorSideLeft.Control = Label2
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Bevel1
+        AnchorSideLeft.Control = lblLink
         AnchorSideTop.Side = asrBottom
-        Left = 64
+        AnchorSideBottom.Control = Label2
+        AnchorSideBottom.Side = asrBottom
+        Left = 194
         Height = 17
-        Top = 145
+        Top = 162
         Width = 202
+        Anchors = [akLeft, akBottom]
         Caption = 'Petr, OK2CQR && Martin, OK1RR'
         ParentColor = False
       end
@@ -898,7 +899,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 6
         Height = 17
-        Top = 168
+        Top = 185
         Width = 160
         BorderSpacing.Top = 6
         Caption = 'Home page and support:'
@@ -909,7 +910,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Control = Label5
         Left = 194
         Height = 17
-        Top = 168
+        Top = 185
         Width = 146
         Caption = 'http://www.cqrlog.com'
         Font.Color = clBlue
@@ -940,7 +941,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 6
         Height = 17
-        Top = 188
+        Top = 205
         Width = 188
         BorderSpacing.Top = 3
         Caption = 'CQRLOG group on Telegram: '
@@ -953,7 +954,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 194
         Height = 17
-        Top = 188
+        Top = 205
         Width = 119
         BorderSpacing.Top = 3
         Caption = 'https://t.me/cqrlog'
@@ -989,8 +990,22 @@ object frmAbout: TfrmAbout
         Left = 182
         Height = 14
         Top = 6
-        Width = 52
-        Caption = 'Based on'
+        Width = 162
+        Caption = 'Cqrlog_Improved is based on'
+        Font.Height = -11
+        ParentFont = False
+      end
+      object Label12: TLabel
+        AnchorSideLeft.Control = Label2
+        AnchorSideTop.Side = asrBottom
+        AnchorSideBottom.Control = btnClose
+        AnchorSideBottom.Side = asrCenter
+        Left = 6
+        Height = 14
+        Top = 234
+        Width = 222
+        Anchors = [akLeft, akBottom]
+        Caption = 'For Cqrlog_Improved see "Upgrade" tab'
         Font.Height = -11
         ParentFont = False
       end
@@ -1992,10 +2007,10 @@ object frmAbout: TfrmAbout
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = Bevel2
         AnchorSideTop.Side = asrBottom
-        Left = 95
+        Left = 92
         Height = 17
         Top = 145
-        Width = 252
+        Width = 259
         Caption = 'Cqrlog_Improved by Saku, OH1KH'
         Font.Color = clRed
         Font.Style = [fsBold]

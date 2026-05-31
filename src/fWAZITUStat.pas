@@ -606,7 +606,7 @@ begin
   Writeln(f,'<HEAD>');
   Writeln(f,'<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf8">');
   Writeln(f,'<TITLE> '+ Caption +' of '+MyCall+' </TITLE>');
-  Writeln(f,'<META NAME="GENERATOR" CONTENT="CQRLOG ver. '+ dmData.VersionString +'">');
+  Writeln(f,'<META NAME="GENERATOR" CONTENT="CQRLOG_Improved ver. '+ dmData.VersionString +'">');
   Writeln(f,'<style type="text/css">');
   Writeln(f,'<!--');
   Writeln(f,'.popis {color: #FFFFFF}');
@@ -724,7 +724,7 @@ begin
   Writeln(f,'</TABLE>');
   Writeln(f,'</CENTER>');
   Writeln(f,'<BR> <BR>');
-  Writeln(f,'<H5 ALIGN=CENTER> <A HREF="http://www.cqrlog.com">CQRLOG ver. ' + dmData.VersionString  + ' </A></H5>');
+    Writeln(f,'<H5 ALIGN=CENTER>CQRLOG_Improved ver. ' + dmData.VersionString  + ' </H5>');
   Writeln(f,'</BODY>');
   Writeln(f,'</HTML>');
   CloseFile(f);

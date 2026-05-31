@@ -40,7 +40,7 @@ var
 {$R *.res}
 
 begin
-  Writeln(LineEnding+'Cqrlog Ver:',cVERSION,' Build:',cBuild,' Date:',cBUILD_DATE+' LCL Version: ' + laz_version+LineEnding);
+  Writeln(LineEnding+'Cqrlog_Improved Ver:',cVERSION,' Build:',cBuild,' Date:',cBUILD_DATE+' LCL Version: ' + laz_version+LineEnding);
   try
     p := TStringList.Create;
     AProcess := TProcess.Create(nil);

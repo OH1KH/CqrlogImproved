@@ -1042,10 +1042,10 @@ begin
   Writeln(f,'<!DOCTYPE HTML>');
   Writeln(f, '<html lang="',lang,'">');
   Writeln(f, '<head>');
-  Writeln(f, '<META NAME="GENERATOR" CONTENT="CQRLOG ver. ' + dmData.VersionString + '">');
+  Writeln(f, '<META NAME="GENERATOR" CONTENT="CQRLOG_Improved ver. ' + dmData.VersionString + '">');
   Writeln(f, '<META charset="UTF-8">');
   Writeln(f, '<META NAME="viewport" content="width=device-width, initial-scale=1.0">');
-  Writeln(f, '<title>List of QSO from CQRLOG - ' + Mycall + '</title>');
+  Writeln(f, '<title>List of QSO from CQRLOG_Improved - ' + Mycall + '</title>');
 
 
   Writeln(f,'<style>');
@@ -1361,7 +1361,7 @@ begin
     end;
     Writeln(f,'</table>');
     Writeln(f,'<br> <br>');
-    Writeln(f,'<h5 class="cntr"> <a href="http://www.cqrlog.com">CQRLOG ver. ' + dmData.VersionString  + ' </a></h5>');
+    Writeln(f,'<h5 class="cntr">CQRLOG_Improved ver. ' + dmData.VersionString  + ' </h5>');
     Writeln(f,'</body>');
     Writeln(f,'</html>')
   finally

@@ -39,7 +39,7 @@ sqlcmd="mysql -ucqrlog -poh1kh $2 --skip-column-names -se "
 
 ####This line below is used when "save log data in local machine" is used. 
 ####Start cqrlog before running script it creates the database/sock file.
-sqlcmd="mysql -S /home/$USER/.config/cqrlog/database/sock $2 --skip-column-names -se "
+#sqlcmd="mysql -S /home/$USER/.config/cqrlog/database/sock $2 --skip-column-names -se "
 
 # subroutine to clean variables
 function newqso(){ 
@@ -76,29 +76,32 @@ newqso
 while IFS= read -r line || [[ -n "$line" ]]; do
 
  #Find qso data from ADIF file
-    if grep -qi "call:" <<< "$line"; then
+     if [[ "$line" == *"<call:"* ]]; then
       call=${line##*">"}
+      call=${call^^}
     fi
-    if grep -qi "band:" <<< "$line"; then
+    if [[ "$line" == *"<band:"* ]]; then
       band=${line##*">"}
+      band=${band^^}
     fi
-    if grep -qi "mode:" <<< "$line"; then
+    if [[ "$line" == *"<mode:"* ]]; then
       mode=${line##*">"}
+      mode=${mode^^}
     fi
-    if grep -qi "qso_date:" <<< "$line"; then
+    if [[ "$line" == *"<qso_date:"* ]]; then
       dat=${line##*">"}
       dat="${dat:0:4}"-"${dat:4:2}"-"${dat:6:2}"
     fi
-    if grep -qi "time_off:" <<< "$line"; then
+    if [[ "$line" == *"<time_off:"* ]]; then
       tim=${line##*">"}
       tim="${tim:0:2}":"${tim:2:2}"
     fi
-    if grep -qi "qrzlog_logid:" <<< "$line"; then
+    if [[ "$line" == *"<app_qrzlog_logid:"* ]]; then
       qrzid=${line##*">"}
     fi
     
     # When eor found hande found data
-    if grep -qi "<eor>" <<< "$line"; then
+    if [[ "$line" == *"<eor>"* ]]; then
     total=$((total+1))
      #Try to find ADIF record qso from log database 
        cqid=$($sqlcmd"SELECT id_cqrlog_main FROM cqrlog_main WHERE qsodate='$dat' AND callsign='$call' AND time_off='$tim' AND band='$band' AND mode='$mode'")

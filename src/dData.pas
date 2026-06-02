@@ -2710,10 +2710,12 @@ begin
     lQ.SQL.Text := 'TRUNCATE long_note;';
     lQ.ExecSQL;
     lQ.SQL.Text := 'TRUNCATE notes;';
+    lQ.ExecSQL;
+    lQ.SQL.Text := 'TRUNCATE id_store';
+    lQ.ExecSQL;
 
     if all then
      begin
-      lQ.ExecSQL;
       lQ.SQL.Text := 'TRUNCATE cqrlog_config;';
       lQ.ExecSQL;
       lQ.SQL.Text := 'TRUNCATE dxcc_id;';

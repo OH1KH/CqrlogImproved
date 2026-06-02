@@ -73,11 +73,13 @@ var
 Begin
   ATextRect.TopLeft := VersionPos;
   ATextRect.BottomRight := Point(Width, Height);
+  I.Picture.Bitmap.Canvas.Font.Size:=8;
   I.Picture.Bitmap.Canvas.Font.Style := [fsBold];
   I.Picture.Bitmap.Canvas.Font.Color := c;
   I.Picture.Bitmap.Canvas.Brush.Style:=bsClear;
   I.Picture.Bitmap.Canvas.TextRect(ATextRect, VersionPos.X, VersionPos.Y, cVERSION, VersionStyle);
   Application.ProcessMessages;
+  sleep(2000);
 end;
 
 end.

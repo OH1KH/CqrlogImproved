@@ -1,18 +1,18 @@
 object frmNewQSO: TfrmNewQSO
   Left = 285
-  Height = 619
+  Height = 569
   Top = 33
-  Width = 1007
+  Width = 981
   HelpType = htKeyword
   HelpKeyword = 'help/index.html'
   HorzScrollBar.Increment = 97
   HorzScrollBar.Page = 967
   VertScrollBar.Increment = 58
-  VertScrollBar.Page = 613
+  VertScrollBar.Page = 569
   AutoScroll = True
-  Caption = 'New QSO ... (CqrlogAlpha for Linux)'
-  ClientHeight = 619
-  ClientWidth = 1007
+  Caption = 'New QSO ... (Cqrlog_Improved for Linux)'
+  ClientHeight = 569
+  ClientWidth = 981
   Constraints.MinHeight = 200
   Constraints.MinWidth = 420
   Icon.Data = {
@@ -2150,9 +2150,9 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlAll
     Left = 0
-    Height = 56
+    Height = 50
     Top = 0
-    Width = 1005
+    Width = 979
     Anchors = [akTop, akLeft, akRight, akBottom]
     Color = clWindow
     Columns = <>
@@ -2172,8 +2172,8 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideBottom.Control = sbNewQSO
     Left = 2
     Height = 535
-    Top = 56
-    Width = 1003
+    Top = 50
+    Width = 977
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Left = 2
     BorderSpacing.Right = 2
@@ -2182,7 +2182,7 @@ object frmNewQSO: TfrmNewQSO
     BorderWidth = 1
     BorderStyle = bsSingle
     ClientHeight = 533
-    ClientWidth = 1001
+    ClientWidth = 975
     Color = clActiveBorder
     ParentBackground = False
     ParentColor = False
@@ -2203,7 +2203,7 @@ object frmNewQSO: TfrmNewQSO
       ClientHeight = 488
       ClientWidth = 160
       ParentBackground = False
-      TabOrder = 32
+      TabOrder = 31
       Visible = False
       object gbContest: TGroupBox
         AnchorSideLeft.Control = pnlContest
@@ -2694,7 +2694,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Bottom = 3
       CharCase = ecUppercase
       ReadOnly = True
-      TabOrder = 21
+      TabOrder = 20
       OnChange = edtCountyChange
       OnEnter = edtDXCCRefEnter
       OnExit = edtDXCCRefExit
@@ -2720,7 +2720,7 @@ object frmNewQSO: TfrmNewQSO
       ParentShowHint = False
       ScrollBars = ssAutoBoth
       ShowHint = True
-      TabOrder = 29
+      TabOrder = 28
       OnKeyDown = mCommentKeyDown
       OnKeyUp = mCommentKeyUp
     end
@@ -3026,7 +3026,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 50
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 20
+      TabOrder = 19
       OnChange = edtCountyChange
       OnEnter = edtAwardEnter
       OnExit = edtAwardExit
@@ -3069,7 +3069,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 30
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 19
+      TabOrder = 18
       OnChange = edtCountyChange
       OnEnter = edtCountyEnter
       OnExit = edtCountyExit
@@ -3111,7 +3111,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 30
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 24
+      TabOrder = 23
       OnChange = edtCountyChange
       OnEnter = edtQSL_VIAEnter
       OnKeyDown = edtQSL_VIAKeyDown
@@ -3128,7 +3128,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Left = 3
       BorderSpacing.InnerBorder = 4
       Caption = '...'
-      TabOrder = 22
+      TabOrder = 21
       OnClick = btnDXCCRefClick
     end
     object btnQSLMgr: TButton
@@ -3147,7 +3147,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Top = 2
       BorderSpacing.InnerBorder = 4
       Caption = '...'
-      TabOrder = 25
+      TabOrder = 24
       OnClick = btnQSLMgrClick
     end
     object edtDate: TEdit
@@ -3161,7 +3161,7 @@ object frmNewQSO: TfrmNewQSO
       Width = 100
       BorderSpacing.Top = 2
       MaxLength = 10
-      TabOrder = 26
+      TabOrder = 25
       OnEnter = edtDateEnter
       OnExit = edtDateExit
       OnKeyDown = edtDateKeyDown
@@ -3180,7 +3180,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Left = 6
       BorderSpacing.Top = 2
       MaxLength = 5
-      TabOrder = 27
+      TabOrder = 26
       OnEnter = edtStartTimeEnter
       OnExit = edtStartTimeExit
       OnKeyDown = edtStartTimeKeyDown
@@ -3199,7 +3199,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Left = 6
       BorderSpacing.Top = 2
       MaxLength = 5
-      TabOrder = 28
+      TabOrder = 27
       OnEnter = edtEndTimeEnter
       OnExit = edtEndTimeExit
       OnKeyDown = edtEndTimeKeyDown
@@ -3243,7 +3243,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 200
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 23
+      TabOrder = 22
       OnEnter = edtRemQSOEnter
       OnKeyDown = edtRemQSOKeyDown
     end
@@ -3261,7 +3261,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 4
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 18
+      TabOrder = 17
       OnChange = edtCountyChange
       OnEnter = edtStateEnter
       OnExit = edtStateExit
@@ -3329,7 +3329,7 @@ object frmNewQSO: TfrmNewQSO
       MaxLength = 12
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 17
+      TabOrder = 35
       Visible = False
       OnChange = edtCountyChange
       OnEnter = edtStateEnter
@@ -3352,7 +3352,7 @@ object frmNewQSO: TfrmNewQSO
       ClientHeight = 24
       ClientWidth = 222
       ParentBackground = False
-      TabOrder = 30
+      TabOrder = 29
       object cbOffline: TCheckBox
         AnchorSideLeft.Control = pnlOffline
         AnchorSideTop.Control = pnlOffline
@@ -3879,12 +3879,12 @@ object frmNewQSO: TfrmNewQSO
       Height = 135
       Top = 396
       Width = 525
-      ActivePage = tabDXCCStat
+      ActivePage = tabSatellite
       Anchors = [akLeft, akRight, akBottom]
       BorderSpacing.Bottom = 1
       ParentFont = False
-      TabIndex = 0
-      TabOrder = 31
+      TabIndex = 2
+      TabOrder = 30
       OnChange = pgDetailsChange
       object tabDXCCStat: TTabSheet
         AnchorSideRight.Side = asrBottom
@@ -3915,8 +3915,8 @@ object frmNewQSO: TfrmNewQSO
           TitleStyle = tsNative
           OnPrepareCanvas = sgrdCallStatisticPrepareCanvas
           ColWidths = (
-            257
             256
+            255
           )
         end
       end
@@ -3947,8 +3947,8 @@ object frmNewQSO: TfrmNewQSO
           TitleStyle = tsNative
           OnPrepareCanvas = sgrdCallStatisticPrepareCanvas
           ColWidths = (
-            257
             256
+            255
           )
         end
       end
@@ -4039,15 +4039,16 @@ object frmNewQSO: TfrmNewQSO
           OnExit = edtRXFreqExit
         end
         object btnClearSatellite: TButton
-          AnchorSideLeft.Control = edtRXFreq
+          AnchorSideLeft.Control = cbRetain
+          AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = cmbPropagation
           AnchorSideTop.Side = asrCenter
-          Left = 284
+          Left = 363
           Height = 33
           Top = 74
           Width = 70
           AutoSize = True
-          BorderSpacing.Right = 10
+          BorderSpacing.Left = 15
           Caption = 'Clear all'
           TabOrder = 4
           OnClick = btnClearSatelliteClick
@@ -4079,6 +4080,18 @@ object frmNewQSO: TfrmNewQSO
           ParentFont = False
           TabOrder = 3
           OnChange = cbSpotRXChange
+        end
+        object cbRetain: TCheckBox
+          AnchorSideLeft.Control = cbSpotRX
+          AnchorSideTop.Control = cmbPropagation
+          AnchorSideTop.Side = asrCenter
+          Left = 284
+          Height = 23
+          Top = 79
+          Width = 64
+          Caption = 'retain'
+          TabOrder = 5
+          OnClick = cbRetainClick
         end
       end
       object tabLOConfig: TTabSheet
@@ -4194,7 +4207,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Bottom = 1
       BorderSpacing.InnerBorder = 1
       Caption = 'Save QSO [enter]'
-      TabOrder = 34
+      TabOrder = 33
       OnClick = btnSaveClick
     end
     object btnCancel: TButton
@@ -4213,7 +4226,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Bottom = 6
       BorderSpacing.InnerBorder = 1
       Caption = 'Quit [CTRL+Q]'
-      TabOrder = 35
+      TabOrder = 34
       OnClick = btnCancelClick
       OnExit = btnCancelExit
     end
@@ -4833,7 +4846,7 @@ object frmNewQSO: TfrmNewQSO
       ParentFont = False
       ReadOnly = True
       ScrollBars = ssAutoBoth
-      TabOrder = 33
+      TabOrder = 32
       TabStop = False
     end
     object lblCallbookInformation: TLabel
@@ -4883,8 +4896,8 @@ object frmNewQSO: TfrmNewQSO
     AnchorSideBottom.Side = asrBottom
     Left = 2
     Height = 25
-    Top = 594
-    Width = 1003
+    Top = 588
+    Width = 977
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False

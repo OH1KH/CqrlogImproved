@@ -106,6 +106,7 @@ type
     cbSplitTX: TCheckBox;
     cbSpotRX: TCheckBox;
     cbTxLo: TCheckBox;
+    cbRetain: TCheckBox;
     chkAutoMode: TCheckBox;
     cmbFreq: TComboBox;
     cmbIOTA: TComboBox;
@@ -415,6 +416,7 @@ type
     procedure acPropExecute(Sender: TObject);
     procedure btnCancelExit(Sender: TObject);
     procedure btnClearSatelliteClick(Sender : TObject);
+    procedure cbRetainClick(Sender: TObject);
     procedure cbRxLoChange(Sender: TObject);
     procedure cbSplitTXChange(Sender: TObject);
     procedure cbTxLoChange(Sender: TObject);
@@ -611,51 +613,52 @@ type
     procedure tmrUploadAllTimer(Sender: TObject);
     procedure tmrWsjtxTimer(Sender: TObject);
   private
-    StartUpCount : integer;
-    StartRun    : Boolean;
-    old_stat_adif : Word;
-    TabUsed     : Boolean;
-    old_cmode   : String;
-    old_ccall   : String;
-    old_cfreq   : String;
+    StartUpCount       : integer;
+    StartRun           : Boolean;
+    old_stat_adif      : Word;
+    TabUsed            : Boolean;
+    old_cmode          : String;
+    old_ccall          : String;
+    old_cfreq          : String;
 
-    old_prof   : Integer;
-//    old_pfx    : String;
-    old_adif   : Word;
-    old_date   : TDateTime;
-    old_mode   : String;
-    old_freq   : String;
-    old_qslr   : String;
-    old_sat    : String;
-    old_prop   : String;
-    old_rxfreq : String;
-    posun      : String;
+    old_prof           : Integer;
+//    old_pfx          : String;
+    old_adif           : Word;
+    old_date           : TDateTime;
+    old_mode           : String;
+    old_freq           : String;
+    old_qslr           : String;
+    old_sat            : String;
+    old_prop           : String;
+    old_rxfreq         : String;
+    posun              : String;
 
-    old_time   : String;
-    old_rsts   : String;
-    old_rstr   : String;
-    ChangeDXCC : Boolean;
-    StartTime  : TDateTime;
-    Running    : Boolean;
-    idcall     : String;
-    old_t_mode : String;
-    lotw_qslr  : String;
-    fromNewQSO : Boolean;
-    FreqBefChange : Double;
-    adif : Word;
-    WhatUpNext : TWhereToUpload;
-    UploadAll  : Boolean;
+    old_time           : String;
+    old_rsts           : String;
+    old_rstr           : String;
+    ChangeDXCC         : Boolean;
+    StartTime          : TDateTime;
+    Running            : Boolean;
+    idcall             : String;
+    old_t_mode         : String;
+    lotw_qslr          : String;
+    fromNewQSO         : Boolean;
+    FreqBefChange      : Double;
+    adif               : Word;
+    WhatUpNext         : TWhereToUpload;
+    UploadAll          : Boolean;
     WsjtxDecodeRunning : boolean;
     DiffCalls          : byte;
-    RememberAutoMode : Boolean;
-    IsJS8Callrmt     : Boolean; //way to isolate adif from JS8's JSON
+    RememberAutoMode   : Boolean;
+    IsJS8Callrmt       : Boolean; //way to isolate adif from JS8's JSON
     QSLcfm,
     eQSLcfm,
-    LoTWcfm    : String;
+    LoTWcfm            : String;
     UsrAssignedProfile : String;
     EditId             : longint;     //id_cqrlog_main of qso in edit mode
-    DetailsCMBColorDone : string;     //changes done for DXCCdetails column color by currently used call+mode+band
-    FirstClose          : boolean;    //When close button is clicked first time wit call in call column.
+    DetailsCMBColorDone: string;     //changes done for DXCCdetails column color by currently used call+mode+band
+    FirstClose         : boolean;    //When close button is clicked first time wit call in call column.
+    multicast          : boolean;
 
     procedure showDOK(stat:boolean);
     procedure ShowDXCCInfo(ref_adif : Word = 0);
@@ -691,7 +694,7 @@ type
     procedure CheckForDOKTablesUpdate;
     procedure CheckForQslManagersUpdate;
     procedure CheckForMembershipUpdate;
-    procedure CheckForAlphaVersion;
+    procedure CheckForImprovedVersion;
 
     procedure SelTextFix(Edit : TEdit; var Key : Char);
 
@@ -803,7 +806,6 @@ var
   frmNewQSO    : TfrmNewQSO;
 
   EscFirstPressDone : Boolean = True;
-  multicast    : boolean = false;
 
   c_callsign  : String;
   c_nick      : String;
@@ -1830,6 +1832,7 @@ begin
      NewLogSplash;
 
    dmUtils.UpdateCallBookcnf;  //renames old user and pass of ini file
+   cbRetain.Checked := cqrini.ReadBool('NewQSO', 'RetainPropagation', False);
    FirstClose:=True;
 end;
 
@@ -2262,7 +2265,8 @@ begin
         if (mode <> '') and (freq <> empty_freq) then
         begin
           band := dmUtils.GetBandFromFreq(freq);
-          if (band <> old_t_band) then btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+          if (band <> old_t_band) then
+                   if not cbRetain.Checked then  btnClearSatelliteClick(nil); //if band changes sat and prop cleared
           if (mode <> old_t_mode) or (band <> old_t_band) then
           begin
             old_t_mode := mode;
@@ -2558,7 +2562,10 @@ begin
 
     MsgType :=  ui32Buf(index);
     if dmData.DebugLevel>=1 then Write(' Message type:', MsgType,' ');
-    cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType);   //changed to see last received msgtype
+    if multicast then
+                cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType)+', multicast'
+           else
+                cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType);
 
     tmpindex := index;
     RemoteName := StrBuf(index);       //read remote name to get index point to RepHead end
@@ -2737,7 +2744,8 @@ begin
                if (dmUtils.GetBandFromFreq(cmbFreq.Text) <> old_t_band) then
                  Begin
                   old_t_band := dmUtils.GetBandFromFreq(cmbFreq.Text);
-                  btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+                  if not cbRetain.Checked then
+                                          btnClearSatelliteClick(nil); //if band changes sat and prop cleared
                  end;
               end;
            end  //band changes
@@ -4818,6 +4826,11 @@ begin
   cmbSatelliteChange(nil)
 end;
 
+procedure TfrmNewQSO.cbRetainClick(Sender: TObject);
+begin
+   cqrini.WriteBool('NewQSO', 'RetainPropagation', cbRetain.Checked);
+end;
+
 procedure TfrmNewQSO.cbRxLoChange(Sender: TObject);
 begin
   cqrini.WriteBool('NewQSO', 'UseRXLO', cbRxLo.Checked);
@@ -4974,7 +4987,8 @@ begin
   band := dmUtils.GetBandFromFreq(cmbFreq.Text);
   if (band <> old_t_band) then
      Begin
-      btnClearSatelliteClick(nil); //if band changes sat and prop cleared
+      if not cbRetain.Checked then
+                              btnClearSatelliteClick(nil); //if band changes sat and prop cleared
        old_t_band := band;
      end;
 end;
@@ -5223,13 +5237,13 @@ Begin
    edtState.Visible:= not stat;
    if (stat) then
    begin
-        edtDOK.TabOrder := 14;
-        edtState.TabOrder := 30;
+        edtDOK.TabOrder := 17;
+        edtState.TabOrder := 35;
    end
    else
    begin
-        edtDOK.TabOrder := 30;
-        edtState.TabOrder := 14;
+        edtState.TabOrder := 17;
+        edtDOK.TabOrder := 35;
    end;
 end;
 
@@ -7864,8 +7878,11 @@ var
   run  : Boolean = False;
   path : String = '';
   tries: integer = 10;
+  Mcast: integer;
+  dot  : integer;
 
 begin
+  multicast := false;
   cqrini.WriteInteger('Pref', 'ActPageIdx', 20);  //set fldigi/wsjt tab active.
   dmUtils.SaveDBGridInForm(frmNewQSO) ;
   case RemoteType of
@@ -7902,7 +7919,6 @@ begin
                   mnuRemoteModeWsjt.Checked := True;
                   AnyRemoteOn := True;
                   WsjtxDecodeRunning        := false;
-                  cbOffline.Caption         := 'Wsjtx remote';
                   path                      := cqrini.ReadString('wsjt','path','');
                   run                       := cqrini.ReadBool('wsjt','run',False);
 
@@ -7913,15 +7929,23 @@ begin
 
                   frmTRXControl.DisableRitXit; //wsjtx does not do this, so we have to ...
 
-                  //multicast is 239.0.0.0/8
-                  multicast:=pos('239.',cqrini.ReadString('wsjt','ip','127.0.0.1'))=1; //check multicast
+                  //multicast is 224.0.0.0 - 239.255.255.255
+                  Dot:=pos('.',cqrini.ReadString('wsjt','ip','127.0.0.1'));
+                  Mcast:=StrToInt(copy(cqrini.ReadString('wsjt','ip','127.0.0.1'),1,Dot-1));
+                  multicast:=((Mcast>=224) and (Mcast <= 239)); //check multicast
+
                   if multicast then
                    Begin
                       WsjtxSockS := TUDPBlockSocket.Create;
-                      if dmData.DebugLevel>=1 then Writeln('Multicast sendsocket created!');
+                      if dmData.DebugLevel>=1 then
+                         Writeln('Multicast sendsocket created!');
                       WsjtxSockS.EnableReuse(true);
-                      if dmData.DebugLevel>=1 then Writeln('Reuse enabled!');
-                   end;
+                      if dmData.DebugLevel>=1 then
+                         Writeln('Reuse enabled!');
+                      cbOffline.Caption         := 'Wsjtx remote, multicast';
+                   end
+                  else
+                      cbOffline.Caption         := 'Wsjtx remote';
 
                   // start UDP server  http://synapse.ararat.cz/doc/help/blcksock.TBlockSocket.html
                   WsjtxSock := TUDPBlockSocket.Create;
@@ -8131,7 +8155,7 @@ begin
   CheckForDOKTablesUpdate;
   CheckForQslManagersUpdate;
   CheckForMembershipUpdate;
-  CheckForAlphaVersion
+  CheckForImprovedVersion
 end;
 
 procedure TfrmNewQSO.CheckForDXCCTablesUpdate;
@@ -8175,16 +8199,16 @@ begin
   if cqrini.ReadBool('Clubs', 'CheckForUpdate', False) then
     dmMembership.CheckForMembershipUpdate
 end;
-procedure TfrmNewQSO.CheckForAlphaVersion;
+procedure TfrmNewQSO.CheckForImprovedVersion;
 var
   VerNr,
   VerAvailNr : integer;
   data:string;
 Begin
-  if not cqrini.ReadBool('Program', 'CheckAlpha', True) then exit;
+  if not cqrini.ReadBool('Program', 'CheckImproved', True) then exit;
   if not (TryStrToInt(ExtractWord(2,cVersionBase,['(',')']),VerNr)) then exit;
   VerAvailNr:=0;
-   if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogAlpha/refs/heads/main/compiled/version.txt', data) then
+   if dmUtils.GetDataFromHttp('https://raw.githubusercontent.com/OH1KH/CqrlogImproved/refs/heads/main/compiled/version.txt', data) then
   begin
     if (pos('NOT FOUND',upcase(data))<>0) then exit;
     if not (TryStrToInt(ExtractWord(2,data,['(',')']),VerAvailNr)) then exit;
@@ -8194,7 +8218,7 @@ Begin
         frmAbout:= TfrmAbout.Create(Application);
         frmAbout.PageControl1.ActivePage := frmAbout.tabUpgrade;
         frmAbout.lblVerze1.Caption := cVERSION + '  ' + cBUILD_DATE;
-        frmAbout.Label8.Caption:='There is CqrlogAlpha version '+IntToStr(VerAvailNr)+' available!';
+        frmAbout.Label8.Caption:='There is Cqrlog_Improved version '+IntToStr(VerAvailNr)+' available!';
         frmAbout.IsNewVersion:=True;
         frmAbout.btnChangelog1.Font.Color:=clRed;
         frmAbout.btnChangelog1.Font.Style:=[fsBold];

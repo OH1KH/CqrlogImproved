@@ -156,7 +156,7 @@ begin
     HTTP.UserName  := cqrini.ReadString('Program','User','');
     HTTP.Password  := cqrini.ReadString('Program','Passwd','');
     if pos('QRZ.COM',UpCase(Url))>0 then  //QRZlog wants program name/version as UserAgent
-                     HTTP.UserAgent := 'CqrlogAlpha/'+cVersion;
+                     HTTP.UserAgent := 'Cqrlog_Improved/'+cVersion;
 
 
     for i:=0 to data.Count-1 do
@@ -217,7 +217,14 @@ begin
       ResultCode := http.ResultCode;
       Response   := '';
       Result     := False
-    end
+    end;
+  if debug then
+      begin
+        writeln('**HTTP.Document response:');
+        writeln('ResultCode:', ResultCode);
+        writeln('Response:' , Response);
+        Writeln('Result:', Result);
+      end;
   finally
     FreeAndNil(HTTP);
     FreeAndNil(l)
@@ -1162,7 +1169,32 @@ begin
 
     upHrdLog  : begin
                   case ParseHrdLogOutput(Response,Result) of
-                    200 : Result := 'OK';
+                    200:Begin
+                         if (Response<>'') then Result := 'OK'
+                                           else
+                                               Begin
+                                                  Result := 'Empty response !';
+                                                  ErrorCode := 4;
+                                               end;
+                         if pos('<INSERT>0',UpperCase(Response))>0 then  //duplicate qso
+                            Begin
+                              Result:='Duplicate qso!';
+                              ErrorCode:=2;
+                            end;
+                         if pos('<ERROR>',UpperCase(Response))>0 then
+                            Begin
+                              if pos(' USER',UpperCase(Response))>0 then //wrong user/passcode
+                                Begin
+                                 Result:='Wrong callsign or key code';
+                                 ErrorCode:=3;
+                                end;
+                              if pos('FIND QSO',UpperCase(Response))>0 then //qso to delete not found
+                                Begin
+                                 Result:='Unable to find qso';
+                                 ErrorCode:=1;
+                                end;
+                            end;
+                         end;
                     400 : ErrorCode := 5;
                     403 : ErrorCode := 3;
                     404 : ErrorCode := 1;

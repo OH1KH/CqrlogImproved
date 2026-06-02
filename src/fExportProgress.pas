@@ -453,14 +453,14 @@ begin   //TfrmExportProgress
   AssignFile(f, FileName);
   Rewrite(f);
   Writeln(f);
-  Writeln(f, 'ADIF export from CQRLOG for Linux version '+dmData.VersionString);
+  Writeln(f, 'ADIF export from CQRLOG_Improved for Linux version '+dmData.VersionString);
   Writeln(f, 'Copyright (C) ',YearOf(now),' by Petr, OK2CQR and Martin, OK1RR');
   Writeln(f);
   Writeln(f, 'Internet: http://www.cqrlog.com');
   Writeln(f);
   Writeln(f, '<ADIF_VER:5>3.1.0');
   Writeln(f,'<CREATED_TIMESTAMP:15>',FormatDateTime('YYYYMMDD hhmmss',dmUtils.GetDateTime(0)));
-  Writeln(f, '<PROGRAMID:6>CQRLOG');
+  Writeln(f, '<PROGRAMID:15>CQRLOG_Improved');
   Writeln(f, '<PROGRAMVERSION:',Length(cVERSION),'>',cVERSION);
   Writeln(f, '<EOH>');
 
@@ -1042,10 +1042,10 @@ begin
   Writeln(f,'<!DOCTYPE HTML>');
   Writeln(f, '<html lang="',lang,'">');
   Writeln(f, '<head>');
-  Writeln(f, '<META NAME="GENERATOR" CONTENT="CQRLOG ver. ' + dmData.VersionString + '">');
+  Writeln(f, '<META NAME="GENERATOR" CONTENT="CQRLOG_Improved ver. ' + dmData.VersionString + '">');
   Writeln(f, '<META charset="UTF-8">');
   Writeln(f, '<META NAME="viewport" content="width=device-width, initial-scale=1.0">');
-  Writeln(f, '<title>List of QSO from CQRLOG - ' + Mycall + '</title>');
+  Writeln(f, '<title>List of QSO from CQRLOG_Improved - ' + Mycall + '</title>');
 
 
   Writeln(f,'<style>');
@@ -1361,7 +1361,7 @@ begin
     end;
     Writeln(f,'</table>');
     Writeln(f,'<br> <br>');
-    Writeln(f,'<h5 class="cntr"> <a href="http://www.cqrlog.com">CQRLOG ver. ' + dmData.VersionString  + ' </a></h5>');
+    Writeln(f,'<h5 class="cntr">CQRLOG_Improved ver. ' + dmData.VersionString  + ' </h5>');
     Writeln(f,'</body>');
     Writeln(f,'</html>')
   finally

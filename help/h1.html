@@ -820,8 +820,8 @@ There are no known dependencies issues.<br><br>
     <br>
     Address can also be other PC's IP address if wsjt-x is running in different networked PC than cqrlog, or even<strong> 0.0.0.0</strong> when cqrlog listens all transmits from every wsjt-x in network.
 
-    <br><br>You can also use a multicast address for both <strong>wsjt-x/settings/Reporting/UDP Server</strong> and <strong>cqrlog/preferences/fldigi/wsjt interface/wsjt addr</strong>. Cqrlog will handle ip addresses starting with "239." as multicast addresses.
-    <br>With multicast you are able to run several programs listening to wsjt-x udp broadcasts at same time. To start with multicast try multicast group address "239.255.0.0" for both cqrlog and wsjt-x (and also other programs needed to listen wsjt-x)
+    <br><br>You can also use a multicast address for both <strong>wsjt-x/settings/Reporting/UDP Server</strong> and <strong>cqrlog/preferences/fldigi/wsjt interface/wsjt addr</strong>. Cqrlog will detect IP addresses between 224.0.0.0 - 239.255.255.255 as multicast addresses and enable multicast.
+    <br>With multicast you are able to run several programs listening to wsjt-x udp broadcasts at same time. To start with multicast set group address within multicast IP range and same for both cqrlog and wsjt-x (and also other programs that are needed to listen wsjt-x UDP transmissions)
     <br><br>
     Using <strong> WB4 chk starts from</strong> it is possible to limit log search starting from given date for callsign and/or locator.
     <br>Setting checkbox will apply given date as start date. Otherwise, when unchecked, whole log is searched through.

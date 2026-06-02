@@ -259,7 +259,7 @@ begin
   Writeln(f,'<HEAD>');
   Writeln(f,'<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf8">');
   Writeln(f,'<TITLE> DXCC statistics of '+MyCAll+' </TITLE>');
-  Writeln(f,'<META NAME="GENERATOR" CONTENT="CQRLOG ver. '+ '0.3' +'">');
+  Writeln(f,'<META NAME="GENERATOR" CONTENT="CQRLOG_Improved ver. '+ '0.3' +'">');
   Writeln(f,'<style type="text/css">');
   Writeln(f,'<!--');
   Writeln(f,'.popis {color: #FFFFFF}');
@@ -514,7 +514,7 @@ begin
   Writeln(f,'</TD></TR></TABLE>');
 
   Writeln(f,'<BR> <BR>');
-  Writeln(f,'<H5 ALIGN=CENTER> <A HREF="https://github.com/OH1KH/CqrlogAlpha">CQRLOG' + dmData.VersionString  + ' </A></H5>');
+  Writeln(f,'<H5 ALIGN=CENTER> <A HREF="https://github.com/OH1KH/CqrlogImproved">CQRLOG' + dmData.VersionString  + ' </A></H5>');
   Writeln(f,'</BODY>');
   Writeln(f,'</HTML>');
 

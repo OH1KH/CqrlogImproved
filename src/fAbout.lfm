@@ -1,10 +1,10 @@
 object frmAbout: TfrmAbout
-  Left = 495
+  Left = 489
   Height = 294
-  Top = 58
+  Top = 60
   Width = 453
   BorderStyle = bsDialog
-  Caption = 'About CqrlogAlpha'
+  Caption = 'About Cqrlog_Improved'
   ClientHeight = 294
   ClientWidth = 453
   Position = poWorkAreaCenter
@@ -22,9 +22,9 @@ object frmAbout: TfrmAbout
     Height = 294
     Top = 0
     Width = 453
-    ActivePage = tabContributors
+    ActivePage = tabAbout
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tabAbout: TTabSheet
       AnchorSideLeft.Control = PageControl1
@@ -845,10 +845,11 @@ object frmAbout: TfrmAbout
       object Label1: TLabel
         AnchorSideLeft.Control = Image1
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Image1
+        AnchorSideTop.Control = Label11
+        AnchorSideTop.Side = asrBottom
         Left = 182
         Height = 64
-        Top = 6
+        Top = 20
         Width = 250
         BorderSpacing.Left = 48
         Caption = 'CQRLOG'
@@ -873,22 +874,23 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Control = Bevel1
         AnchorSideTop.Side = asrBottom
         Left = 6
-        Height = 17
+        Height = 34
         Top = 145
-        Width = 58
-        Caption = 'Authors: '
+        Width = 119
+        Caption = 'Origin information'#10'Authors: '
         ParentColor = False
       end
       object Label3: TLabel
-        AnchorSideLeft.Control = Label2
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Bevel1
+        AnchorSideLeft.Control = lblLink
         AnchorSideTop.Side = asrBottom
-        Left = 64
+        AnchorSideBottom.Control = Label2
+        AnchorSideBottom.Side = asrBottom
+        Left = 194
         Height = 17
-        Top = 145
-        Width = 366
-        Caption = 'Petr, OK2CQR && Martin, OK1RR. Additions: Saku, OH1KH'
+        Top = 162
+        Width = 202
+        Anchors = [akLeft, akBottom]
+        Caption = 'Petr, OK2CQR && Martin, OK1RR'
         ParentColor = False
       end
       object Label5: TLabel
@@ -897,7 +899,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 6
         Height = 17
-        Top = 168
+        Top = 185
         Width = 160
         BorderSpacing.Top = 6
         Caption = 'Home page and support:'
@@ -908,7 +910,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Control = Label5
         Left = 194
         Height = 17
-        Top = 168
+        Top = 185
         Width = 146
         Caption = 'http://www.cqrlog.com'
         Font.Color = clBlue
@@ -918,21 +920,7 @@ object frmAbout: TfrmAbout
         OnClick = lblLinkClick
         OnMouseEnter = lblLinkMouseEnter
       end
-      object btnChangelog: TButton
-        AnchorSideLeft.Control = Image1
-        Left = 7
-        Height = 33
-        Top = 224
-        Width = 90
-        AutoSize = True
-        BorderSpacing.Around = 1
-        Caption = 'Changelog'
-        Constraints.MinWidth = 90
-        TabOrder = 0
-        OnClick = btnChangelogClick
-      end
       object btnClose: TButton
-        AnchorSideTop.Control = btnChangelog
         AnchorSideRight.Control = Label1
         AnchorSideRight.Side = asrBottom
         Left = 341
@@ -945,26 +933,7 @@ object frmAbout: TfrmAbout
         Caption = 'Close'
         Constraints.MinWidth = 90
         ModalResult = 2
-        TabOrder = 1
-      end
-      object lblVerze: TLabel
-        AnchorSideLeft.Control = Image1
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Label1
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = Label1
-        AnchorSideRight.Side = asrBottom
-        Left = 146
-        Height = 18
-        Top = 86
-        Width = 286
-        Alignment = taRightJustify
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = False
-        BorderSpacing.Left = 12
-        BorderSpacing.Top = 16
-        Caption = 'lblVerze'
-        ParentColor = False
+        TabOrder = 0
       end
       object Label4: TLabel
         AnchorSideLeft.Control = Label5
@@ -972,7 +941,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 6
         Height = 17
-        Top = 188
+        Top = 205
         Width = 188
         BorderSpacing.Top = 3
         Caption = 'CQRLOG group on Telegram: '
@@ -985,7 +954,7 @@ object frmAbout: TfrmAbout
         AnchorSideTop.Side = asrBottom
         Left = 194
         Height = 17
-        Top = 188
+        Top = 205
         Width = 119
         BorderSpacing.Top = 3
         Caption = 'https://t.me/cqrlog'
@@ -995,6 +964,50 @@ object frmAbout: TfrmAbout
         ParentFont = False
         OnClick = lblLinkClick
         OnMouseEnter = lblLinkMouseEnter
+      end
+      object lblVerze: TLabel
+        AnchorSideLeft.Control = Image2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label7
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Label6
+        AnchorSideRight.Side = asrBottom
+        Left = 146
+        Height = 18
+        Top = 99
+        Width = 286
+        Alignment = taRightJustify
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        BorderSpacing.Left = 12
+        BorderSpacing.Top = 12
+        Caption = 'lblVerze'
+        ParentColor = False
+      end
+      object Label11: TLabel
+        AnchorSideLeft.Control = Label1
+        AnchorSideTop.Control = Image1
+        Left = 182
+        Height = 14
+        Top = 6
+        Width = 162
+        Caption = 'Cqrlog_Improved is based on'
+        Font.Height = -11
+        ParentFont = False
+      end
+      object Label12: TLabel
+        AnchorSideLeft.Control = Label2
+        AnchorSideTop.Side = asrBottom
+        AnchorSideBottom.Control = btnClose
+        AnchorSideBottom.Side = asrCenter
+        Left = 6
+        Height = 14
+        Top = 234
+        Width = 222
+        Anchors = [akLeft, akBottom]
+        Caption = 'For Cqrlog_Improved see "Upgrade" tab'
+        Font.Height = -11
+        ParentFont = False
       end
     end
     object tabContributors: TTabSheet
@@ -1994,11 +2007,11 @@ object frmAbout: TfrmAbout
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = Bevel2
         AnchorSideTop.Side = asrBottom
-        Left = 174
+        Left = 92
         Height = 17
         Top = 145
-        Width = 94
-        Caption = 'CqrlogAlpha'
+        Width = 259
+        Caption = 'Cqrlog_Improved by Saku, OH1KH'
         Font.Color = clRed
         Font.Style = [fsBold]
         ParentColor = False
@@ -2023,8 +2036,8 @@ object frmAbout: TfrmAbout
         Left = 62
         Height = 17
         Top = 168
-        Width = 319
-        Caption = 'https://github.com/OH1KH/CqrlogAlpha/tree/main'
+        Width = 344
+        Caption = 'https://github.com/OH1KH/CqrlogImproved/tree/main'
         Font.Color = clBlue
         Font.Style = [fsUnderline]
         ParentColor = False
@@ -2064,19 +2077,19 @@ object frmAbout: TfrmAbout
       object lblVerze1: TLabel
         AnchorSideLeft.Control = Image2
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Label6
+        AnchorSideTop.Control = Label7
         AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = Label6
         AnchorSideRight.Side = asrBottom
         Left = 146
         Height = 18
-        Top = 86
+        Top = 99
         Width = 286
         Alignment = taRightJustify
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         BorderSpacing.Left = 12
-        BorderSpacing.Top = 16
+        BorderSpacing.Top = 12
         Caption = 'lblVerze1'
         ParentColor = False
       end
@@ -2100,15 +2113,29 @@ object frmAbout: TfrmAbout
         Left = 49
         Height = 17
         Top = 188
-        Width = 383
+        Width = 408
         BorderSpacing.Top = 3
-        Caption = 'https://github.com/OH1KH/CqrlogAlpha/tree/main/compiled'
+        Caption = 'https://github.com/OH1KH/CqrlogImproved/tree/main/compiled'
         Font.Color = clBlue
         Font.Style = [fsUnderline]
         ParentColor = False
         ParentFont = False
         OnClick = lblLinkClick
         OnMouseEnter = lblLinkMouseEnter
+      end
+      object Label7: TLabel
+        AnchorSideTop.Control = Label6
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Label6
+        AnchorSideRight.Side = asrBottom
+        Left = 353
+        Height = 17
+        Top = 70
+        Width = 79
+        Anchors = [akTop, akRight]
+        Caption = 'IMPROVED'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
     end
   end

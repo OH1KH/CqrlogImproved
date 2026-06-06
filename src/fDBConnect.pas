@@ -475,13 +475,16 @@ begin
   begin
     btnDisconnectClick(nil);
     RemoteMySQL  := True;
+    grbLogin.Visible := True;
     edtServer.Text         := EServer;
     edtPort.Text           := EPort;
     edtUser.Text           := EUser;
     edtPass.Text           := EPass;
-    chkAutoConn.Checked:=False;
-    chkSavePass.Checked:=False;
-    grbLogin.Visible := True
+    if not AskForDB then
+     Begin
+      chkAutoConn.Checked:=False;
+      chkSavePass.Checked:=False;
+     end;
   end
 end;
 
@@ -659,14 +662,18 @@ begin
         RemoteMySQL := True;
 
         edtUser.Text:=frmDbSqlSel.user;
+        EUser:=frmDbSqlSel.user;
         edtPass.Text:=frmDbSqlSel.pass;
+        EPass:=frmDbSqlSel.pass;
         edtPort.Text:=frmDbSqlSel.port;
+        EPort:=frmDbSqlSel.port;
         edtServer.Text:=frmDbSqlSel.ip;
+        EServer:=frmDbSqlSel.ip;
         chkAutoConn.Checked:= frmDbSqlSel.Acon;
         chkSavePass.Checked:= frmDbSqlSel.Rmbr;
 
         chkSaveToLocal.Checked := False;
-        chkSaveToLocalClick(nil);
+        SaveLogin;
        end;
 
       FreeAndNil(frmDbSqlSel);

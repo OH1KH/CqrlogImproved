@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#OH1KH 2026-06-06
+# This fix works with (X)Ubuntu releases 26.04(and up?) when 
+# MariaDB is installed and systemctld is in use
+
+GLOBAL_MYSQL_FILE=/etc/apparmor.d/usr.sbin.mariadbd
+LOCAL_MYSQL_FILE=/etc/apparmor.d/local/mariadbd
+FTMP=`mktemp /tmp/tmp.XXXXXX`
+
+restart_apparmor() 
+{
+  #apparmor runs via systemctl, but can not be restarted if it is stopped
+  
+  sudo systemctl reload apparmor
+  
+  if [[ $? -eq 0 ]]
+  then
+   echo "Restart done!"
+  else
+    echo "It seems apparmor is not installed, or running. Check reason from systemctl."
+  fi
+}
+
+echo Checking $GLOBAL_MYSQL_FILE
+if [ -f "$GLOBAL_MYSQL_FILE" ] 
+then
+  grep -v "@{HOME}/.config/cqrlog/database/" $GLOBAL_MYSQL_FILE >> $FTMP
+  cat $FTMP > $GLOBAL_MYSQL_FILE
+  echo ""
+  echo Changes removed from $GLOBAL_MYSQL_FILE
+  echo ""
+ else
+  echo "Not found!"
+fi
+
+echo Looking for $LOCAL_MYSQL_FILE
+if [ -f "$LOCAL_MYSQL_FILE" ] 
+then
+  modifed=0;
+  if ! grep -q "@{HOME}/.config/cqrlog/database/\*\*  rwk," "$LOCAL_MYSQL_FILE"; then
+      echo "@{HOME}/.config/cqrlog/database/**  rwk," >> $LOCAL_MYSQL_FILE
+      echo "File $LOCAL_MYSQL_FILE was modified (rwk)"
+      echo ""
+      modified=1
+  fi
+  if ! grep -q "@{HOME}/.config/cqrlog/database/  r," "$LOCAL_MYSQL_FILE"; then
+      echo "@{HOME}/.config/cqrlog/database/  r," >> $LOCAL_MYSQL_FILE
+      echo "File $LOCAL_MYSQL_FILE was modified (r)"
+      echo ""
+      modified=1
+  fi
+  if [[ $modified -gt 0 ]]; then
+      echo File $LOCAL_MYSQL_FILE was modified, restarting apparmor
+      restart_apparmor
+    else
+      echo ""
+      echo File $LOCAL_MYSQL_FILE was already modified, no changes needed
+      echo ""
+   fi  
+ 
+else
+ echo "Not found!"
+ echo "@{HOME}/.config/cqrlog/database/  r," >> $LOCAL_MYSQL_FILE
+ echo "@{HOME}/.config/cqrlog/database/** rwk," >> $LOCAL_MYSQL_FILE
+ echo ""
+ echo File $LOCAL_MYSQL_FILE was created, restarting apparmor
+ echo "" 
+ restart_apparmor
+ echo ""
+fi
+
+rm $FTMP
+

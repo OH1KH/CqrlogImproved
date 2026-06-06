@@ -1,0 +1,10 @@
+### Install official Cqrlog (2.5.2 together with MariaDB) to Ubuntu 26.04 and optionally upgrade it to latest CqrlogImproved
+
+"install_Ubuntu_cqrlog.zip" holds script "install_cqrlog.sh" that has been tested with Ubuntu 26.04 in Oracle virtual machine.
+Download, unzip and start it in command console to install Cqrlog (without loadng it from Ubuntu's faulty install packet). 
+Installing is tested several times to plain XUbuntu 26.04, but no quarantee is given.
+
+In any case Ubuntu can not wait long enough when Cqrlog is creating first log and will prompt you that cqrlog is not resoponding.
+Press "wait" or do nothing if this happens while creating first log at beginning.
+
+

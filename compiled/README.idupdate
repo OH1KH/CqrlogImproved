@@ -1,0 +1,37 @@
+-----------------------------------------------------------------
+NOTE:
+Before running this script make backup from your logs.
+This script should not touch the QSO data itself, but
+security first!
+
+If you have checked 'save log data to local machine' checkbox
+simplest way is to save folder ~/.config/cqrlog to the safe place.
+If something goes wrong first delete ~/.config/cqrlog from HD and then
+restore ~/.config/cqrlog from the safe place back to your HD.
+
+Keep Cqrlog closed while doing these.
+-----------------------------------------------------------------
+
+
+For updating QRZlog logid numbers to old qsos that you
+have saved to QRZlog before you upgraded to version (142)
+[or higher] that supports QRZlog online logs upload.
+(preferences/Online logs/QRZlog).
+
+You must first download QRZlog as adif file from QRZ.com
+'logname' is 'cqrlogXXX'
+ where XXX is 3digit zero padded log number like 001
+
+Use: ./idupdate.sh <adif_file_name> <logname> [> /tmp/debug.txt]
+
+Start Cqrlog before running script if you have
+checked 'save log data to local machine' checkbox.
+Keep Cqrlog running while this script runs!
+
+Otherwise check script variable 'sqlcmd' to correspond
+your SQL server settings and cqrlog database log number.
+You do not need to start Cqrlog in that case.
+
+You can direct output to debug text file adding arrow right
+followed by filename to the end of srcipt starting command line.
+

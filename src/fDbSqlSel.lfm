@@ -7,10 +7,10 @@ object frmDbSqlSel: TfrmDbSqlSel
   ClientHeight = 306
   ClientWidth = 441
   Color = clWhite
+  Position = poWorkAreaCenter
+  LCLVersion = '4.6.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poWorkAreaCenter
-  LCLVersion = '3.8.0.0'
   object gbLocalUser: TGroupBox
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = rbExternal
@@ -19,13 +19,13 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideRight.Side = asrBottom
     Left = 6
     Height = 89
-    Top = 177
+    Top = 171
     Width = 429
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 6
     BorderSpacing.Top = 12
     BorderSpacing.Right = 6
-    Caption = 'Define Local SQL user'
+    Caption = 'Define'
     ClientHeight = 71
     ClientWidth = 427
     ParentBackground = False
@@ -142,7 +142,7 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideTop.Side = asrBottom
     Left = 21
     Height = 34
-    Top = 44
+    Top = 38
     Width = 398
     BorderSpacing.Top = 6
     Caption = 'It seems you are trying to run this program for '#10'the first time. Do you want to save your Log data to:'
@@ -156,8 +156,8 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideTop.Side = asrBottom
     Left = 24
     Height = 23
-    Hint = 'Log data is saved to ~/.config/cqrlog/database folder. '#10'Access to that data is done by starting a new SQL server thread for that.'#10'Unfortunately using this way to save logs causes most of database '#10'connection problems with CQRLOG.'#10'_______________________________________________'#10'For further information press "Please read"-button'
-    Top = 90
+    Hint = 'Log data is saved to ~/.config/cqrlog/database folder. '#10'Access to data is done by starting a new SQL server thread in folder.'#10#10'Unfortunately using this way to save logs causes most of database '#10'connection problems with CQRLOG.'#10'You need to have MariaDB installed instead of MYSQL!'#10'_______________________________________________'#10'For further information press "Please read help!"-button'
+    Top = 84
     Width = 284
     BorderSpacing.Left = 24
     BorderSpacing.Top = 12
@@ -175,8 +175,8 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideTop.Side = asrBottom
     Left = 24
     Height = 23
-    Hint = 'Use SQL server already installed to your machine. Both Mysql or MariDB should work.'#10'CQRLOG tries first create SQL user with proper privileges to use the SQL server'#10'and then set proper values to "Database connection" window.'#10'This is done by ~/create_cqr_user.sh scipt that is tried to run with most common'#10'terminals xterm, gnome-terminal or lxterminal.'#10'If that fails you have to run script manually from your command-line console.'#10'_______________________________________________'#10'For further information press "Please read"-button'
-    Top = 116
+    Hint = 'Use MariaDB SQL server already installed to your machine.'#10#10'CQRLOG tries first to create SQL user "cqrlog" with proper privileges'#10'to access to the SQL server databases.'#10'This is done by ~/create_cqr_user.sh scipt that is tried to run with most common'#10'terminals xterm, gnome-terminal or lxterminal.'#10'If that fails you have to run script manually from your command-line console.'#10#10'Then given values are set to "Database connection" window.'#10'_______________________________________________'#10'For further information press "Please read help!"-button'
+    Top = 110
     Width = 202
     BorderSpacing.Top = 3
     Caption = 'local machine''s SQL server'
@@ -192,8 +192,8 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideTop.Side = asrBottom
     Left = 24
     Height = 23
-    Hint = 'Use SQL server anywhere. Both Mysql or MariDB should work.'#10'You have to define values to connect SQL server by yourself:'#10'Address, port, user and password required to connect to external SQL server.'#10'SQL user and privileges have to be created by SQL server administrator.'#10'Server can exist in your home network or Internet.'#10'With external networks VPN or SSH tunnel is recommended for security reasons.'#10'_______________________________________________'#10'For further information press "Please read"-button'
-    Top = 142
+    Hint = 'Use MariaDB SQL server anywhere in network.'#10'You have to check values to connect SQL server by yourself:'#10'Address, port, user and password required to connect to external SQL server.'#10'SQL user and privileges have to be created by SQL server administrator.'#10#10'With external networks VPN or SSH tunnel is recommended for security reasons.'#10'_______________________________________________'#10'For further information press "Please read help!"-button'
+    Top = 136
     Width = 226
     BorderSpacing.Top = 3
     Caption = 'external networked SQL server'
@@ -229,7 +229,7 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 30
-    Height = 32
+    Height = 26
     Top = 6
     Width = 381
     Anchors = [akTop, akLeft, akRight]
@@ -237,24 +237,74 @@ object frmDbSqlSel: TfrmDbSqlSel
     BorderSpacing.Left = 30
     BorderSpacing.Top = 6
     BorderSpacing.Right = 30
-    ClientHeight = 32
+    ClientHeight = 26
     ClientWidth = 381
     Color = clWhite
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    object lblWelcome: TLabel
+    object lblWelcome1: TLabel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Control = pnlWelcome
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = lblWelcome2
+      AnchorSideRight.Side = asrBottom
+      Left = 54
+      Height = 24
+      Top = 1
+      Width = 140
+      Anchors = [akTop, akRight]
+      Caption = 'Welcome to '
+      Font.Color = clOlive
+      Font.Height = 20
+      Font.Style = [fsBold, fsItalic]
+      ParentColor = False
+      ParentFont = False
+    end
+    object lblWelcome4: TLabel
+      AnchorSideLeft.Control = lblWelcome3
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideBottom.Control = lblWelcome1
+      AnchorSideBottom.Side = asrBottom
+      Left = 287
+      Height = 10
+      Top = 15
+      Width = 42
+      Anchors = [akLeft, akBottom]
+      BorderSpacing.Left = 1
+      Caption = 'IMPROVED'
+      Font.Color = 13969677
+      Font.Height = 8
+      Font.Style = [fsItalic]
+      ParentFont = False
+    end
+    object lblWelcome3: TLabel
+      AnchorSideLeft.Control = lblWelcome2
+      AnchorSideTop.Control = pnlWelcome
+      AnchorSideTop.Side = asrCenter
+      Left = 187
+      Height = 24
+      Top = 1
+      Width = 99
+      Caption = ' CQRLOG'
+      Font.Color = clOlive
+      Font.Height = 20
+      Font.Style = [fsBold, fsItalic]
+      ParentColor = False
+      ParentFont = False
+    end
+    object lblWelcome2: TLabel
       AnchorSideLeft.Control = pnlWelcome
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = pnlWelcome
       AnchorSideTop.Side = asrCenter
-      Left = 46
-      Height = 30
+      Left = 187
+      Height = 24
       Top = 1
-      Width = 289
-      Caption = 'Welcome to CQRLOG'
+      Width = 7
+      Caption = ' '
       Font.Color = clOlive
-      Font.Height = 25
+      Font.Height = 20
       Font.Style = [fsBold, fsItalic]
       ParentColor = False
       ParentFont = False
@@ -266,7 +316,7 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideRight.Side = asrBottom
     Left = 354
     Height = 64
-    Top = 90
+    Top = 84
     Width = 64
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963E423000089504E47
@@ -568,7 +618,7 @@ object frmDbSqlSel: TfrmDbSqlSel
     AnchorSideBottom.Side = asrBottom
     Left = 30
     Height = 89
-    Top = 177
+    Top = 171
     Width = 381
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 30
@@ -614,14 +664,14 @@ object frmDbSqlSel: TfrmDbSqlSel
   object btnHelp: TSpeedButton
     AnchorSideTop.Control = btnOK
     AnchorSideRight.Control = btnOK
-    Left = 232
+    Left = 160
     Height = 25
     Hint = 'Did you read help of first start ?'#10'___________________'#10'PLEASE DO IT NOW !'
     Top = 269
-    Width = 116
+    Width = 188
     Anchors = [akTop, akRight]
     BorderSpacing.Right = 6
-    Caption = '(Please read)'
+    Caption = '(Please read help!)'
     Glyph.Data = {
       F6030000424DF6030000000000003600000028000000100000000F0000000100
       200000000000C003000064000000640000000000000000000000FFFFFF00FFFF
@@ -656,8 +706,8 @@ object frmDbSqlSel: TfrmDbSqlSel
       FF00E2A289A4D0927FD7D49078DAD39079DAD5927BDAD7947CDAD8947DDADB96
       7FDADB9880DADC9A81DAE19F86DBD4937CAEFFFFFF00FFFFFF00
     }
-    OnClick = btnHelpClick
     ShowHint = True
     ParentShowHint = False
+    OnClick = btnHelpClick
   end
 end

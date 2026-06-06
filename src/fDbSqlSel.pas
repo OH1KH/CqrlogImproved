@@ -21,6 +21,7 @@ type
     edtPassword: TEdit;
     gbLocalUser: TGroupBox;
     imLogo: TImage;
+    lblWelcome4: TLabel;
     lblError: TLabel;
     lblIp: TLabel;
     lblPort: TLabel;
@@ -28,7 +29,9 @@ type
     lblUsername: TLabel;
     lblPass: TLabel;
     lblQuestion: TLabel;
-    lblWelcome: TLabel;
+    lblWelcome1: TLabel;
+    lblWelcome3: TLabel;
+    lblWelcome2: TLabel;
     pnlWelcome: TPanel;
     pnlInfo: TPanel;
     rbFolder: TRadioButton;
@@ -73,6 +76,7 @@ procedure TfrmDbSqlSel.rbLocalChange(Sender: TObject);
 begin
   if rbLocal.Checked then
   begin
+    gbLocalUser.Caption:='Define local SQLuser';
     btnOK.Enabled := True;
     lblError.Caption := '';
     lblError.Visible := False;
@@ -96,6 +100,7 @@ procedure TfrmDbSqlSel.rbExternalChange(Sender: TObject);
 begin
   if rbExternal.Checked then
   begin
+    gbLocalUser.Caption:='Define SQLserver and SQLuser';
     btnOK.Enabled := True;
     lblError.Caption := '';
     lblError.Visible := False;
@@ -105,7 +110,7 @@ begin
     edtIp.Font.Color := clDefault;
     edtport.ReadOnly := False;
     edtport.Font.Color := clDefault;
-    edtIP.Text := '';
+    edtIP.Text := 'localhost';
     edtPort.Text := '3306';
     repaint;
     edtIP.SetFocus;
@@ -169,11 +174,11 @@ begin
   Writeln(f);
   Writeln(f, 'stamp=$(date +_%Y%m%d-%H%M)');
   Writeln(f, 'echo -e "\nStarted$stamp"');
-  Writeln(f, 'echo -e "Creating common backup of all CQRLOG logs in database to /tmp/allcqrlogs$stamp.sql"');
+  Writeln(f, 'echo -e "Creating common backup of all CQRLOG logs in database to /tmp/cqrlogall_logs$stamp.sql"');
   Writeln(f, '$(mysql -u' + user + ' -p' + pass + ' -B -N -h' + ip + ' -P' + port +
              ' -e " show databases like ' + #$27 + 'cqr%' + #$27 + '" |\');
   Writeln(f, 'xargs  echo -n mysqldump -q -h' + ip + ' -P' + port + ' -u' +
-              user + ' -p' + pass + ' --databases) > /tmp/allcqrlogs$stamp.sql');
+              user + ' -p' + pass + ' --databases) > /tmp/cqrlogall_logs$stamp.sql');
 
   Writeln(f, 'echo -e "Creating separate backups of each CQRLOG logXXX in database to /tmp/cqrlogXXX$stamp.sql(s)\n"');
   Writeln(f, 'mysql -u' + user + ' -p' + pass + ' -B -N -h' + ip + ' -P' + port +
@@ -185,16 +190,24 @@ begin
   Writeln(f, '/tmp/sepsql.sh');
   Writeln(f, 'rm /tmp/sepsql.sh');
 
+  Writeln(f, 'zip -qr9 /tmp/cqrlogfolder$stamp.zip '  + UsrHome + '.config/cqrlog');
 
-  Writeln(f, 'echo -e "\nDone!\nCopy backup files to your safe place.\n'+
-             'They will be erased from /tmp at next Linux start\n\n"');
-  Writeln(f, 'echo "To restore all CQRLOG logs use command:"');
+  Writeln(f, 'echo -e "\nDone!\nCopy backup files cqrlog*.* from /tmp/ folder to safe place!\n'+
+             'They will be erased from /tmp/ at next Linux start!!!\n\n"');
+  Writeln(f, 'echo "To restore all Cqrlog logs use command:"');
   Writeln(f, 'echo -e "mysql -h' + ip + ' -P' + port + ' -u' + user + ' -p' + pass +
              ' < /tmp/allcqrlogs$stamp.sql\n\n"');
   Writeln(f, 'echo "To restore single a log use command:"');
   Writeln(f, 'echo "mysql -h' + ip + ' -P' + port + ' -u' + user + ' -p' + pass +
              ' cqrlog001 < /tmp/cqrlog001$stamp.sql"');
-  Writeln(f, 'echo -e "\nBe sure that both log numbers used in line are equal"');
+  Writeln(f, 'echo -e "\nBe sure that both 3 digit log numbers used in line are equal. (ex. 001)"');
+
+  Writeln(f, 'echo -e "\n\nTo restore other Cqrlog properties use command:"');
+  Writeln(f, 'echo -e "cd '+ UsrHome +' ; unzip /tmp/cqrlogfolder$stamp.zip "');
+
+  Writeln(f, 'echo -e "\nNOTE:"');
+  writeln(f, 'echo -e "Replace path /tmp/ in front of cqrlog-filenames with\n'+
+             'path that you have used when saving files from /tmp/ after backup"');
   closeFile(f);
   dmUtils.ExecuteCommand('chmod a+rwx ' + UsrHome + 'backup_all_cqr.sh');
 end;
@@ -240,7 +253,7 @@ begin
   end;
 
 
-  msg := msg + 'Backup of all CQRLOG SQL databases can be done at any '
+  msg := msg + 'Backup of CQRLOG (+SQL log databases) can be done at any '
     + LineEnding + 'time from command-line terminal by typing:'
     + LineEnding + UsrHome + 'backup_all_cqr.sh (and pressing enter)';
 

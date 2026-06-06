@@ -2125,11 +2125,11 @@ object frmDBConnect: TfrmDBConnect
     0000000000000000000000000000000000000000000000000000000000000000
     0000
   }
+  Position = poWorkAreaCenter
+  LCLVersion = '4.6.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poWorkAreaCenter
-  LCLVersion = '3.8.0.0'
   object grbLogin: TGroupBox
     Left = 0
     Height = 218

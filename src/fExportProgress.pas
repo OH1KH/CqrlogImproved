@@ -453,8 +453,8 @@ begin   //TfrmExportProgress
   AssignFile(f, FileName);
   Rewrite(f);
   Writeln(f);
-  Writeln(f, 'ADIF export from CQRLOG_Improved for Linux version '+dmData.VersionString);
-  Writeln(f, 'Copyright (C) ',YearOf(now),' by Petr, OK2CQR and Martin, OK1RR');
+  Writeln(f, 'ADIF export from CQRLOG_Improved for Linux version '+dmData.VersionString + 'by Saku, OH1KH');
+  Writeln(f, 'CQRLOG Copyright (C) ',YearOf(now),' by Petr, OK2CQR and Martin, OK1RR');
   Writeln(f);
   Writeln(f, 'Internet: http://www.cqrlog.com');
   Writeln(f);

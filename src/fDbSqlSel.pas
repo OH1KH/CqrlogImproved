@@ -225,6 +225,8 @@ begin
   if Terminal = '' then
     Terminal := FileSearch('lxterminal', C_PATH, True);
   if Terminal = '' then
+    Terminal := FileSearch('xfce4-terminal', C_PATH, True);
+  if Terminal = '' then
     ShowMessage('CQRLOG did not find command-line terminal from your system!')
   else
     dmUtils.ExecuteCommand(Terminal + ' -e ' + UsrHome + 'create_cqr_user.sh');

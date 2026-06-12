@@ -114,7 +114,7 @@ object frmDXCluster: TfrmDXCluster
     FFFF
   }
   KeyPreview = True
-  LCLVersion = '4.4.0.0'
+  LCLVersion = '4.6.0.0'
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate

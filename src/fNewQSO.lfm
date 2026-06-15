@@ -3879,7 +3879,7 @@ object frmNewQSO: TfrmNewQSO
       Height = 135
       Top = 396
       Width = 525
-      ActivePage = tabSatellite
+      ActivePage = tabDXCCStat
       Anchors = [akLeft, akRight, akBottom]
       BorderSpacing.Bottom = 1
       ParentFont = False

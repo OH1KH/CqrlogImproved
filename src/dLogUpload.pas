@@ -7,8 +7,10 @@ interface
 uses
   Classes, SysUtils, sqldb, FileUtil, LResources,
   dynlibs, lcltype, ExtCtrls, sqlscript, process, mysql51dyn, ssl_openssl_lib,
-  mysql55dyn, mysql55conn, mysql51conn, db, httpsend, blcksock, synautil, Forms,
-  Graphics, mysql56conn, mysql56dyn, mysql57dyn, mysql57conn,
+  //mysql55dyn, mysql55conn, mysql51conn,
+  db, httpsend, blcksock, synautil, Forms,
+  Graphics,
+  //mysql56conn, mysql56dyn, mysql57dyn, mysql57conn,  mysql80dyn, mysql80conn,
   lNet, lNetComponents, laz2_DOM, laz2_XMLWrite, md5, StrUtils, LazFileUtils, LazUTF8;
 
 const

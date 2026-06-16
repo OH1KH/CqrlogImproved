@@ -20,7 +20,7 @@ uses
   memds, mysql51conn, sqldb, inifiles, stdctrls, RegExpr,
   dynlibs, lcltype, ExtCtrls, sqlscript, process, mysql51dyn, ssl_openssl_lib,
   mysql55dyn, mysql55conn, CustApp, mysql56dyn, mysql56conn, grids, LazFileUtils,
-  mysql57dyn, mysql57conn, uMyFindFile, Graphics, LazUTF8, LCLVersion;
+  mysql57dyn, mysql57conn, mysql80dyn, mysql80conn, uMyFindFile, Graphics, LazUTF8, LCLVersion;
 
 const
   cDB_LIMIT = 500;
@@ -295,7 +295,7 @@ type
     function  IsCallInLogR(callsign,band,mode,LastDate,LastTime : String) : Boolean;
     function  CallNoteExists(Callsign : String) : Boolean;
     function  GetNewLogNumber : Integer;
-    function  getNewMySQLConnectionObject : TMySQL57Connection;
+    function  getNewMySQLConnectionObject : TMySQL80Connection;
 
     procedure SaveQSO(date : TDateTime; time_on,time_off,call : String; freq : Currency;mode,rst_s,
                       rst_r, stn_name,qth,qsl_s,qsl_r,qsl_via,iota,pwr : String; itu,waz : Integer;
@@ -4616,11 +4616,11 @@ begin
     QSOColorDate := now
 end;
 
-function TdmData.getNewMySQLConnectionObject : TMySQL57Connection;
+function TdmData.getNewMySQLConnectionObject : TMySQL80Connection;
 var
-  Connection : TMySQL57Connection;
+  Connection : TMySQL80Connection;
 begin
-  Connection := TMySQL57Connection.Create(self);
+  Connection := TMySQL80Connection.Create(self);
   Connection.SkipLibraryVersionCheck := True;
   Connection.KeepConnection := True;
 //  mysql_options(Connection.Handle, MYSQL_OPT_RECONNECT, 'true');   //compiles, but causes crash at start. Why?

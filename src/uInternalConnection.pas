@@ -15,7 +15,7 @@ unit uInternalConnection;
 interface
 
 uses
-  Classes, SysUtils, sqldb, mysql57dyn, mysql57conn, uConnectionInfo;
+  Classes, SysUtils, sqldb, mysql57dyn, mysql57conn,  mysql80dyn, mysql80conn, uConnectionInfo;
 
 type
   TinternalConnection = class
@@ -59,9 +59,9 @@ end;
 
 function TInternalConnection.getNewMySQLConnectionObject() : TConnectionName;
 var
-  Conn : TMySQL57Connection;
+  Conn : TMySQL80Connection;
 begin
-  Conn := TMySQL57Connection.Create(nil);
+  Conn := TMySQL80Connection.Create(nil);
   Conn.SkipLibraryVersionCheck := True;
   Conn.KeepConnection := True;
 

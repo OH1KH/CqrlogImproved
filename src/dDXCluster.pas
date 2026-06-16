@@ -17,8 +17,11 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Dialogs, Graphics,
-  inifiles, sqldb, mysql51conn, db, mysql55conn, process, mysql56conn,
-  mysql56dyn, mysql57dyn, mysql57conn,strutils;
+  inifiles, sqldb,
+// mysql51conn, mysql55conn, mysql56conn,
+  db, process,
+//  mysql56dyn, mysql57dyn, mysql57conn, mysql80dyn, mysql80conn,
+ strutils;
 
 type
   TExplodeArray = Array of String;

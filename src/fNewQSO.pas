@@ -705,6 +705,7 @@ type
     procedure NewLogSplash;
 
   public
+    ImprovedVer : Integer;  //0=state not known, 1=up to date, 2=there is an upgrade available 3=Higer than released!
     fEditQSO    : Boolean;
     fViewQSO    : Boolean;
     QTHfromCb   : Boolean;
@@ -8205,6 +8206,7 @@ var
   VerAvailNr : integer;
   data:string;
 Begin
+  ImprovedVer:=0;
   if not cqrini.ReadBool('Program', 'CheckImproved', True) then exit;
   if not (TryStrToInt(ExtractWord(2,cVersionBase,['(',')']),VerNr)) then exit;
   VerAvailNr:=0;
@@ -8214,19 +8216,24 @@ Begin
     if not (TryStrToInt(ExtractWord(2,data,['(',')']),VerAvailNr)) then exit;
     if VerNr < VerAvailNr then
     begin
+      ImprovedVer:=2;
       try
         frmAbout:= TfrmAbout.Create(Application);
         frmAbout.PageControl1.ActivePage := frmAbout.tabUpgrade;
-        frmAbout.lblVerze1.Caption := cVERSION + '  ' + cBUILD_DATE;
-        frmAbout.Label8.Caption:='There is Cqrlog_Improved version '+IntToStr(VerAvailNr)+' available!';
+        frmAbout.lblUpVer.Caption := cVERSION + '  ' + cBUILD_DATE;
+        frmAbout.lblUpBy.Caption:='Cqrlog_Improved '+IntToStr(VerAvailNr)+' available!';
         frmAbout.IsNewVersion:=True;
-        frmAbout.btnChangelog1.Font.Color:=clRed;
-        frmAbout.btnChangelog1.Font.Style:=[fsBold];
+        frmAbout.btnChangelog.Font.Color:=clRed;
+        frmAbout.btnChangelog.Font.Style:=[fsBold];
         frmAbout.ShowModal
       finally
         frmAbout.Free;
       end
     end;
+    if VerNr = VerAvailNr then
+                          ImprovedVer:=1;
+    if VerNr > VerAvailNr then
+                           ImprovedVer:=3;
   end;
 end;
 

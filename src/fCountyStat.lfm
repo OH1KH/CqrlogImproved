@@ -8,9 +8,9 @@ object frmCountyStat: TfrmCountyStat
   ClientWidth = 653
   Constraints.MinHeight = 225
   Constraints.MinWidth = 585
+  LCLVersion = '4.6.0.0'
   OnClose = FormClose
   OnShow = FormShow
-  LCLVersion = '3.8.0.0'
   object Panel1: TPanel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -243,6 +243,7 @@ object frmCountyStat: TfrmCountyStat
   end
   object tmrBlink: TTimer
     Enabled = False
+    Interval = 250
     OnTimer = tmrBlinkTimer
     OnStartTimer = tmrBlinkStartTimer
     OnStopTimer = tmrBlinkStopTimer

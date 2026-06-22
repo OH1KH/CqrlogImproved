@@ -42,11 +42,13 @@ type
   private
     TmpFile : String;
     f  : TextFile;
+    BlinkCount: integer;
     procedure WriteHMTLHeader;
   public
 
   end; 
-
+const
+  BlinkText = ' Press to run statistic with selected values... ';
 var
   frmCountyStat: TfrmCountyStat;
 
@@ -70,6 +72,10 @@ begin
 end;
 
 procedure TfrmCountyStat.btnRefreshClick(Sender: TObject);
+const
+  BgLight = '#FFFFFF';
+  BgDark  = '#F3F3F3';
+
 var
   tmp : String = '';
   bnd : String = '';
@@ -83,6 +89,8 @@ var
   sum_wkd : integer = 0;
   sum_cfm : integer = 0;
   TableName : String;
+  BackClr   : String;
+
 begin
   tmrBlink.Enabled:=False;
   TableName:='cqrlog_main';
@@ -158,7 +166,12 @@ begin
         pbTot.Position:=TotPos;
         Application.ProcessMessages;
         ll := dmData.Q.Fields[0].AsString;
-        writeln(f,'<tr>'+LineEnding+'<td valign="middle">'+LineEnding+'<font color="black"><b>'+ll+'</b></font>'+LineEnding+'</td>');
+
+        if BackClr=BgDark then
+                        BackClr:=BgLight
+                        else
+                        BackClr:=BgDark;
+        writeln(f,'<tr bgcolor="'+BackClr+'">'+LineEnding+'<td valign="middle">'+LineEnding+'<font color="black"><b>'+ll+'</b></font>'+LineEnding+'</td>');
         writeln(f,'<td align="left">');
         writeln(f,'<font color="black">');
         dmData.Q1.Close;
@@ -248,7 +261,7 @@ begin
   writeln(f,'<html>');
   Writeln(f,'<head>');
   writeln(f,'<meta http-equiv="content-type" content="text/html; charset=utf-8">');
-  writeln(f,'<meta name="generator" content="CQRLOG_Improved '+cVERSION+'>');
+  writeln(f,'<meta name="generator" content="CQRLOG_Improved '+cVERSION+'">');
   writeln(f,'<title>County statistic ('+cqrini.ReadString('Station','Call','')+')</title>');
   writeln(f,'</head>');
   writeln(f,'<body>');
@@ -290,8 +303,10 @@ end;
 
 procedure TfrmCountyStat.tmrBlinkStartTimer(Sender: TObject);
 begin
-  btnRefresh.Caption:='Press to';
+  BlinkCount:=1;
+  btnRefresh.Caption:='               ';
   btnRefresh.Font.Color:=clGreen;
+  btnRefresh.Font.Style:=[fsBold];
   btnRefresh.Repaint;
 end;
 
@@ -299,27 +314,15 @@ procedure TfrmCountyStat.tmrBlinkStopTimer(Sender: TObject);
 begin
   btnRefresh.Caption:='Refresh statistic';
   btnRefresh.Font.Color:=clDefault;
+  btnRefresh.Font.Style:=[];
   btnRefresh.Repaint;
 end;
 
 procedure TfrmCountyStat.tmrBlinkTimer(Sender: TObject);
-var
-  C :Tcolor;
-  T:String;
 begin
-  case odd(SecondOf(Now)) of
-    True:  Begin
-            C := clGreen;
-            T :='run statistic'
-           end;
-    False: Begin
-            C := clGreen;
-            T :='Press to'
-    end;
-  end;
-  btnRefresh.Caption:= T;
-  btnRefresh.Font.Color:=C;
-  btnRefresh.Repaint;
+  inc(BlinkCount);
+  if BlinkCount>length(BlinkText) then BlinkCount:=1;
+  btnRefresh.Caption:=copy(btnRefresh.Caption,2,14)+BlinkText[BlinkCount];
 end;
 
 end.

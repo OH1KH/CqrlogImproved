@@ -289,27 +289,14 @@ begin
              'UPDATE' : begin
                           if (WhereToUpload=upQrzLog) then
                            Begin
-                            ToMainThread('Deleting original '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
-                            dmLogUpload.PrepareDeleteHeader(WhereToUpload,dmLogUpload.Q.Fields[0].AsInteger,dmLogUpload.Q.FieldByName('id_cqrlog_main').AsInteger,data);
+                            ToMainThread('Replacing original '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
+                            dmLogUpload.PrepareInsertHeader(WhereToUpload,dmLogUpload.Q.Fields[0].AsInteger,dmLogUpload.Q.FieldByName('id_cqrlog_main').AsInteger,data,True);
                             UpSuccess := dmLogUpload.UploadLogData(WhereToUpload,Command,data,Response,ResultCode);
-                            if (ResultCode=200) and (pos('OK',Response)>0) then
+                            if (ResultCode=200) and (pos('REPLACE',Response)>0) then
                                Begin
-                                 ToMainThread('','OK');
-                                 AlreadyDel:=True;
                                  RemoveQrzLogId(dmLogUpload.Q.FieldByName('id_cqrlog_main').AsString);
-                                 Sleep(500);
-                                 ToMainThread('Uploading updated '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
-                                 data.Clear;
-                                 dmLogUpload.PrepareUserInfoHeader(WhereToUpload,data);
-                                 dmLogUpload.PrepareInsertHeader(WhereToUpload,dmLogUpload.Q.Fields[0].AsInteger,dmLogUpload.Q.FieldByName('id_cqrlog_main').AsInteger,data);
-                                 UpSuccess := dmLogUpload.UploadLogData(WhereToUpload,Command,data,Response,ResultCode);
                                end
-                             else
-                               begin
-                                 UpSuccess  := False;
-                                 ErrorCode:=1;
-                               end;
-                           end
+                           end   //upQrzLog
                           else
                            Begin
                               if (WhereToUpload=upUDPLog) then
@@ -419,7 +406,9 @@ begin
                 Writeln('-----------')
               end;
 
-           if (pos('OK',Response)>0) and (ErrorCode=0) then
+           if    (pos('OK',Response)>0)
+            or ( (pos('REPLACE',Response)>0) and (WhereToUpload = upQrzLog) and (Command = 'UPDATE') )
+            and  (ErrorCode=0) then
              Begin
                if (WhereToUpload = upQrzLog) then
                 Begin

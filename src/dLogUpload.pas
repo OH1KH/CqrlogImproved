@@ -63,7 +63,7 @@ type
     function  LogUploadEnabled : Boolean;
 
     procedure PrepareUserInfoHeader(where : TWhereToUpload; data : TStringList);
-    procedure PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
+    procedure PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList;QRZIsReplace : Boolean=false);
     procedure PrepareDeleteHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
     procedure MarkAsUploadedToAllOnlineLogs;
     procedure MarkAsUploaded(LogName : String);
@@ -903,7 +903,7 @@ begin
   end //case
 end;
 
-procedure TdmLogUpload.PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
+procedure TdmLogUpload.PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList;QRZIsReplace : Boolean=false);
 const
   C_SEL_LOG_CHANGES = 'select * from log_changes where id=%d';
 var
@@ -970,6 +970,8 @@ begin
                    end;
       upQrzLog  :  begin
                      data.Add('ACTION=INSERT');
+                     if QRZIsReplace then
+                                     data.Add('OPTION=REPLACE');
                      data.Add('ADIF='+StringReplace(adif,'<EOR>','',[rfReplaceAll])+
                               GetAdifValue('STATION_CALLSIGN',cqrini.ReadString('Station','Call',''))+'<EOR>');
                    end;

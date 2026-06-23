@@ -959,11 +959,13 @@ There are no known dependencies issues.<br><br>
     <a name=ch8b><h3>NOTE</h3></a>
 
     UPDATE qso to QRZlog is changed since version _(144)_ (or devel version _(143)d_ after 2026-06-22) to use QRZlog's REPLACE option.<br>
-    If you modify QSO so that you change frequency to another band or mode QRZ log will understand this is a new QSO that uses same LOGID as before.<br>
-    Everything is sync with Cqrlog_Improved and QRZ log, except that the old qso with different band or/and mode is not deleted from QRZlog and does not have own LOGID in Cqrlog_Improved any more.<br><br>
-    If you want to remove the QSO (in form it was before your edit) from QRZlog you have to do it manually via qrz.com. Cqrlog_Improved does not have the QSO or it's LOGID any more.<br>
-    Change of UPDATE function of qso this way allows small frequency fixes (within same band) or QSL, eQSL, LoTW received/sent marking without change the QSO bases in QRZlog.<br>
-    The previous function of Cqrlog_Improved UPDATE was first to delete the qso from QRZlog then insert qso as a new one to QRZlog.<br><br>
+    If you modify QSO so that you change frequency to another band or mode QRZ log will understand this is a new QSO.<br>
+    Everything is sync with Cqrlog_Improved and QRZ log, except that the old qso (before edit) is not deleted from QRZlog and does not have own LOGID<->ID_Cqrlog_main connection any more in Cqrlog_Improved.<br><br>
+    If you want to remove the QSO from QRZlog (in form it was before your edit) you have to do it manually via qrz.com because Cqrlog_Improved does not have the QSO or it's LOGID any more.<br><br>
+    Change of UPDATE function of qso this way allows small frequency fixes (within same band) or QSL, eQSL, LoTW received/sent marking without change the QSO basics in QRZlog.<br><br>
+    The previous function of Cqrlog_Improved UPDATE was first to delete the qso from QRZlog then insert qso as a new one to QRZlog.<br>
+    This could lead to situation where qso, uploaded to QRZlog before Cqrlog_Improved QRZlog support, changes and new status was updated to QRZlog by Cqrlog_Improved that had no LOGID for qso.<br>
+    That caused error because deleting qso from QRZlog always need proper LOGID for qso.<br><br>
     <strong>How Ever be aware of QRZlog note:</strong> "WARNING: REPLACE will overwrite confirmed QSOs with the supplied unconfirmed QSO until the new QSO data is verified as a match"
     
 </div>

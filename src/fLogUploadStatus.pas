@@ -292,9 +292,14 @@ begin
                             ToMainThread('Replacing original '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
                             dmLogUpload.PrepareInsertHeader(WhereToUpload,dmLogUpload.Q.Fields[0].AsInteger,dmLogUpload.Q.FieldByName('id_cqrlog_main').AsInteger,data,True);
                             UpSuccess := dmLogUpload.UploadLogData(WhereToUpload,Command,data,Response,ResultCode);
-                            if (ResultCode=200) and (pos('REPLACE',Response)>0) then
+                            if (ResultCode=200) and ( (pos('OK',Response)>0) or (pos('REPLACE',Response)>0) ) then
                                Begin
                                  RemoveQrzLogId(dmLogUpload.Q.FieldByName('id_cqrlog_main').AsString);
+                                 if (pos('OK',Response)>0) then
+                                   Begin
+                                     ToMainThread('QRZlog treats edited qso as a new one.','');
+                                     ToMainThread('Original qso is left in QRZlog as is.','');
+                                   end;
                                end
                            end   //upQrzLog
                           else

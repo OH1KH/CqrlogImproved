@@ -1228,10 +1228,11 @@ Begin
   if chk then
      begin
            s:= 'This option disables EVERY Online Log'+#39+'s updating'+LineEnding+
-               'when CHANGE(S) to QSO in local log happens.'+LineEnding+
-               'If you change important values like date,time,band,mode it might'+LineEnding+
-               'break connection between Cqrlog<>Onlinelog and qso is not located any more'+LineEnding+
-               'from online log with information that Cqrlog has.'+LineEnding+
+               'when CHANGE(S) to QSO in local log happens.'+LineEnding+LineEnding+
+               'If you change important values like date,time,band,mode'+LineEnding+
+               'it might break connection between local log<>Online log'+LineEnding+
+               'and qso is not located any more from online log'+LineEnding+
+               'using qso information that local log has.'+LineEnding+LineEnding+
                'Are you SURE you want to check this?';
            if Application.MessageBox(s,'Question ...', mb_YesNo + mb_IconQuestion) = idNo then
                                                                                            Result:=False;
@@ -2511,7 +2512,7 @@ procedure TfrmPreferences.chkIgnoreEditChange(Sender: TObject);
 begin
   //Warn:
    if not chkIgnoreEdit.Focused then exit; //otherwise triggers on settings load
-   chkIgnoreEdit.Checked:=WarnCheck(chkIgnoreEdit.Checked)
+   chkIgnoreEdit.Checked:=WarnEdit(chkIgnoreEdit.Checked)
 end;
 
 procedure TfrmPreferences.chkIgnoreLoTWChange(Sender: TObject);

@@ -1334,23 +1334,6 @@ begin
       if debug then
          Writeln(t.SQL.Text);
       t.ExecSQL;
-
-      {
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_bd']);
-      if debug then
-       Writeln(t.SQL.Text);
-      t.ExecSQL;
-
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_ai']);
-      if debug then
-       Writeln(t.SQL.Text);
-      t.ExecSQL;
-
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_bu']);
-      if debug then
-         Writeln(t.SQL.Text);
-      t.ExecSQL;
-       }
     except
         on E : Exception do
           Writeln('DeleteTriggers:',E.Message);

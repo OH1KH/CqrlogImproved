@@ -1189,6 +1189,7 @@ type
     function SeekExecFile(MyFile,MyExeFor:String): String;
     function DataModeInput(s:string):string;
     function WarnCheck(chk:boolean):boolean;
+    function WarnEdit(chk:boolean):boolean;
 
   public
     { public declarations }
@@ -1219,6 +1220,23 @@ uses dUtils, dData, fMain, fFreq, fQTHProfiles, fSerialPort, fClubSettings, fLoa
   fRadioMemories, dMembership, dLogUpload;
 
 
+function TfrmPreferences.WarnEdit(chk:boolean):boolean;
+var
+   s:PChar;
+Begin
+  Result:= chk;
+  if chk then
+     begin
+           s:= 'This option disables EVERY Online Log'+#39+'s updating'+LineEnding+
+               'when CHANGE(S) to QSO in local log happens.'+LineEnding+
+               'If you change important values like date,time,band,mode it might'+LineEnding+
+               'break connection between Cqrlog<>Onlinelog and qso is not located any more'+LineEnding+
+               'from online log with information that Cqrlog has.'+LineEnding+
+               'Are you SURE you want to check this?';
+           if Application.MessageBox(s,'Question ...', mb_YesNo + mb_IconQuestion) = idNo then
+                                                                                           Result:=False;
+     end;
+end;
 
 function TfrmPreferences.WarnCheck(chk:boolean):boolean;
 var

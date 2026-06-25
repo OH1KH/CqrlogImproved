@@ -3191,7 +3191,9 @@ begin
   if fViewQSO then
     exit;
   if edtCall.Text = '' then
-    exit;
+    exit
+   else
+     edtCall.Text:=UpperCase(edtCall.Text); //to be sure call is upper case. It should, but managed once save call with low case last letter with fast typing!!
 
   if edtITU.Text = '' then
     edtITU.Text := '0';
@@ -3283,6 +3285,10 @@ begin
       id := dmData.qQSOBefore.FieldByName('id_cqrlog_main').AsInteger
     else
       id := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger;
+
+    if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
+                                                         dmLogUpload.DisableOnlineLogSupport;
+
     dmData.EditQSO(dmUtils.StrToDateFormat(edtDate.Text),
                    edtStartTime.Text,
                    edtEndTime.Text,
@@ -3371,6 +3377,7 @@ begin
       if Delete then
         frmBandMap.DeleteFromBandMap(edtCall.Text,cmbMode.Text,dmUtils.GetBandFromFreq(cmbFreq.Text))
     end;
+
     dmData.SaveQSO(date,
                    edtStartTime.Text,
                    edtEndTime.Text,
@@ -3421,14 +3428,12 @@ begin
      if (cqrini.ReadBool('NewQSO','UpdateAMSATstatus',False)) then
         dmSatellite.UpdateAMSATStatusPage(edtDate.Text, edtStartTime.Text, cmbSatellite.Text, cmbFreq.Text, edtRXFreq.Text, cmbMode.Text);
   end;
-  if fEditQSO and (not fromNewQSO) then
+  if fEditQSO then
   begin
-    dmData.RefreshMainDatabase(id);
+    if (not fromNewQSO) then
+                        dmData.RefreshMainDatabase(id);
     if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
-     Begin
-       dmLogUpload.DisableOnlineLogSupport;
-       dmLogUpload.EnableOnlineLogSupport;
-     end;
+       dmLogUpload.EnableOnlineLogSupport(False); //False= do not remove old changes, just restore triggers
   end;
   if not AnyRemoteOn then
                        UnsetEditLabel;

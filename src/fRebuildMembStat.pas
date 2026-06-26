@@ -215,7 +215,7 @@ begin
       dmData.trQ.Commit;
 
     if chkIgnoreChanges.Checked and dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False);
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
     lblInfo.Caption := 'Done ...'
   end
 end;

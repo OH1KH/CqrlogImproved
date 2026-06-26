@@ -4010,7 +4010,7 @@ begin
   finally
 
     if dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False);
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
     t.Free;
   end
 end;
@@ -4040,7 +4040,7 @@ begin
   end;
   finally
     if dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False);
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
     t.Free;
   end
 end;

@@ -657,7 +657,7 @@ begin
     btnOpenExpFile.Visible:=True;
 
     if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
-     dmLogUpload.EnableOnlineLogSupport;
+     dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
   end
 end;
 

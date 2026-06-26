@@ -295,7 +295,7 @@ begin
     btnClose.Font.Style:=[fsBold,fsItalic];
     btnClose.Repaint;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False)
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
   end
 end;
 

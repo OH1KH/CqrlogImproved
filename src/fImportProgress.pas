@@ -951,7 +951,7 @@ begin
     l.Free;
     CloseFile(f);
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) and dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False)
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
   end;
   Close
 end;
@@ -1280,7 +1280,7 @@ begin
   finally
     l.Free;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False);
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
     Close
   end
 end;

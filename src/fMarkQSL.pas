@@ -252,7 +252,7 @@ begin
   lblProg.Caption := 'Complete!';
 
   if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
-     dmLogUpload.EnableOnlineLogSupport;
+     dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
 end;
 
 procedure TfrmMarkQSL.cmbTypeChange(Sender: TObject);

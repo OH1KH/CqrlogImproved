@@ -203,7 +203,7 @@ begin
         dmData.trQ.Commit;
         dmData.trQ1.Rollback;
         if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) and dmLogUpload.LogUploadEnabled then
-          dmLogUpload.EnableOnlineLogSupport(False)
+          dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
       end
     end
   finally

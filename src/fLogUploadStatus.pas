@@ -701,6 +701,9 @@ begin
         Writeln('SyncUpdate:',SyncUpdate);
         Writeln('SyncMsg   :',SyncMsg);
    end;
+
+   frmNewQSO.ReturnToNewQSO;
+
    if ((SyncUpdate<>'') or (SyncMsg<>'')) then
       tmrClose.Enabled:=False;
 

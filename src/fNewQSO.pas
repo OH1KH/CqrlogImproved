@@ -7830,8 +7830,11 @@ begin
   if ( frmContest <> nil) and  frmContest.Showing  and frmContest.ContestReady then
       frmContest.edtCall.SetFocus
     else
-      if edtCall.Enabled then
-         edtCall.SetFocus
+      if ( frmMonWsjtx <> nil )  and  frmMonWsjtx.Showing then
+        frmMonWsjtx.sgMonitor.SetFocus
+      else
+        if edtCall.Enabled then
+          edtCall.SetFocus
 end;
 
 procedure TfrmNewQSO.RefreshInfoLabels;

@@ -4873,6 +4873,7 @@ object frmNewQSO: TfrmNewQSO
       BorderSpacing.Left = 6
       ParentFont = False
       ReadOnly = True
+      ScrollBars = ssAutoBoth
       TabOrder = 7
       TabStop = False
     end

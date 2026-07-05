@@ -185,7 +185,7 @@ public
 
     function  GetCurrVFO  : TVFO;
     function  GetModePass : TRigMode;
-    function  GetPassOnly : word;
+    function  GetPassOnly : integer;
     function  GetModeOnly : String;
     function  GetFreqHz   : Double;
     function  GetFreqKHz  : Double;
@@ -580,7 +580,7 @@ function TRigControl.GetModeOnly : String;
 begin
   result := fMode.mode
 end;
-function TRigControl.GetPassOnly : word;
+function TRigControl.GetPassOnly : integer;
 begin
   result := fMode.pass
 end;
@@ -822,14 +822,21 @@ begin
                                      end;
 
              'MODE:'               : Begin
-                                       fMode.raw  := b[1];
-                                       fMode.mode :=  fMode.raw;
+                                       fMode.mode  := b[1];
+                                       fMode.raw := fMode.mode; //raw is legacy "clean mode only string"
                                        if (fMode.mode = 'USB') or (fMode.mode = 'LSB') then
                                          fMode.mode := 'SSB';
                                        if fMode.mode = 'CWR' then
                                          fMode.mode := 'CW';
                                        Hit:=true;
                                       end;
+
+             'PASSBAND:'           : Begin
+                                       if not TryStrToInt(b[1],fMode.pass) then
+                                          fMode.Pass:=0;
+                                       Hit:=true;
+                                      end;
+
 
               'VFO:'                : //FT-920 returned VFO as MEM
                                       //Some rigs report VFO as Main,MainA,MainB or Sub,SubA,SubB

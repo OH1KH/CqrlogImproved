@@ -24,7 +24,7 @@ uses
 
 const
   cDB_LIMIT = 500;
-  cDB_MAIN_VER = 20;
+  cDB_MAIN_VER = 21;
   cDB_COMN_VER = 8;
   cDB_PING_INT = 300;  //ping interval for database connection in seconds
                        //program crashed after long time of inactivity
@@ -3393,6 +3393,15 @@ begin
                 trQ1.Commit;
                 end;
             end;
+
+       if old_version < 21 then    //ignorelog to pass by update on defined log
+      begin                        //ignore is binary flag (1) in order
+        trQ1.StartTransaction;     //HamQTH,CLublog,Hrdlog,Udplog,Qrzlog -> %11111 (Hamlog is MSB, Qrzlog LSB)
+        Q1.SQL.Text := 'alter table log_changes add ignorelog int(1) default 0';
+        if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+        Q1.ExecSQL;
+        trQ1.Commit
+      end;
 
       if TableExists('view_cqrlog_main_by_callsign') then
       begin

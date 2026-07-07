@@ -295,7 +295,9 @@ begin
     btnClose.Font.Style:=[fsBold,fsItalic];
     btnClose.Repaint;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
+      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
+     else
+      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
   end
 end;
 

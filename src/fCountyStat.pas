@@ -92,6 +92,7 @@ var
   BackClr   : String;
 
 begin
+  BackClr:= BgLight;
   tmrBlink.Enabled:=False;
   TableName:='cqrlog_main';
   try

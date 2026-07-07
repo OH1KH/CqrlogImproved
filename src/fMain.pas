@@ -2385,7 +2385,9 @@ begin
   RefreshQSODXCCCount;
 
   if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
-   dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
+    dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
+   else
+       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
 end;
 
 procedure TfrmMain.acQSL_SExecute(Sender: TObject);
@@ -2785,7 +2787,9 @@ begin
   dmData.RefreshMainDatabase(idx);
 
    if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
-     dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
+     dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
+    else
+       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
 end;
 
 procedure TfrmMain.ChechkSelRecords;

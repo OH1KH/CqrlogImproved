@@ -951,7 +951,9 @@ begin
     l.Free;
     CloseFile(f);
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) and dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
+      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
+     else
+      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
   end;
   Close
 end;
@@ -1280,7 +1282,9 @@ begin
   finally
     l.Free;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
+      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
+     else
+      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
     Close
   end
 end;

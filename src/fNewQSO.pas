@@ -3433,7 +3433,9 @@ begin
     if (not fromNewQSO) then
                         dmData.RefreshMainDatabase(id);
     if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
-       dmLogUpload.EnableOnlineLogSupport(False); //False= do not remove old changes, just restore triggers
+       dmLogUpload.EnableOnlineLogSupport(False) //False= do not remove old changes, just restore triggers
+      else
+       dmLogUpload.DoUploadIgnore(4);  //check if some of logs do not want edited updates
   end;
   if not AnyRemoteOn then
                        UnsetEditLabel;

@@ -62,6 +62,7 @@ type
     debug:Boolean;
     function CheckEnabledOnlineLogs : Boolean;
     function GetLogName : String;
+    function ShouldIgnore(whereto:TWhereToUpload;mask:integer):boolean;
     procedure RemoveQrzLogId(id:string);
     procedure AddQrzLogId(cqr_id,qrz_id:string);
     procedure ToMainThread(Message,Update : String);
@@ -171,7 +172,23 @@ Begin
   if debug then
     Writeln('QRZ LOGID saved: ', qrz_id, ' for id_cqrlog_main=', cqr_id)
 end;
+function TUploadThread.ShouldIgnore(whereto:TWhereToUpload;mask:integer):boolean;
+Begin
+  //Log mask
+  //%00001   %00010  %00100  %01000  %10000
+  //'QrzIgn','UdIgn','HrIgn','ClIgn','HaIgn');
 
+  case whereto of
+       upHamQTH   : Result := (%10000 and mask)>0;
+       upClubLog  : Result := (%01000 and mask)>0;
+       upHrdLog   : Result := (%00100 and mask)>0;
+       upUDPLog   : Result := (%00010 and mask)>0;
+       upQrzLog   : Result := (%00001 and mask)>0;
+    else
+       Result:=false;
+  end;
+
+end;
 
 procedure TUploadThread.Execute;
 
@@ -205,6 +222,8 @@ var
   StreamFile : String;
   BulkResp1,
   BulkResp2  : String;
+  BulkUp,
+  BulkIgn    : integer;
 
 
 begin
@@ -275,6 +294,19 @@ begin
       begin
         AlreadyDel := False;
         Command := dmLogUpload.Q.FieldByName('cmd').AsString;
+
+        if Command='UPDATE' then //check if there is log/action-change based ignores
+         Begin
+            if ShouldIgnore(WhereToUpload,dmLogUpload.Q.FieldByName('ignorelog').AsInteger) then
+             begin
+              if debug then
+                begin
+                  Writeln(Command,' should be ignored with log mask ',IntToBin(dmLogUpload.Q.FieldByName('ignorelog').AsInteger,5,0));
+                end;
+              Command:='IGNORE';
+
+             end;
+         end;
 
         data.Clear;
         dmLogUpload.PrepareUserInfoHeader(WhereToUpload,data);
@@ -372,8 +404,10 @@ begin
 
              else
                          begin
+                           if Command='IGNORE' then
+                              ToMainThread('Ignored by preferences '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
                            if debug then
-                              Writeln('Unknown command:',Command);
+                                Writeln('Case/else command: ',Command);
                            dmLogUpload.MarkOneAsUploaded(GetLogName,dmLogUpload.Q.FieldByName('id').AsInteger);
                            dmLogUpload.Q.Next;
                            Continue
@@ -509,6 +543,8 @@ begin
    end //not ClubBulk --------------------------------------------------------------------------------------------------------
   else
    Begin  // ClubBulk --------------------------------------------------------------------------------------------------------
+     BulkUp:=0;
+     BulkIgn:=0;
      try try
          dmLogUpload.Q.Close;
          dmLogUpload.Q.SQL.Text := Format(C_SEL_UPLOAD_STATUS,[QuotedStr(GetLogName)]);
@@ -536,6 +572,18 @@ begin
            AlreadyDel := False;
            Command := dmLogUpload.Q.FieldByName('cmd').AsString;
 
+         if Command='UPDATE' then //check if there is log/action-change based ignores
+         Begin
+            if ShouldIgnore(WhereToUpload,dmLogUpload.Q.FieldByName('ignorelog').AsInteger) then
+             begin
+              if debug then
+                begin
+                  Writeln(Command,' should be ignored with log mask ',IntToBin(dmLogUpload.Q.FieldByName('ignorelog').AsInteger,5,0));
+                end;
+              Command:='IGNORE';
+             end;
+         end;
+
            data.Clear;
 
            if (pos('DONE',Command)>0) then
@@ -551,6 +599,7 @@ begin
               else
                 ToMainThread(Command+' '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
 
+           inc(BulkUp); //inc one qso to upload
            case Command of
              'INSERT'   :  begin
                              dmLogUpload.PrepareInsertHeader(WhereToUpload,dmLogUpload.Q.Fields[0].AsInteger,dmLogUpload.Q.FieldByName('id_cqrlog_main').AsInteger,data);
@@ -584,8 +633,13 @@ begin
 
              else
                          begin
+                           if Command='IGNORE' then
+                             Begin
+                              ToMainThread('Ignored by preferences '+dmLogUpload.Q.FieldByName('callsign').AsString,'');
+                              inc(BulkIgn); //inc one qso to ignore
+                             end;
                            if debug then
-                              Writeln('Unknown command:',Command);
+                                Writeln('Case/else command: ',Command);
                            dmLogUpload.Q.Next;
                            Continue
                          end;
@@ -604,7 +658,14 @@ begin
            writeln('*Next to upload bulk data:',LineEnding,'tmpdata:',LineEnding,tmpdata.text);
          end;
 
-         UpSuccess := dmLogUpload.UploadLogData(WhereToUpload,'BULK',tmpdata,Response,ResultCode);
+         if (BulkUp<>BulkIgn) and (BulkUp>0) then   //something to upload
+                UpSuccess := dmLogUpload.UploadLogData(WhereToUpload,'BULK',tmpdata,Response,ResultCode)
+            else
+               Begin
+                UpSuccess:=True;
+                ResultCode:=200;
+                Response:='Bulk:No QSOs to upload';
+               end;
 
          if debug then
            begin
@@ -859,7 +920,7 @@ Procedure TfrmLogUploadStatus.DoAutoCleanup;        //makes auto cleanup to tabl
 Var
   p       : integer;
 
-Function Pending(where : String):integer;
+function Pending(where : String):integer;
 Begin
   Result:=0;
   dmLogUpload.Q2.Close;
@@ -891,6 +952,8 @@ Begin
               dmLogUpload.MarkAsUploadedToAllOnlineLogs;  //this cleans table log_changes but keeps it's last ID value.
 
 end;
+
+
 
 end.
 

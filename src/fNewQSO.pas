@@ -3557,6 +3557,14 @@ begin
                     btnSave.Click
                 end;
    VK_TAB    :  Begin
+                 skip :=  cqrini.ReadBool('NewQSO','SkipModeFreq',True);
+                  if (not skip) or fEditQSO or fViewQSO or cbOffline.Checked then
+                    cmbFreq.SetFocus
+                  else begin
+                    edtHisRST.SetFocus;
+                    edtHisRST.SelStart  := 1;
+                    edtHisRST.SelLength := 1;
+                  end;
                  TabUsed := True;
                  key := 0;
                 end;
@@ -3639,6 +3647,7 @@ begin
                  key := 0
                 end;
    VK_TAB    :  Begin
+                 edtMyRST.SetFocus;
                  TabUsed := True;
                  key := 0;
                 end;
@@ -3648,21 +3657,23 @@ end;
 procedure TfrmNewQSO.edtMyRSTKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if (key = 40) then  //down arrow
-  begin
-    edtName.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    key := 0;
-    edtHisRST.SetFocus;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtName.SetFocus;
-    key := 0;
-  end;
+  case key of
+     40       :  begin  //down arrow
+                   edtName.SetFocus;
+                   //edtHisRST.SelStart  := 1;
+                   //edtHisRST.SelLength := 1;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtHisRST.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtName.SetFocus;
+                  key := 0
+                 end;
+   end;
 end;
 
 procedure TfrmNewQSO.edtNameKeyDown(Sender: TObject; var Key: Word;
@@ -4025,7 +4036,12 @@ procedure TfrmNewQSO.mCommentKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   case key of
-     VK_TAB   :  if (not AnyRemoteOn) then begin  //down arrow
+    38       :  begin  //up arrow
+                  edtEndTime.SetFocus;
+                  key := 0
+                end;
+     40,         //down arrow
+     VK_TAB  :  if (not AnyRemoteOn) then begin
                    ReturnToNewQSO;
                    key := 0
                  end;

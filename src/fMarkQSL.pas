@@ -126,6 +126,8 @@ begin
         dmData.trQ.StartTransaction;
         dmData.Q.ExecSQL;
         dmData.trQ.Commit;
+        if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
         QSLNeeded := QSLNeeded + tmp;
         dmData.qCQRLOG.Next;
         Continue
@@ -164,6 +166,8 @@ begin
         dmData.trQ.StartTransaction;
         dmData.Q.ExecSQL;
         dmData.trQ.Commit;
+        if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
         FirstMode := FirstMode + tmp;
         dmData.qCQRLOG.Next;
         Continue
@@ -203,6 +207,8 @@ begin
         dmData.trQ.StartTransaction;
         dmData.Q.ExecSQL;
         dmData.trQ.Commit;
+        if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
         FirstBand := FirstBand + tmp;
         dmData.qCQRLOG.Next;
         Continue
@@ -240,6 +246,8 @@ begin
         dmData.trQ.StartTransaction;
         dmData.Q.ExecSQL;
         dmData.trQ.Commit;
+        if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
         FirstQSO := FirstQSO + tmp;
         dmData.qCQRLOG.Next;
         Continue
@@ -253,8 +261,6 @@ begin
 
   if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-    else
-       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
 end;
 
 procedure TfrmMarkQSL.cmbTypeChange(Sender: TObject);

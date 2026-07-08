@@ -2357,6 +2357,9 @@ var
     if dmData.DebugLevel >= 1 then
       Writeln(dmData.Q.SQL.Text);
     dmData.Q.ExecSQL;
+    dmData.trQ.Commit;
+    if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
   end;
 
 begin
@@ -2386,8 +2389,6 @@ begin
 
   if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
     dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-   else
-       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
 end;
 
 procedure TfrmMain.acQSL_SExecute(Sender: TObject);
@@ -2757,7 +2758,10 @@ var
     dmData.Q.SQL.Text := 'UPDATE cqrlog_main SET qsl_s = ' + QuotedStr(qsl) +
       ', qsls_date = '+ QuotedStr(dmUtils.DateInRightFormat(dmUtils.GetDateTime(0))) +
       ' WHERE id_cqrlog_main = ' + IntToStr(idx);
-    dmData.Q.ExecSQL
+    dmData.Q.ExecSQL;
+    dmData.trQ.Commit;
+    if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
   end;
 
 begin
@@ -2788,8 +2792,6 @@ begin
 
    if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-    else
-       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
 end;
 
 procedure TfrmMain.ChechkSelRecords;

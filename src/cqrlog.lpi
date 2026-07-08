@@ -950,13 +950,6 @@
         <OptimizationLevel Value="2"/>
       </Optimizations>
     </CodeGeneration>
-    <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="False"/>
-        <RunWithoutDebug Value="True"/>
-        <UseLineInfoUnit Value="False"/>
-      </Debugging>
-    </Linking>
     <Other>
       <Verbosity>
         <ShowNotes Value="False"/>

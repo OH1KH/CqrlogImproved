@@ -602,7 +602,10 @@ begin
                               ', qsls_date = '+ QuotedStr(dmUtils.DateInRightFormat(dmUtils.GetDateTime(0))) +
                               ' where id_cqrlog_main='+IntToStr(dmData.Q.Fields[2].AsInteger);
         if dmData.DebugLevel >= 1 then Writeln(dmData.Q1.SQL.Text);
-        dmData.Q1.ExecSQL
+        dmData.Q1.ExecSQL;
+        dmData.trQ1.Commit;
+        if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+             dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
       end;
 
       if old <> dmData.Q.FieldByName('callsign').AsString then
@@ -658,8 +661,6 @@ begin
 
     if cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-    else
-       dmLogUpload.DoUploadIgnore(2);  //check if some of logs do not want QSL updates
   end
 end;
 

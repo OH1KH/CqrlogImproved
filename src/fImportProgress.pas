@@ -908,7 +908,10 @@ begin
                   dmData.Q1.SQL.Add(' where id_cqrlog_main = ' + dmData.Q.Fields[8].AsString);
                   inc(qsln);
                   if LocalDbg then Writeln(dmData.Q1.SQL.Text+ '  qsl number:'+ IntToStr(qsln));
-                  dmData.Q1.ExecSQL
+                  dmData.Q1.ExecSQL;
+                  dmData.trQ1.Commit;
+                  if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+                     dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want QSL updates
                 end;
                 qso_in_log := True;
                 Break
@@ -951,9 +954,7 @@ begin
     l.Free;
     CloseFile(f);
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) and dmLogUpload.LogUploadEnabled then
-      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-     else
-      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
   end;
   Close
 end;
@@ -1251,7 +1252,10 @@ begin
                 dmData.Q1.SQL.Add(',eqsl_qslrdate = ' + QuotedStr(dmUtils.DateInRightFormat(now)));
                 dmData.Q1.SQL.Add(' where id_cqrlog_main = ' + dmData.Q.Fields[0].AsString);
                 if LocalDbg then Writeln(dmData.Q1.SQL.Text);
-                dmData.Q1.ExecSQL
+                dmData.Q1.ExecSQL;
+                dmData.trQ1.Commit;
+                if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+                     dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want QSL updates
               end;
               qso_in_log := True;
               Break //should only be one qso confirmed, if we have several answers we stop looping those if found one match
@@ -1282,9 +1286,7 @@ begin
   finally
     l.Free;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-     else
-      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
     Close
   end
 end;

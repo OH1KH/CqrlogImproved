@@ -196,6 +196,9 @@ begin
                                dmData.Q1.FieldByName('id_cqrlog_main').AsString;
           if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);
           dmData.Q.ExecSQL;
+          dmData.trQ.Commit;
+          if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+                     dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want QSL updates
           dmData.Q1.Next
         end;
       finally
@@ -203,9 +206,7 @@ begin
         dmData.trQ.Commit;
         dmData.trQ1.Rollback;
         if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) and dmLogUpload.LogUploadEnabled then
-          dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-         else
-          dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
+          dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
       end
     end
   finally

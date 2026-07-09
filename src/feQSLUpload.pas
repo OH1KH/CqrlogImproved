@@ -295,9 +295,7 @@ begin
     btnClose.Font.Style:=[fsBold,fsItalic];
     btnClose.Repaint;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then
-      dmLogUpload.EnableOnlineLogSupport(False,False) //restore, but do not delete pending
-     else
-      dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want LoTW/eQSL updates
+      dmLogUpload.EnableOnlineLogSupport(False,False); //restore, but do not delete pending
   end
 end;
 
@@ -425,6 +423,9 @@ begin
                                dmData.Q.FieldByName('id_cqrlog_main').AsString;
           if dmData.DebugLevel>=1 then Writeln(dmData.Q1.SQL.Text);
           dmData.Q1.ExecSQL;
+          dmData.trQ1.Commit;
+          if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+                     dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want QSL updates
           dmData.Q.Next
         end
       finally

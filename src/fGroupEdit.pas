@@ -55,7 +55,7 @@ implementation
 {$R *.lfm}
 
 { TfrmGroupEdit }
-uses dUtils, dData, dDXCC, fMain,dSatellite;
+uses dUtils, dData, dDXCC, fMain,dSatellite, uMyIni,dLogUpload;
 
 procedure TfrmGroupEdit.cmbFieldChange(Sender: TObject);
 begin
@@ -169,8 +169,13 @@ var
 //------------------------------------------------------------------------------------------------------
   procedure ChangeQSO(idx : LongInt);
   begin
-    if update_dxcc then
+    if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
+              dmLogUpload.DisableOnlineLogSupport;
+
+
+    if update_dxcc then                                           //202060709-oh1kh: Update_dxcc is ALWAYS false !!
     begin
+      {  //202060709-oh1kh: blocked out, see comments
       dmData.Q.Close;
       if dmData.trQ.Active then
         dmData.trQ.RollBack;
@@ -179,19 +184,20 @@ var
       if dmData.DebugLevel >=1 then Writeln(dmData.Q.SQL.Text);
       dmData.trQ.StartTransaction;
       dmData.Q.Open();
-
+                                                                   //202060709-oh1kh: query result is not used anywhere ???
       dmData.Q.Close();
       dmData.trQ.Rollback;
-      dmData.trQ.StartTransaction;
+      dmData.trQ.StartTransaction;                                 //202060709-oh1kh: See below comments and this line
 {      if new_pfx <> pfx then
         dmData.Q.SQL.Text := 'update cqrlog_main set '+sql+',dxcc_ref='+ QuotedStr(new_pfx)+
                              ' where id_cqrlog_main='+IntToStr(idx)
       else
         dmData.Q.SQL.Text := 'update cqrlog_main set '+sql+' where id_cqrlog_main='+IntToStr(idx);
  }
-      if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);
-      dmData.Q.ExecSQL;
-      dmData.trQ.Commit
+      if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);     //202060709-oh1kh: What
+      dmData.Q.ExecSQL;                                            //does these
+      dmData.trQ.Commit                                            //actually do when "if pxf<>" is commented out???
+      }  //202060709-oh1kh: blocked out, see comments
     end
     else begin
       dmData.Q.SQL.Text := 'update cqrlog_main set '+sql+' where id_cqrlog_main='+IntToStr(idx);
@@ -199,14 +205,21 @@ var
                        Writeln(dmData.Q.SQL.Text);
       dmData.trQ.StartTransaction;
       dmData.Q.ExecSQL;
-      dmData.trQ.Commit
+      dmData.trQ.Commit;
+      if not cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
+                    dmLogUpload.DoUploadIgnore(4);  //check if some of logs do not want edited updates
+
     end;
 
     inc(nr);
     pnlGrpEdt.Color:=clYellow;
     lblInfo.Caption := 'Working .... QSO nr. ' + IntToStr(nr);
     pnlGrpEdt.Repaint;
-    lblInfo.Repaint
+    lblInfo.Repaint;
+
+    if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
+       dmLogUpload.EnableOnlineLogSupport(False) //False= do not remove old changes, just restore triggers
+
   end;
 
 //------------------------------------------------------------------------------------------------------

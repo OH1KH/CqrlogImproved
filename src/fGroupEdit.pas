@@ -196,7 +196,7 @@ var
  }
       if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);     //202060709-oh1kh: What
       dmData.Q.ExecSQL;                                            //does these
-      dmData.trQ.Commit                                            //actually do when "if pxf<>" is commented out???
+      dmData.trQ.Commit                                            //actually do when "if pxf<>" is commented out previously (some day in past, when?)???
       }  //202060709-oh1kh: blocked out, see comments
     end
     else begin

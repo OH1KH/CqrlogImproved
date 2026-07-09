@@ -146,9 +146,9 @@ object frmGroupEdit: TfrmGroupEdit
     0000000000000000000000000000000000000000000000000000000000000000
     0000
   }
-  OnShow = FormShow
   Position = poWorkAreaCenter
-  LCLVersion = '3.8.0.0'
+  LCLVersion = '4.6.0.0'
+  OnShow = FormShow
   object GroupBox1: TGroupBox
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

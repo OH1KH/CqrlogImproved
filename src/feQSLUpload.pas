@@ -423,6 +423,9 @@ begin
                                dmData.Q.FieldByName('id_cqrlog_main').AsString;
           if dmData.DebugLevel>=1 then Writeln(dmData.Q1.SQL.Text);
           dmData.Q1.ExecSQL;
+          dmData.trQ1.Commit;
+          if not cqrini.ReadBool('OnlineLog','IgnoreQSL',False) then
+                     dmLogUpload.DoUploadIgnore(1);  //check if some of logs do not want QSL updates
           dmData.Q.Next
         end
       finally

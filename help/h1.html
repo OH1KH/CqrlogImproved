@@ -955,12 +955,17 @@ There are no known dependencies issues.<br><br>
     a qso will cause a new upload to the online log database. Sometimes it can be useful to
     have the opportunity to disable it when upload/download data to LoTW/eQSL or printig QSls etc.. These changes
     won't be logged to 'log_changes' and QSO won't be uploaded to any online log.<br><br>
+    <strong>As an alternative way</strong> to ignore upload changes to online log(s) you can use checkboxes in each online log setup group box. Then you can have different ignores for every log instead of
+    ignoring all from every online log.<br>
+    <strong>Note:</strong> the ignore checkboxes at the bottom of preferences tab will always roll over all individual ignore settings.<br><br>
     <strong>WARNING:</strong> If you have 'ignored changes by edit' and you modify qsodate,time,band,mode it might be that you can not delete qso from online log when it is deleted from Cqrlog.<br>
     Only QRZlog uses LOGID_number based delete where change qso values do not affect to qso finding from online log.<br><br>
+    You should also understand that using either immediately upload or manual upload with individual ignores makes so many different combinations that there are, almost for sure, rabbit holes that can cause unexpected behavies.
+    Making just one change at time with proper testing is most recommended.
 
     <a name=ch8b><h3>NOTE</h3></a>
 
-    UPDATE qso to QRZlog is changed since version _(144)_ (or devel version _(143)d_ after 2026-06-22) to use QRZlog's REPLACE option.<br>
+    UPDATE qso to QRZlog is changed since version CI_(144)_ (or devel version CI_(143)d_ after 2026-06-22) to use QRZlog's REPLACE option.<br>
     If you modify QSO so that you change frequency to another band or mode QRZ log will understand this is a new QSO.<br>
     Everything is sync with Cqrlog_Improved and QRZ log, except that the old qso (before edit) is not deleted from QRZlog and does not have own LOGID<->ID_Cqrlog_main connection any more in Cqrlog_Improved.<br><br>
     If you want to remove the QSO from QRZlog (in form it was before your edit) you have to do it manually via qrz.com because Cqrlog_Improved does not have the QSO or it's LOGID any more.<br><br>

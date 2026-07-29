@@ -14985,9 +14985,9 @@ object frmAbout: TfrmAbout
     Height = 294
     Top = 0
     Width = 453
-    ActivePage = tabUpgrade
+    ActivePage = TabAbout
     Align = alClient
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     object TabAbout: TTabSheet
       Caption = 'About'

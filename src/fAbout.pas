@@ -56,6 +56,7 @@ type
     TabAbout: TTabSheet;
     tabUpgrade: TTabSheet;
     procedure btnChangelogClick(Sender: TObject);
+    procedure btnUpCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lblLinkClick(Sender: TObject);
@@ -95,6 +96,11 @@ begin
    showNewChangelog
   else
    showChangelog;
+end;
+
+procedure TfrmAbout.btnUpCloseClick(Sender: TObject);
+begin
+
 end;
 
 Procedure TfrmAbout.showChangelog;

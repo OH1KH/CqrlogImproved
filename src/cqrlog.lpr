@@ -35,8 +35,8 @@ var
   p         : TStringList;
   c         : integer;
   s         : string;
-// that is what we never do !!  -> {$IFDEF WINDOWS}{$R cqrlog.rc}{$ENDIF}
 
+{$IFDEF WINDOWS}{$R cqrlog.rc}{$ENDIF}
 {$R *.res}
 
 begin

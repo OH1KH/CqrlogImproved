@@ -1508,6 +1508,9 @@ begin
       if dmData.DebugLevel>=1 then
          Writeln('Request eQSL from: ', url);
 
+      //CallsignFrom can not contain "/" (/P, /MM, etc.) if it is used in Linux file system It must be replaced with something that is allowed char
+      CallsignFrom:=StringReplace(CallsignFrom,'/','_',[rfReplaceAll]);
+
       eQSLImageName:=dmData.HomeDir + 'call_data' + PathDelim +'eqsl'+ PathDelim + CallsignFrom+'_'+QSOBand+'_'+QSOMode+'_'+QSOYear+QSOMonth +QSODay+'_'+QSOHour+QSOMinute;
 
   //Check if we have image in call_data/eqsl folder already

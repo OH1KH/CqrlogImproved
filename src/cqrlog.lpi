@@ -20,7 +20,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="1"/>
-      <BuildNr Value="2209"/>
+      <BuildNr Value="2210"/>
       <StringTable ProductVersion="0.3.1.2026"/>
     </VersionInfo>
     <MacroValues Count="1">
@@ -173,6 +173,7 @@
         <Filename Value="fSort.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmSort"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit10>
       <Unit11>
@@ -193,6 +194,7 @@
         <Filename Value="fImportTest.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmImportTest"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit13>
       <Unit14>
@@ -311,12 +313,14 @@
         <Filename Value="fSerialPort.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmSerialPort"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit30>
       <Unit31>
         <Filename Value="fQSLMgr.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmQSLMgr"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit31>
       <Unit32>
@@ -474,6 +478,7 @@
         <Filename Value="fShowStations.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmShowStations"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit54>
       <Unit55>
@@ -491,6 +496,7 @@
         <Filename Value="fSQLConsole.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmSQLConsole"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit57>
       <Unit58>
@@ -954,7 +960,6 @@
       <Debugging>
         <GenerateDebugInfo Value="False"/>
         <RunWithoutDebug Value="True"/>
-        <UseLineInfoUnit Value="False"/>
       </Debugging>
     </Linking>
     <Other>

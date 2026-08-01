@@ -107,6 +107,11 @@ type
     cb30cm: TCheckBox;
     cgLimit: TCheckGroup;
     cbNoKeyerReset: TCheckBox;
+    chkgClub: TCheckGroup;
+    chkgQrz: TCheckGroup;
+    chkgUdp: TCheckGroup;
+    chkgHrd: TCheckGroup;
+    chkgHam: TCheckGroup;
     chkAutoClean: TCheckBox;
     chkCbSH: TCheckBox;
     chkLoSH: TCheckBox;
@@ -707,6 +712,7 @@ type
     Label108: TLabel;
     Label12: TLabel;
     Label13: TLabel;
+    lblAllLogs: TLabel;
     lblHamQTHAddr: TLabel;
     lblQrzAddr: TLabel;
     lblQrzApiKey: TLabel;
@@ -1186,9 +1192,12 @@ type
     procedure SaveClubSection;
     procedure LoadMebershipCombo;
     procedure LoadMembersFromCombo(ClubComboText, ClubNumber : String);
+    procedure WriteIgnoreGroup(grp:TCheckGroup;v:integer);
     function SeekExecFile(MyFile,MyExeFor:String): String;
     function DataModeInput(s:string):string;
     function WarnCheck(chk:boolean):boolean;
+    function WarnEdit(chk:boolean):boolean;
+    function ReadIgnoreGroup(grp:TCheckGroup):integer;
 
   public
     { public declarations }
@@ -1218,7 +1227,24 @@ uses dUtils, dData, fMain, fFreq, fQTHProfiles, fSerialPort, fClubSettings, fLoa
   fSplitSettings, uMyIni, fNewQSODefValues, fDXCluster, fCallAlert, fConfigStorage, fPropagation,
   fRadioMemories, dMembership, dLogUpload;
 
-
+function TfrmPreferences.WarnEdit(chk:boolean):boolean;
+var
+   s:PChar;
+Begin
+  Result:= chk;
+  if chk then
+     begin
+           s:=  'This option disables EVERY Online Log'+#39+'s updating'+LineEnding+
+                'when CHANGE(S) to QSO in local log happens.'+LineEnding+LineEnding+
+                'If you change important values like date,time,band,mode'+LineEnding+
+                'it might break connection between local log<>Online log'+LineEnding+
+                'and qso is not located any more from online log'+LineEnding+
+                'using qso information that local log has.'+LineEnding+LineEnding+
+                'Are you SURE you want to check this?';
+           if Application.MessageBox(s,'Question ...', mb_YesNo + mb_IconQuestion) = idNo then
+                                                                                           Result:=False;
+     end;
+end;
 
 function TfrmPreferences.WarnCheck(chk:boolean):boolean;
 var
@@ -1699,6 +1725,7 @@ begin
   cqrini.WriteString('OnlineLog','HaPasswd',edtHaPasswd.Text);
   cqrini.WriteInteger('OnlineLog','HaColor',cmbHaColor.Selected);
   cqrini.WriteString('OnlineLog','HaUrl',edtHamQthUrl.Text);
+  cqrini.WriteInteger('OnlineLog','HaIgn', ReadIgnoreGroup(chkgHam));
 
   cqrini.WriteBool('OnlineLog','ClUP',chkClUpEnabled.Checked);
   cqrini.WriteBool('OnlineLog','ClUpOnline',chkClUpOnline.Checked);
@@ -1709,6 +1736,7 @@ begin
   cqrini.WriteString('OnlineLog','ClUrl',edtClubLogUrl.Text);
   cqrini.WriteString('OnlineLog','ClUrlDel',edtClubLogUrlDel.Text);
   cqrini.WriteString('OnlineLog','ClUrlBulk',edtClubLogUrlBulk.Text);
+  cqrini.WriteInteger('OnlineLog','ClIgn', ReadIgnoreGroup(chkgClub));
 
   cqrini.WriteBool('OnlineLog','HrUP',chkHrUpEnabled.Checked);
   cqrini.WriteBool('OnlineLog','HrUpOnline',chkHrUpOnline.Checked);
@@ -1716,18 +1744,21 @@ begin
   cqrini.WriteString('OnlineLog','HrCode',edtHrCode.Text);
   cqrini.WriteInteger('OnlineLog','HrColor',cmbHrColor.Selected);
   cqrini.WriteString('OnlineLog','HrUrl',edtHrdUrl.Text);
+  cqrini.WriteInteger('OnlineLog','HrIgn', ReadIgnoreGroup(chkgHrd));
 
   cqrini.WriteBool('OnlineLog','UdUP',chkUdUpEnabled.Checked);
   cqrini.WriteBool('OnlineLog','UdUpOnline',chkUdUpOnline.Checked);
   cqrini.WriteString('OnlineLog','UdAddress',edtUdAddress.Text);
   cqrini.WriteBool('OnlineLog','UdIncExch',chkUdIncExch.Checked);
   cqrini.WriteInteger('OnlineLog','UdColor',cmbUdColor.Selected);
+  cqrini.WriteInteger('OnlineLog','UdIgn', ReadIgnoreGroup(chkgUdp));
 
   cqrini.WriteBool('OnlineLog','QrzUP',chkQrzUpEnabled.Checked);
   cqrini.WriteBool('OnlineLog','QrzUpOnline',chkQrzUpOnline.Checked);
   cqrini.WriteString('OnlineLog','QrzApiKey',edtQrzApiKey.Text);
   cqrini.WriteInteger('OnlineLog','QrzColor',cmbQrzColor.Selected);
   cqrini.WriteString('OnlineLog','QrzUrl',edtQrzUrl.Text);
+  cqrini.WriteInteger('OnlineLog','QrzIgn', ReadIgnoreGroup(chkgQrz));
 
   cqrini.WriteBool('OnlineLog','CloseAfterUpload',chkCloseAfterUpload.Checked);
   cqrini.WriteBool('OnlineLog','AutoClean',chkAutoClean.Checked);
@@ -2493,7 +2524,7 @@ procedure TfrmPreferences.chkIgnoreEditChange(Sender: TObject);
 begin
   //Warn:
    if not chkIgnoreEdit.Focused then exit; //otherwise triggers on settings load
-   chkIgnoreEdit.Checked:=WarnCheck(chkIgnoreEdit.Checked)
+   chkIgnoreEdit.Checked:=WarnEdit(chkIgnoreEdit.Checked)
 end;
 
 procedure TfrmPreferences.chkIgnoreLoTWChange(Sender: TObject);
@@ -3042,6 +3073,7 @@ var
    end;
   CWKeyerChanged := True
 end;
+
 
 procedure TfrmPreferences.rbHamQTHChange(Sender: TObject);
 begin
@@ -3726,7 +3758,8 @@ begin
   edtHaPasswd.Text       := cqrini.ReadString('OnlineLog','HaPasswd','');
   cmbHaColor.Selected    := cqrini.ReadInteger('OnlineLog','HaColor',clBlue);
   edtHamQTHurl.Text      := cqrini.ReadString('OnlineLog','HaUrl','https://www.hamqth.com/qso_realtime.php');
-  chkHaUpEnabledChange(nil);
+  WriteIgnoreGroup       (chkgHam,cqrini.ReadInteger('OnlineLog','HaIgn',0));
+  chkHaUpEnabledChange   (nil);
 
   chkClUpEnabled.Checked := cqrini.ReadBool('OnlineLog','ClUP',False);
   chkClUpOnline.Checked  := cqrini.ReadBool('OnlineLog','ClUpOnline',False);
@@ -3737,7 +3770,8 @@ begin
   edtClubLogUrl.Text     := cqrini.ReadString('OnlineLog','ClUrl','https://clublog.org/realtime.php');
   edtClubLogUrlDel.Text  := cqrini.ReadString('OnlineLog','ClUrlDel','https://clublog.org/delete.php');
   edtClubLogUrlBulk.Text  := cqrini.ReadString('OnlineLog','ClUrlBulk','https://clublog.org/putlogs.php');
-  chkClUpEnabledChange(nil);
+  WriteIgnoreGroup       (chkgClub,cqrini.ReadInteger('OnlineLog','ClIgn',0));
+  chkClUpEnabledChange   (nil);
 
   chkHrUpEnabled.Checked := cqrini.ReadBool('OnlineLog','HrUP',False);
   chkHrUpOnline.Checked  := cqrini.ReadBool('OnlineLog','HrUpOnline',False);
@@ -3745,21 +3779,24 @@ begin
   edtHrCode.Text         := cqrini.ReadString('OnlineLog','HrCode','');
   cmbHrColor.Selected    := cqrini.ReadInteger('OnlineLog','HrColor',clPurple);
   edtHrdUrl.Text         := cqrini.ReadString('OnlineLog','HrUrl','http://robot.hrdlog.net/NewEntry.aspx');
-  chkHrUpEnabledChange(nil);
+  WriteIgnoreGroup       (chkgHrd,cqrini.ReadInteger('OnlineLog','HrIgn',0));
+  chkHrUpEnabledChange   (nil);
 
   chkUdUpEnabled.Checked := cqrini.ReadBool('OnlineLog','UdUP',False);
   chkUdUpOnline.Checked  := cqrini.ReadBool('OnlineLog','UdUpOnline',False);
   edtUdAddress.Text      := cqrini.ReadString('OnlineLog','UdAddress','127.0.0.1:5444');
   chkUdIncExch.Checked   := cqrini.ReadBool('OnlineLog','UdIncExch',True);
   cmbUdColor.Selected    := cqrini.ReadInteger('OnlineLog','UdColor',clGreen);
-  chkUdUpEnabledChange(nil);
+  WriteIgnoreGroup       (chkgUdp,cqrini.ReadInteger('OnlineLog','UdIgn',0));
+  chkUdUpEnabledChange   (nil);
 
   chkQrzUpEnabled.Checked := cqrini.ReadBool('OnlineLog','QrzUP',False);
   chkQrzUpOnline.Checked  := cqrini.ReadBool('OnlineLog','QrzUpOnline',False);
   edtQrzApiKey.Text       := cqrini.ReadString('OnlineLog','QrzApiKey','');
   cmbQrzColor.Selected    := cqrini.ReadInteger('OnlineLog','QrzColor',clTeal);
   edtQrzUrl.Text          := cqrini.ReadString('OnlineLog','QrzUrl', 'https://logbook.qrz.com/api');
-  chkQrzUpEnabledChange(nil);
+  WriteIgnoreGroup       (chkgQrz,cqrini.ReadInteger('OnlineLog','QrzIgn',0));
+  chkQrzUpEnabledChange  (nil);
 
   chkCloseAfterUpload.Checked := cqrini.ReadBool('OnlineLog','CloseAfterUpload',False);
   chkAutoClean.Checked        := cqrini.ReadBool('OnlineLog','AutoClean',False);
@@ -4170,6 +4207,18 @@ Begin
       //TRX, CW and Band lists
 
 end;
-
+Function TfrmPreferences.ReadIgnoreGroup(grp:TCheckGroup):integer;
+Begin
+ Result:=0; //binary or of checkboxes
+ if grp.Checked[0] then Result:=result+1;
+ if grp.Checked[1] then Result:=result+2;
+ if grp.Checked[2] then Result:=result+4;
+end;
+procedure TfrmPreferences.WriteIgnoreGroup(grp:TCheckGroup;v:integer);
+Begin
+  grp.Checked[0]:=(v and %001)=1;    //LoTW/eQSL
+  grp.Checked[1]:=(v and %010)=2;    //QSL
+  grp.Checked[2]:=(v and %100)=4;    //Edit
+end;
 
 end.

@@ -12,7 +12,27 @@
     <strong>Cqrlog_Improved</strong><br>
     What is new:
     <ul style="list-style: square;text-align:left; color: green;" >    
-    <li>(143) 2026-06-12</li><ul>
+    <li>(144) 2026-08-01</li><ul>
+    <li>QsoList:VieweQSL:Fix: /P, /MM, etc. callsign's eQSL can not be saved with '/' in file name. Replace with '_'</li>
+    <li>Icons:Fix: icons overall update</li>
+    <li>Online Log:Add: support for ingnore upload by changes of LoTW/eQSL, QSL and Edit individually for every online log
+	<br>(This upgrades main database version to 21) </li>
+    <li>Contest filter:Fix: create Contest form if not exist.(Tu: Stefan, DG0OAT)</li>
+    <li>NewQSO:Fix:Key down routines</li> 
+    <li>NewQSO:Key down routines fixed</li>
+    <li>TRXControl:Memory:uRigControl:Add: Missing bandwidth detection.</li>
+    <li>NewQSO:DXCC info:Fix: added auto scrollbars</li>
+    <li>Online log:Fix: return focus immediately to NewQSO (Contest or WsjtxMon if active)</li> 
+    <li>Online log:Fix: cases where changes are ignored: do not delete possible pending uploads</li>
+    <li>Online log:Fix: if edit changes are disabled do not delete pending uploads if qso is edited</li>
+    <li>Online log:QRZlog:Add: warning text to upload status that QRZlog treats edited qso as new one leaving old qso laying in QRZlog</li>
+    <li>Online log:QRZlog:Fix: UPDATE of qso uses now QRZlog's REPLACE option.<br>
+	This replaces UPDATE of qso function: "First delete, then insert" with QRZlog<br>
+	See:"Help/Quick start/Online log upload support/NOTE"</li>
+    <li>Statistic:Big Square+County:Fix: result appear</li> 
+    <li>About:Fix: new format</li>	
+    <li>Database connection: changed mysql57conn to mysql80conn for testing. Will be kept if works/removed if not</li>
+    </ul><li>(143) 2026-06-12</li><ul>
     <li>Renamed: CqrlogAlpha is for now on Cqrlog_Improved</li>
     <li>DXCluster:Fix: login parser looks now 'login:' and 'password:' (double dots required to hit right text line)</li>
     <li>First Run:Fix: can now found also xfce4-terminal as one of command line terminals</li>

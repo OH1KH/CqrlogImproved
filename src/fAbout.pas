@@ -14,36 +14,49 @@ type
 
   TfrmAbout = class(TForm)
     Bevel1 : TBevel;
-    Bevel2: TBevel;
-    btnChangelog1: TButton;
+    BevelUp: TBevel;
+    BevelAb: TBevel;
+    btnChangelog: TButton;
     btnClose : TButton;
-    btnClose1: TButton;
+    btnUpClose: TButton;
+    btnAbClose: TButton;
     Image1 : TImage;
-    Image2: TImage;
+    imgUp: TImage;
+    imgAb: TImage;
     Label1 : TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
+    lblAbExe: TLabel;
+    lblAbBy: TLabel;
+    lblAbName: TLabel;
+    lblAbExt: TLabel;
+    Label14: TLabel;
+    lblUpExe: TLabel;
+    lblUPSrc: TLabel;
+    lblAbState: TLabel;
     Label2 : TLabel;
     Label3 : TLabel;
     Label4: TLabel;
     Label5 : TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
+    lblUpName: TLabel;
+    lblUpExt: TLabel;
+    lblUpBy: TLabel;
+    lblAbSrc: TLabel;
     lblLink : TLabel;
     lblLink1: TLabel;
-    lblLink2: TLabel;
-    lblLink3: TLabel;
-    lblVerze1: TLabel;
+    lblAbLinkSrc: TLabel;
+    lblAbLinkExe: TLabel;
+    lbUPLinkSrc: TLabel;
+    lblUpLinkExe: TLabel;
+    lblUpVer: TLabel;
     lblVerze: TLabel;
+    lblAbVer: TLabel;
     PageControl1 : TPageControl;
     sgContributors: TStringGrid;
-    tabAbout : TTabSheet;
+    tabOrigin : TTabSheet;
     tabContributors : TTabSheet;
+    TabAbout: TTabSheet;
     tabUpgrade: TTabSheet;
-    procedure btnChangelog1Click(Sender: TObject);
+    procedure btnChangelogClick(Sender: TObject);
+    procedure btnUpCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lblLinkClick(Sender: TObject);
@@ -65,7 +78,7 @@ implementation
 {$R *.lfm}
 
 { TfrmAbout }
-uses fChangelog, uVersion, dUtils;
+uses fChangelog, uVersion, dUtils, fNewQSO;
 
 procedure TfrmAbout.lblLinkMouseEnter(Sender: TObject);
 begin
@@ -77,12 +90,17 @@ begin
   dmUtils.OpenInApp((Sender as TLabel).Caption);
 end;
 
-procedure TfrmAbout.btnChangelog1Click(Sender: TObject);
+procedure TfrmAbout.btnChangelogClick(Sender: TObject);
 begin
    if IsNewVersion then
    showNewChangelog
   else
    showChangelog;
+end;
+
+procedure TfrmAbout.btnUpCloseClick(Sender: TObject);
+begin
+
 end;
 
 Procedure TfrmAbout.showChangelog;
@@ -112,8 +130,14 @@ end;
 
 procedure TfrmAbout.FormShow(Sender: TObject);
 begin
-  lblVerze.Caption := '2.5.2';
-  lblVerze1.Caption := cVERSION +'  '+ cBUILD_DATE;
+  lblUpVer.Caption := cVERSION +'  '+ cBUILD_DATE;
+  lblAbVer.Caption := cVERSION +'  '+ cBUILD_DATE;
+  Case frmNewQso.ImprovedVer of
+       0:   lblAbState.Caption:='Version state:  Unknown';
+       1:   lblAbState.Caption:='Version state:  Latest';
+       2:   lblAbState.Caption:='Version state:  Update!';
+       3:   lblAbState.Caption:='Version state:  Eh? Over release, Devel?';
+   end;
 end;
 
 end.

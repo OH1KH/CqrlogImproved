@@ -42,10 +42,13 @@ type
   private
     TmpFile : String;
     f  : TextFile;
+    BlinkCount: integer;
     procedure WriteHMTLHeader;
   public
 
-  end; 
+  end;
+const
+  BlinkText = ' Press to run statistic with selected values... ';
 
 var
   frmBigSquareStat: TfrmBigSquareStat;
@@ -70,6 +73,11 @@ begin
 end;
 
 procedure TfrmBigSquareStat.btnRefreshClick(Sender: TObject);
+
+const
+  BgLight = '#FFFFFF';
+  BgDark  = '#F3F3F3';
+
 var
   tmp : String = '';
   bnd : String = '';
@@ -85,7 +93,10 @@ var
   sum_cfm : integer = 0;
   db : TBufDataset;
   TableName : String;
+  BackClr   : String;
+
 begin
+  BackClr := BgLight;
   tmrBlink.Enabled:=False;
   TableName:='cqrlog_main';
   try
@@ -166,7 +177,11 @@ begin
         pbTot.Position:=TotPos;
         Application.ProcessMessages;
         ll := dmData.Q.Fields[0].AsString;
-        writeln(f,'<tr>'+LineEnding+'<td valign="middle">'+LineEnding+'<font color="black"><b>'+ll+'</b></font>'+LineEnding+'</td>');
+        if BackClr=BgDark then
+                          BackClr:=BgLight
+                          else
+                          BackClr:=BgDark;
+        writeln(f,'<tr bgcolor="'+BackClr+'">'+LineEnding+'<td valign="middle">'+LineEnding+'<font color="black"><b>'+ll+'</b></font>'+LineEnding+'</td>');
         writeln(f,'<td align="left">');
         writeln(f,'<font color="black">');
         dmData.Q1.Close;
@@ -305,10 +320,11 @@ procedure TfrmBigSquareStat.WriteHMTLHeader;
 begin
   AssignFile(f,TmpFile);
   Rewrite(f);
-  writeln(f,'<html>');
+  writeln(f);
+  writeln(f,'<html lang="en">');
   Writeln(f,'<head>');
   writeln(f,'<meta http-equiv="content-type" content="text/html; charset=utf-8">');
-  writeln(f,'<meta name="generator" content="CQRLOG_Improved '+cVERSION+'>');
+  writeln(f,'<meta name="generator" content="CQRLOG_Improved '+cVERSION+'">');
   writeln(f,'<title>Big square statistic ('+cqrini.ReadString('Station','Call','')+')</title>');
   writeln(f,'</head>');
   writeln(f,'<body>');
@@ -349,38 +365,29 @@ begin
 end;
 
 procedure TfrmBigSquareStat.tmrBlinkStartTimer(Sender: TObject);
-begin
-  btnRefresh.Caption:='Press to';
-  btnRefresh.Font.Color:=clGreen;
-  btnRefresh.Repaint;
-end;
+  begin
+    BlinkCount:=1;
+    btnRefresh.Caption:='               ';
+    btnRefresh.Font.Color:=clGreen;
+    btnRefresh.Font.Style:=[fsBold];
+    btnRefresh.Repaint;
+  end;
 
 procedure TfrmBigSquareStat.tmrBlinkStopTimer(Sender: TObject);
-begin
-  btnRefresh.Caption:='Refresh statistic';
-  btnRefresh.Font.Color:=clDefault;
-  btnRefresh.Repaint;
-end;
+  begin
+    btnRefresh.Caption:='Refresh statistic';
+    btnRefresh.Font.Color:=clDefault;
+    btnRefresh.Font.Style:=[];
+    btnRefresh.Repaint;
+  end;
 
 procedure TfrmBigSquareStat.tmrBlinkTimer(Sender: TObject);
-var
-  C :Tcolor;
-  t:String;
-begin
-  case odd(SecondOf(Now)) of
-    True:  Begin
-            C := clGreen;
-            T :='run statistic'
-           end;
-    False: Begin
-            C := clGreen;
-            T :='Press to'
-    end;
+
+  begin
+    inc(BlinkCount);
+    if BlinkCount>length(BlinkText) then BlinkCount:=1;
+    btnRefresh.Caption:=copy(btnRefresh.Caption,2,14)+BlinkText[BlinkCount];
   end;
-  btnRefresh.Caption:= T;
-  btnRefresh.Font.Color:=C;
-  btnRefresh.Repaint;
-end;
 
 end.
 

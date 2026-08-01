@@ -705,6 +705,7 @@ type
     procedure NewLogSplash;
 
   public
+    ImprovedVer : Integer;  //0=state not known, 1=up to date, 2=there is an upgrade available 3=Higer than released!
     fEditQSO    : Boolean;
     fViewQSO    : Boolean;
     QTHfromCb   : Boolean;
@@ -3190,7 +3191,9 @@ begin
   if fViewQSO then
     exit;
   if edtCall.Text = '' then
-    exit;
+    exit
+   else
+     edtCall.Text:=UpperCase(edtCall.Text); //to be sure call is upper case. It should, but managed once save call with low case last letter with fast typing!!
 
   if edtITU.Text = '' then
     edtITU.Text := '0';
@@ -3282,6 +3285,10 @@ begin
       id := dmData.qQSOBefore.FieldByName('id_cqrlog_main').AsInteger
     else
       id := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger;
+
+    if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
+                                                         dmLogUpload.DisableOnlineLogSupport;
+
     dmData.EditQSO(dmUtils.StrToDateFormat(edtDate.Text),
                    edtStartTime.Text,
                    edtEndTime.Text,
@@ -3370,6 +3377,7 @@ begin
       if Delete then
         frmBandMap.DeleteFromBandMap(edtCall.Text,cmbMode.Text,dmUtils.GetBandFromFreq(cmbFreq.Text))
     end;
+
     dmData.SaveQSO(date,
                    edtStartTime.Text,
                    edtEndTime.Text,
@@ -3420,14 +3428,14 @@ begin
      if (cqrini.ReadBool('NewQSO','UpdateAMSATstatus',False)) then
         dmSatellite.UpdateAMSATStatusPage(edtDate.Text, edtStartTime.Text, cmbSatellite.Text, cmbFreq.Text, edtRXFreq.Text, cmbMode.Text);
   end;
-  if fEditQSO and (not fromNewQSO) then
+  if fEditQSO then
   begin
-    dmData.RefreshMainDatabase(id);
+    if (not fromNewQSO) then
+                        dmData.RefreshMainDatabase(id);
     if cqrini.ReadBool('OnlineLog','IgnoreEdit',False) then
-     Begin
-       dmLogUpload.DisableOnlineLogSupport;
-       dmLogUpload.EnableOnlineLogSupport;
-     end;
+       dmLogUpload.EnableOnlineLogSupport(False) //False= do not remove old changes, just restore triggers
+      else
+       dmLogUpload.DoUploadIgnore(4);  //check if some of logs do not want edited updates
   end;
   if not AnyRemoteOn then
                        UnsetEditLabel;
@@ -3511,42 +3519,542 @@ var
   mode : String  = '';
   Skip : Boolean = False;
 begin
-  if ((key = 40) or ((key = VK_SPACE) and UseSpaceBar)) then  //down arrow
-  begin
-     skip :=  cqrini.ReadBool('NewQSO','SkipModeFreq',True);
-    if (not skip) or fEditQSO or fViewQSO or cbOffline.Checked then
-      cmbFreq.SetFocus
-    else begin
-      edtHisRST.SetFocus;
-      edtHisRST.SelStart  := 1;
-      edtHisRST.SelLength := 1;
-    end;
-    key := 0;
-    exit
+  case key of
+    40       :  begin  //down arrow
+                  skip :=  cqrini.ReadBool('NewQSO','SkipModeFreq',True);
+                  if (not skip) or fEditQSO or fViewQSO or cbOffline.Checked then
+                    cmbFreq.SetFocus
+                  else begin
+                    edtHisRST.SetFocus;
+                    edtHisRST.SelStart  := 1;
+                    edtHisRST.SelLength := 1;
+                  end;
+                  key := 0;
+                end;
+    38       :  begin  //up arrow
+                  mComment.SetFocus;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                 begin
+                  skip :=  cqrini.ReadBool('NewQSO','SkipModeFreq',True);
+                  if (not skip) or fEditQSO or fViewQSO or cbOffline.Checked then
+                    cmbFreq.SetFocus
+                  else begin
+                    edtHisRST.SetFocus;
+                    edtHisRST.SelStart  := 1;
+                    edtHisRST.SelLength := 1;
+                  end;
+                  key := 0;
+                end;
+   13        :  begin
+                  key := 0;
+                  if TryStrToFloat(edtCall.Text,tmp) then   //if call is number then set frequency
+                  begin
+                    mode := dmUtils.GetModeFromFreq(FloatToStr(tmp/1000));
+                    frmTRXControl.SetModeFreq(mode,FloatToStr(tmp));
+                    edtCall.Text := '';
+                  end
+                  else
+                    btnSave.Click
+                end;
+   VK_TAB    :  Begin
+                 skip :=  cqrini.ReadBool('NewQSO','SkipModeFreq',True);
+                  if (not skip) or fEditQSO or fViewQSO or cbOffline.Checked then
+                    cmbFreq.SetFocus
+                  else begin
+                    edtHisRST.SetFocus;
+                    edtHisRST.SelStart  := 1;
+                    edtHisRST.SelLength := 1;
+                  end;
+                 TabUsed := True;
+                 key := 0;
+                end;
   end;
-  if (key = 38) then //up arrow
-  begin
-    mComment.SetFocus;
-    key := 0;
-    exit
-  end;
-  if key = 13 then  //enter
-  begin
-    key := 0;
-    if TryStrToFloat(edtCall.Text,tmp) then   //if call is number then set frequency
-    begin
-      mode := dmUtils.GetModeFromFreq(FloatToStr(tmp/1000));
-      frmTRXControl.SetModeFreq(mode,FloatToStr(tmp));
-      edtCall.Text := '';
-      exit
-    end
-    else
-      btnSave.Click
-  end;
-  if key = VK_TAB then
-    TabUsed := True
 end;
 
+procedure TfrmNewQSO.cmbFreqKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  cmbMode.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  ReturnToNewQSO;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 cmbMode.SetFocus;
+                 key := 0
+                end;
+   VK_TAB    :  Begin
+                 cmbMode.SetFocus;
+                 TabUsed := True;
+                 key := 0;
+                end;
+  end;
+end;
+
+procedure TfrmNewQSO.cmbModeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  edtHisRST.SetFocus;
+                  edtHisRST.SelStart  := 1;
+                  edtHisRST.SelLength := 1;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  cmbFreq.SetFocus;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 edtHisRST.SetFocus;
+                 edtHisRST.SelStart  := 1;
+                 edtHisRST.SelLength := 1;
+                 key := 0
+                end;
+   VK_TAB    :  Begin
+                 edtHisRST.SetFocus;
+                 TabUsed := True;
+                 key := 0;
+                end;
+  end;
+end;
+
+procedure TfrmNewQSO.edtHisRSTKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+ case key of
+    40       :  begin  //down arrow
+                  edtMyRST.SetFocus;
+                  //edtHisRST.SelStart  := 1;
+                  //edtHisRST.SelLength := 1;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  cmbMode.SetFocus;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 edtMyRST.SetFocus;
+                 edtHisRST.SelStart  := 1;
+                 edtHisRST.SelLength := 1;
+                 key := 0
+                end;
+   VK_TAB    :  Begin
+                 edtMyRST.SetFocus;
+                 TabUsed := True;
+                 key := 0;
+                end;
+  end;
+end;
+
+procedure TfrmNewQSO.edtMyRSTKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtName.SetFocus;
+                   //edtHisRST.SelStart  := 1;
+                   //edtHisRST.SelLength := 1;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtHisRST.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtName.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+
+procedure TfrmNewQSO.edtNameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  edtQTH.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  edtMyRST.SetFocus;
+                  edtMyRST.SelStart  := 1;
+                  edtMyRST.SelLength := 1;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 edtQTH.SetFocus;
+                 key := 0
+                end;
+   VK_A      :  if (Shift=[ssAlt]) then
+                Begin
+                 edtName.SelectAll;
+                 key:=0;
+                end;
+  end;
+end;
+procedure TfrmNewQSO.edtQTHKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  edtGrid.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  edtName.SetFocus;
+                  key := 0
+                end;
+  end;
+end;
+
+procedure TfrmNewQSO.edtGridKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtPWR.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtQTH.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtPWR.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtPWRKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   cmbQSL_S.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtGrid.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  cmbQSL_S.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+
+procedure TfrmNewQSO.cmbQSL_SKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  cmbQSL_R.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  edtPWR.SetFocus;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 cmbQSL_R.SetFocus;
+                 key := 0
+                end;
+   end;
+end;
+
+procedure TfrmNewQSO.cmbQSL_RKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  edtItu.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  cmbQSL_S.SetFocus;
+                  key := 0
+                end;
+   VK_SPACE  :  if  UseSpaceBar then
+                Begin
+                 edtITU.SetFocus;
+                 key := 0
+                end;
+   end;
+end;
+procedure TfrmNewQSO.edtITUKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtWAZ.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   cmbQSL_R.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtWAZ.SetFocus;
+                  key := 0
+                 end;
+    end;
+end;
+procedure TfrmNewQSO.edtCQKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   cmbIOTA.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtITU.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  cmbIOTA.SetFocus;
+                  key := 0
+                 end;
+    end;
+end;
+procedure TfrmNewQSO.cmbIOTAKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   case key of
+     40       :  begin  //down arrow
+                   if edtState.IsVisible then
+                     edtState.SetFocus
+                    else
+                     edtDOK.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtWAZ.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  if edtState.IsVisible then
+                    edtState.SetFocus
+                   else
+                    edtDOK.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtStateKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtCounty.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   cmbIOTA.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtCounty.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtCountyKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtAward.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   if edtState.IsVisible then
+                      edtState.SetFocus
+                    else
+                      edtDOK.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtAward.SetFocus;
+                  key := 0
+                 end;
+    end;
+end;
+
+procedure TfrmNewQSO.edtAwardKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtDXCCRef.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtCounty.SetFocus;
+                   key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtDXCCRefKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtRemQSO.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtAward.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtRemQSO.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtRemQSOKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    40       :  begin  //down arrow
+                  edtQSL_VIA.SetFocus;
+                  key := 0
+                end;
+    38       :  begin  //up arrow
+                  edtDXCCRef.SetFocus;
+                  key := 0
+                end;
+  end;
+end;
+
+procedure TfrmNewQSO.edtQSL_VIAKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtDate.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtRemQSO.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtDate.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+
+procedure TfrmNewQSO.edtDateKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtStartTime.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtQSL_VIA.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtStartTime.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+
+procedure TfrmNewQSO.edtStartTimeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   edtEndTime.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtDate.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  edtEndTime.SetFocus;
+                  key := 0
+                 end;
+   end;
+end;
+procedure TfrmNewQSO.edtEndTimeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     40       :  begin  //down arrow
+                   mComment.SetFocus;
+                   key := 0
+                 end;
+     38       :  begin  //up arrow
+                   edtStartTime.SetFocus;
+                   key := 0
+                 end;
+    VK_SPACE  :  if  UseSpaceBar then
+                 Begin
+                  mComment.SetFocus;
+                  key := 0
+                 end;
+    VK_TAB    :  if (cbOffline.Checked and (edtCall.Text='') and (not AnyRemoteOn)) then
+                 begin
+                   ReturnToNewQSO;
+                   key := 0
+                 end;
+   end;
+end;
+
+procedure TfrmNewQSO.mCommentKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+    38       :  begin  //up arrow
+                  edtEndTime.SetFocus;
+                  key := 0
+                end;
+     40,         //down arrow
+     VK_TAB  :  if (not AnyRemoteOn) then begin
+                   ReturnToNewQSO;
+                   key := 0
+                 end;
+    VK_RETURN :  Begin
+                  mComment.Text:=mComment.Text+LineEnding;
+                  mComment.SelStart:=length(mComment.Text);
+                  mComment.SelLength:=0;
+                  key:=0;
+                 end;
+    end;
+end;
 
 procedure TfrmNewQSO.edtCallKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -3611,43 +4119,6 @@ begin
   CheckCountyClub
 end;
 
-procedure TfrmNewQSO.edtCountyKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtAward.SetFocus;
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    if edtState.IsVisible then
-      edtState.SetFocus
-    else
-      edtDOK.SetFocus;
-    key := 0
-  end
-end;
-
-procedure TfrmNewQSO.edtCQKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    cmbIOTA.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtITU.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    cmbIOTA.SetFocus;
-    key := 0
-  end
-end;
 
 procedure TfrmNewQSO.edtDateExit(Sender: TObject);
 var
@@ -3672,41 +4143,6 @@ begin
   CheckCountyClub;
 end;
 
-procedure TfrmNewQSO.edtDateKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtStartTime.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtQSL_VIA.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtStartTime.SetFocus;
-    key := 0
-  end;
-end;
-
-
-procedure TfrmNewQSO.edtAwardKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtDXCCRef.SetFocus;
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtCounty.SetFocus;
-    key := 0
-  end
-end;
 
 procedure TfrmNewQSO.edtDXCCRefExit(Sender: TObject);
 begin
@@ -3715,26 +4151,6 @@ begin
     ShowCountryInfo;
     ShowCountryInfo;
   end;
-end;
-
-procedure TfrmNewQSO.edtDXCCRefKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtRemQSO.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtAward.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtRemQSO.SetFocus;
-    key := 0
-  end
 end;
 
 procedure TfrmNewQSO.edtDateKeyPress(Sender: TObject; var Key: char);
@@ -3760,31 +4176,6 @@ begin
  if (cbOffline.Checked) and (not AnyremoteOn) then
                                                edtCall.SetFocus;
 end;
-procedure TfrmNewQSO.edtEndTimeKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    mComment.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtStartTime.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    mComment.SetFocus;
-    key := 0
-  end;
-  if ((key = VK_TAB) and cbOffline.Checked and (edtCall.Text='') and (not AnyRemoteOn)) then
-   Begin
-     ReturnToNewQSO;
-     key := 0
-   end;
-end;
-
 
 procedure TfrmNewQSO.edtHisRSTEnter(Sender: TObject);
 begin
@@ -3800,55 +4191,9 @@ begin
   end
 end;
 
-procedure TfrmNewQSO.edtHisRSTKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtMyRST.SetFocus;
-    //edtMyRST.SelStart  := 1;
-    //edtMyRST.SelLength := 1;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    cmbMode.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtMyRST.SetFocus;
-    edtMyRST.SelStart  := 1;
-    edtMyRST.SelLength := 1;
-    key := 0;
-  end;
-  if key = VK_TAB then
-    TabUsed := True
-end;
-
 procedure TfrmNewQSO.edtITUExit(Sender: TObject);
 begin
   frmQSODetails.itu := edtITU.Text
-end;
-
-procedure TfrmNewQSO.edtITUKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtWAZ.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    cmbQSL_R.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtWAZ.SetFocus;
-    key := 0
-  end
 end;
 
 procedure TfrmNewQSO.edtMyRSTEnter(Sender: TObject);
@@ -3873,27 +4218,6 @@ begin
     edtMyRST.SelLength := 1
   end
 end;
-
-procedure TfrmNewQSO.edtMyRSTKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtName.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    key := 0;
-    edtHisRST.SetFocus;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtName.SetFocus;
-    key := 0;
-  end;
-end;
-
 procedure TfrmNewQSO.edtNameChange(Sender: TObject);
 var
   tmp : String;
@@ -3904,73 +4228,6 @@ begin
     tmp:=dmUtils.UTF8UpperFirst(tmp);
     edtName.Text := tmp;
     edtName.SelStart:=1;
-  end
-end;
-
-procedure TfrmNewQSO.edtNameKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtQTH.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtMyRST.SetFocus;
-    edtMyRST.SelStart  := 1;
-    edtMyRST.SelLength := 1;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtQTH.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_A) and (Shift=[ssAlt])) then
-     Begin
-      edtName.SelectAll;
-      key:=0;
-     end;
-end;
-
-procedure TfrmNewQSO.edtPWRKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    cmbQSL_S.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtGrid.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    cmbQSL_S.SetFocus;
-    key := 0
-  end
-end;
-
-procedure TfrmNewQSO.edtQSL_VIAKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtDate.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtRemQSO.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtDate.SetFocus;
-    key := 0
   end
 end;
 
@@ -3991,35 +4248,7 @@ Begin
   CheckQTHClub
 end;
 
-procedure TfrmNewQSO.edtQTHKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtGrid.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtName.SetFocus;
-    key := 0;
-  end;
-end;
 
-procedure TfrmNewQSO.edtRemQSOKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtQSL_VIA.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtDXCCRef.SetFocus;
-    key := 0;
-  end;
-end;
 procedure TfrmNewQSO.ModifyTimeFormat( var time:string);
 var f:integer;
 begin
@@ -4049,25 +4278,6 @@ Begin
     edtEndTime.Text := edtStartTime.Text;
 end;
 
-procedure TfrmNewQSO.edtStartTimeKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtEndTime.SetFocus;
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtDate.SetFocus;
-    key := 0
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtEndTime.SetFocus;
-    key := 0
-  end;
-end;
 
 procedure TfrmNewQSO.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
@@ -4111,32 +4321,6 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TfrmNewQSO.cmbFreqKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    cmbMode.SetFocus;
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    ReturnToNewQSO;
-    key := 0
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    cmbMode.SetFocus;
-    key := 0
-  end;
-  if key = VK_TAB then
-  begin
-    key := 0;
-    cmbMode.SetFocus;
-    TabUsed := True
-  end;
-end;
-
 procedure TfrmNewQSO.cmbIOTAChange(Sender: TObject);
 begin
   if (dmUtils.IsIOTAOK(cmbIOTA.Text)) then
@@ -4150,33 +4334,6 @@ begin
   if (dmUtils.IsIOTAOK(cmbIOTA.Text)) then
   begin
     frmQSODetails.iota := cmbIOTA.Text
-  end
-end;
-
-procedure TfrmNewQSO.cmbIOTAKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    if edtState.IsVisible then
-      edtState.SetFocus
-    else
-      edtDOK.SetFocus;
-
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtWAZ.SetFocus;
-    key := 0
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    if edtState.IsVisible then
-      edtState.SetFocus
-    else
-      edtDOK.SetFocus;
-    key := 0
   end
 end;
 
@@ -4535,7 +4692,6 @@ begin
   edtGrid.Font.Color:=clDefault;
 end;
 
-
 procedure TfrmNewQSO.edtCountyChange(Sender: TObject);   //works for all columns
 var
   tmp, tmp1 :String;
@@ -4615,26 +4771,6 @@ begin
       end;
 end;
 
-procedure TfrmNewQSO.edtGridKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  writeln(length(edtGrid.text));
-  if (key = 40) then  //down arrow
-  begin
-    edtPWR.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtQTH.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtPWR.SetFocus;
-    key := 0
-  end
-end;
 procedure TfrmNewQSO.edtGridKeyPress(Sender: TObject; var Key: char);
 begin
   //pass only format AB12cd34ef and BS/DEL keys
@@ -5490,36 +5626,6 @@ Begin
   ChangeReports
 end;
 
-procedure TfrmNewQSO.cmbModeKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    key := 0;
-    edtHisRST.SetFocus;
-    edtHisRST.SelStart  := 1;
-    edtHisRST.SelLength := 1;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    cmbFreq.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtHisRST.SetFocus;
-    edtHisRST.SelStart  := 1;
-    edtHisRST.SelLength := 1;
-    key := 0;
-  end;
-  if key = VK_TAB then
-  begin
-    key := 0;
-    edtHisRST.SetFocus;
-    TabUsed := True
-  end
-end;
-
 procedure TfrmNewQSO.cmbProfilesChange(Sender: TObject);
 
 begin
@@ -5533,47 +5639,6 @@ begin
   UsrAssignedProfile:= cmbProfiles.Text;   //this is only place for change value
   if dmData.DebugLevel >=1 then Writeln('Set profile: ',cmbProfiles.Text)
 end;
-
-procedure TfrmNewQSO.cmbQSL_RKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtItu.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    cmbQSL_S.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtITU.SetFocus;
-    key := 0
-  end
-end;
-
-procedure TfrmNewQSO.cmbQSL_SKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    cmbQSL_R.SetFocus;
-    key := 0;
-  end;
-  if (key = 38) then //up arrow
-  begin
-    edtPWR.SetFocus;
-    key := 0;
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    cmbQSL_R.SetFocus;
-    key := 0
-  end
-end;
-
 
 procedure TfrmNewQSO.dbgrdQSOBeforeDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -6259,46 +6324,9 @@ begin
   CheckStateClub
 end;
 
-procedure TfrmNewQSO.edtStateKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if (key = 40) then  //down arrow
-  begin
-    edtCounty.SetFocus;
-    key := 0
-  end;
-  if (key = 38) then //up arrow
-  begin
-    cmbIOTA.SetFocus;
-    key := 0
-  end;
-  if ((key = VK_SPACE) and UseSpaceBar) then
-  begin
-    edtCounty.SetFocus;
-    key := 0
-  end
-end;
-
 procedure TfrmNewQSO.edtWAZExit(Sender: TObject);
 begin
   frmQSODetails.waz := edtWAZ.Text
-end;
-
-procedure TfrmNewQSO.mCommentKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if ((key = VK_TAB) and (not AnyRemoteOn)) then
-    Begin
-     ReturnToNewQSO;
-     key := 0
-    end;
-  if (key = VK_RETURN) then
-    Begin
-     mComment.Text:=mComment.Text+LineEnding;
-     mComment.SelStart:=length(mComment.Text);
-     mComment.SelLength:=0;
-     key:=0;
-    end;
 end;
 
 procedure TfrmNewQSO.mCommentKeyUp(Sender: TObject; var Key: Word;
@@ -7824,8 +7852,11 @@ begin
   if ( frmContest <> nil) and  frmContest.Showing  and frmContest.ContestReady then
       frmContest.edtCall.SetFocus
     else
-      if edtCall.Enabled then
-         edtCall.SetFocus
+      if ( frmMonWsjtx <> nil )  and  frmMonWsjtx.Showing then
+        frmMonWsjtx.sgMonitor.SetFocus
+      else
+        if edtCall.Enabled then
+          edtCall.SetFocus
 end;
 
 procedure TfrmNewQSO.RefreshInfoLabels;
@@ -8205,6 +8236,7 @@ var
   VerAvailNr : integer;
   data:string;
 Begin
+  ImprovedVer:=0;
   if not cqrini.ReadBool('Program', 'CheckImproved', True) then exit;
   if not (TryStrToInt(ExtractWord(2,cVersionBase,['(',')']),VerNr)) then exit;
   VerAvailNr:=0;
@@ -8214,19 +8246,24 @@ Begin
     if not (TryStrToInt(ExtractWord(2,data,['(',')']),VerAvailNr)) then exit;
     if VerNr < VerAvailNr then
     begin
+      ImprovedVer:=2;
       try
         frmAbout:= TfrmAbout.Create(Application);
         frmAbout.PageControl1.ActivePage := frmAbout.tabUpgrade;
-        frmAbout.lblVerze1.Caption := cVERSION + '  ' + cBUILD_DATE;
-        frmAbout.Label8.Caption:='There is Cqrlog_Improved version '+IntToStr(VerAvailNr)+' available!';
+        frmAbout.lblUpVer.Caption := cVERSION + '  ' + cBUILD_DATE;
+        frmAbout.lblUpBy.Caption:='Cqrlog_Improved '+IntToStr(VerAvailNr)+' available!';
         frmAbout.IsNewVersion:=True;
-        frmAbout.btnChangelog1.Font.Color:=clRed;
-        frmAbout.btnChangelog1.Font.Style:=[fsBold];
+        frmAbout.btnChangelog.Font.Color:=clRed;
+        frmAbout.btnChangelog.Font.Style:=[fsBold];
         frmAbout.ShowModal
       finally
         frmAbout.Free;
       end
     end;
+    if VerNr = VerAvailNr then
+                          ImprovedVer:=1;
+    if VerNr > VerAvailNr then
+                           ImprovedVer:=3;
   end;
 end;
 

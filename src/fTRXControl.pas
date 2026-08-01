@@ -925,7 +925,7 @@ end;
 
 procedure TfrmTRXControl.btnMemWriClick(Sender : TObject);
 var
-  bandwidth : Word = 0;
+  bandwidth : integer = 0;
   mode : String = '';
   freq : String = '';
   Dfreq : Double;

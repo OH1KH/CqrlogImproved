@@ -87,7 +87,10 @@ procedure TfrmContestFilter.FormShow(Sender: TObject);
 
 begin
   dmUtils.LoadFontSettings(self);
-   if frmContest.Showing and (frmContest.cmbContestName.Text<>'') then
+  // DG0OAT: create frmContest because it was nil
+   if (frmContest = nil) then
+     Application.CreateForm(TfrmContest, frmContest);
+   if Assigned(frmContest) and frmContest.Showing and (frmContest.cmbContestName.Text<>'') then
     cmbContestName.Text:=frmContest.cmbContestName.Text;
 end;
 

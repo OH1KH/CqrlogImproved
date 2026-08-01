@@ -7,8 +7,10 @@ interface
 uses
   Classes, SysUtils, sqldb, FileUtil, LResources,
   dynlibs, lcltype, ExtCtrls, sqlscript, process, mysql51dyn, ssl_openssl_lib,
-  mysql55dyn, mysql55conn, mysql51conn, db, httpsend, blcksock, synautil, Forms,
-  Graphics, mysql56conn, mysql56dyn, mysql57dyn, mysql57conn,
+  //mysql55dyn, mysql55conn, mysql51conn,
+  db, httpsend, blcksock, synautil, Forms,
+  Graphics,
+  //mysql56conn, mysql56dyn, mysql57dyn, mysql57conn,  mysql80dyn, mysql80conn,
   lNet, lNetComponents, laz2_DOM, laz2_XMLWrite, md5, StrUtils, LazFileUtils, LazUTF8;
 
 const
@@ -61,7 +63,7 @@ type
     function  LogUploadEnabled : Boolean;
 
     procedure PrepareUserInfoHeader(where : TWhereToUpload; data : TStringList);
-    procedure PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
+    procedure PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList;QRZIsReplace : Boolean=false);
     procedure PrepareDeleteHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
     procedure MarkAsUploadedToAllOnlineLogs;
     procedure MarkAsUploaded(LogName : String);
@@ -69,6 +71,7 @@ type
     procedure MarkAsUpDeleted(id_log_upload : Integer);
     procedure DisableOnlineLogSupport;
     procedure EnableOnlineLogSupport(RemoveOldChanges : Boolean = True;ForceRecreateTrigs : Boolean = False);
+    procedure DoUploadIgnore(act:integer);
   end;
 
 var
@@ -901,7 +904,7 @@ begin
   end //case
 end;
 
-procedure TdmLogUpload.PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList);
+procedure TdmLogUpload.PrepareInsertHeader(where : TWhereToUpload; id_log_changes,id_cqrlog_main : Integer; data : TStringList;QRZIsReplace : Boolean=false);
 const
   C_SEL_LOG_CHANGES = 'select * from log_changes where id=%d';
 var
@@ -968,6 +971,8 @@ begin
                    end;
       upQrzLog  :  begin
                      data.Add('ACTION=INSERT');
+                     if QRZIsReplace then
+                                     data.Add('OPTION=REPLACE');
                      data.Add('ADIF='+StringReplace(adif,'<EOR>','',[rfReplaceAll])+
                               GetAdifValue('STATION_CALLSIGN',cqrini.ReadString('Station','Call',''))+'<EOR>');
                    end;
@@ -1330,23 +1335,6 @@ begin
       if debug then
          Writeln(t.SQL.Text);
       t.ExecSQL;
-
-      {
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_bd']);
-      if debug then
-       Writeln(t.SQL.Text);
-      t.ExecSQL;
-
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_ai']);
-      if debug then
-       Writeln(t.SQL.Text);
-      t.ExecSQL;
-
-      t.SQL.Text := Format(C_DROP,['cqrlog_main_bu']);
-      if debug then
-         Writeln(t.SQL.Text);
-      t.ExecSQL;
-       }
     except
         on E : Exception do
           Writeln('DeleteTriggers:',E.Message);
@@ -1438,6 +1426,131 @@ begin
     tr.Free;
     t.Free;
   end
+end;
+
+procedure TdmLogUpload.DoUploadIgnore(act:integer);
+{
+Here check latest log_changes ID appeared and set ignorelog flag(s) for that row
+ ignore is binary flag (1) in order
+ HamQTH,CLublog,Hrdlog,Udplog,Qrzlog -> %11111 (Hamlog is MSB, Qrzlog LSB)
+
+What is binary flag act to ignore:
+ %001=1;    //LoTW/eQSL
+ %010=2;    //QSL
+ %100=4;    //Edit
+}
+
+const
+                                //%00001   %00010  %00100  %01000  %10000
+  logs   : array of string[6] = ('QrzIgn','UdIgn','HrIgn','ClIgn','HaIgn');
+                                    //%001  %010      %100
+  ops    : array of string[5] = ('','Lo/eQ','QSL','','Edit');
+var
+  tr : TSQLTransaction;
+  t  : TSQLQuery;
+
+  l      : integer;
+  LastId : integer;    //last ID of log_changes to work with
+
+
+//---------------------------------------------------------------------------------------
+  procedure SetLogIgnoreFlagToLog(id:integer;log:byte);
+  var
+  IgnLog : byte;
+
+   Begin
+   //get current state of flags
+   t.SQL.Text     := 'select ignorelog from log_changes where id='+IntToStr(id);
+   //if debug then
+         Writeln(t.SQL.Text);
+   tr.StartTransaction;
+   t.Open;
+   IgnLog:=t.Fields[0].AsInteger;
+   t.Close;
+   tr.Rollback;
+
+   //set new flag
+   //if debug then
+         Write('Logs was: ',IntToBin(IgnLog,5,0), ' Log to set is :',IntToBin(log,5,0));
+   IgnLog:=(IgnLog OR log);
+   //if debug then
+         Writeln(' Logs Now: ',IntToBin(IgnLog,5,0));
+
+
+   //set current flag
+   t.SQL.Text := 'update log_changes set ignorelog='+IntToStr(IgnLog)+' where id='+IntToStr(id);
+   //if debug then
+         Writeln(t.SQL.Text);
+   t.ExecSQL;
+   end;
+//---------------------------------------------------------------------------------------
+  procedure WantIgnore(log,what:integer);
+  var
+   b: byte;
+   logignore:string;
+   Begin
+     logignore:=logs[log];
+     b:=%00001;
+     if log>0 then
+        b:= b shl log;
+     //if  debug then
+                writeln('Log in process: ',logignore,' ',IntToBin(b,5,0),' Operation to ignore: ',ops[what],' ',IntToBin(what,3,0));
+
+    case what of
+      1  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
+              Begin
+               //if debug then
+                writeln('Ignore LoTW,eQSL:',logIgnore);
+               SetLogIgnoreFlagToLog(LastId,b);
+              end;
+
+      2  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
+              Begin
+               //if debug then
+                writeln('Ignore QSL:',logIgnore);
+               SetLogIgnoreFlagToLog(LastId,b);
+              end;
+
+      4  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
+              Begin
+               //if debug then
+                writeln('Ignore Edit:',logIgnore);
+               SetLogIgnoreFlagToLog(LastId,b);
+              end;
+    end;
+   end;
+//---------------------------------------------------------------------------------------
+
+
+Begin
+  try
+  t := TSQLQuery.Create(nil);
+  tr:= TSQLTransaction.Create(nil);
+  try
+   t.DataBase     := dmData.MainCon;
+   tr.DataBase    := dmData.MainCon;
+   t.SQL.Text     := 'select id from log_changes order by id desc limit 1';
+   //if debug then
+         Writeln(t.SQL.Text);
+   tr.StartTransaction;
+   t.Open;
+   LastId:=t.Fields[0].AsInteger;
+   t.Close;
+   tr.Rollback;
+
+  for l:=0 to 4 do   //go through logs and see if they want to ignore this(what)
+   Begin
+     WantIgnore(l,act);
+   end;
+
+ except
+     on E : Exception do
+       Writeln('DoUploadIgnores:',E.Message);
+ end
+ finally
+   tr.Free;
+   t.Free;
+ end
 end;
 
 

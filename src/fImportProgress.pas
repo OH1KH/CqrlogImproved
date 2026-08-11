@@ -196,7 +196,7 @@ begin
         dmDXCC.qDXCCRef.ExecSQL;
       end;
     end;
-    List.AddStrings(f);
+    List.AddStrings(f);       //1st add: current country list
     dmDXCC.trDXCCRef.Commit;
     ////////////////////////////////////////////////////////////// countrydel.tab
     dmDXCC.trDXCCRef.StartTransaction;
@@ -234,23 +234,23 @@ begin
     lblComment.Caption := 'Importing file Callresolution.tbl ...';
     Application.ProcessMessages;
     f.LoadFromFile(Directory+'CallResolution.tbl');
-    List.AddStrings(f);
+    List.AddStrings(f);         //2nd. add CallResolution
     ////////////////////////////////////////////////////////////////// AreaOK1RR.tab
 
     f.Clear;
     f.LoadFromFile(Directory+'AreaOK1RR.tbl');
-    List.AddStrings(f);
+    List.AddStrings(f);        //3rd. add AreaOK1RR
 
     for y:=0 to List.Count-1 do
     begin
-      if List.Strings[y][1] = '%' then
+      if List.Strings[y][1] = '%' then  //go through list and if line starts % duplicate it with one of ABCDEFGHIJKLMNOPQRSTUVWXYZ at beginning
       begin
-        for i:=65 to 90 do
+        for i:=65 to 90 do    //A-Z
           list.Add(chr(i)+copy(list.Strings[y],2,Length(list.Strings[y])-1));
       end;
     end;
 
-    List.SaveToFile(dmData.HomeDir+'dxcc_data'+PathDelim+'country.tab');
+    List.SaveToFile(dmData.HomeDir+'dxcc_data'+PathDelim+'country.tab');   //finally save the whole List stringist to file dxcc_data/Counry.tab.
 
     //////////////////////////////////////////////////////////// ambigous.tbl;
     CopyFile(Directory+'Ambiguous.tbl',dmData.HomeDir+'dxcc_data'+PathDelim+'ambiguous.tab');

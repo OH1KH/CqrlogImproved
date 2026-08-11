@@ -885,6 +885,8 @@ begin
   else begin
     if not Showing then  //status window has to be visible when working
       Show;
+    if cqrini.ReadBool('OnlineLog','KeepMin',False) then
+                                                    Self.WindowState:=wsMinimized;
     UploadThread := TUploadThread.Create(True);
     UploadThread.WhereToUpload := where;
     UploadThread.ToAll         := ToAll;

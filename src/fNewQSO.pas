@@ -2307,6 +2307,7 @@ procedure TfrmNewQSO.tmrUploadAllTimer(Sender: TObject);
 begin
   if (not frmLogUploadStatus.thRunning) then
   begin
+
     case WhatUpNext of
       upHamQTH :  begin
                     if UploadAll then
@@ -4899,6 +4900,16 @@ end;
 
 procedure TfrmNewQSO.acUploadToAllExecute(Sender: TObject);
 begin
+     if not (cqrini.ReadBool('OnlineLog','HaUP',False)
+        or cqrini.ReadBool('OnlineLog','ClUP',False)
+        or cqrini.ReadBool('OnlineLog','HrUP',False)
+        or cqrini.ReadBool('OnlineLog','UdUP',False)
+        or cqrini.ReadBool('OnlineLog','QrzUP',False)) then
+           Begin
+                ShowMessage('You do not have online log(s) defined for upload!');
+                Exit;
+           end;
+
   if not tmrUploadAll.Enabled then
   begin
     UploadAll            := True;

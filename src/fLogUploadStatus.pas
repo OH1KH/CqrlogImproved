@@ -763,7 +763,7 @@ begin
         Writeln('SyncMsg   :',SyncMsg);
    end;
 
-   frmNewQSO.ReturnToNewQSO;
+   //frmNewQSO.ReturnToNewQSO;  //keeps popping NewQSO to the Top with every msg line printed
 
    if ((SyncUpdate<>'') or (SyncMsg<>'')) then
       tmrClose.Enabled:=False;

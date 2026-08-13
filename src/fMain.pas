@@ -591,7 +591,7 @@ end;
 
 procedure TfrmMain.lblQSOCountClick(Sender: TObject);
 begin
-    ShowMessage(IntToStr(dbgrdMain.SelectedRows.Count)+' selected QSOs');
+    dmUtils.ShowTheMessage('Count',IntToStr(dbgrdMain.SelectedRows.Count)+' selected QSOs');
 end;
 
 procedure TfrmMain.mnuCEClick(Sender: TObject);
@@ -621,7 +621,7 @@ begin
       dmDXCluster.ReloadDXCCTables
      end
     else
-     ShowMessage('File not found!');
+     dmUtils.ShowTheMessage('Error','File not found!');
   end
   else
     BringToFront
@@ -1169,7 +1169,7 @@ begin
         end
        end
      else
-       ShowMessage('File not found!');
+       dmUtils.ShowTheMessage('Error','File not found!');
   end
   else
     BringToFront
@@ -1192,7 +1192,7 @@ begin
         end
      end
     else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
   end
 end;
 
@@ -2340,7 +2340,7 @@ begin
         acRefreshExecute(nil);
       end
     else
-       ShowMessage('File not found!');
+      dmUtils.ShowTheMessage('Error','File not found!');
     end
     else
       BringToFront

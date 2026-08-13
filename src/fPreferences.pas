@@ -2236,7 +2236,7 @@ begin
       if FileExists(dlgOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
          edtFldigiPath.Text := dlgOpen.FileName
       else
-       ShowMessage('File not found!');
+       dmUtils.ShowTheMessage('Error','File not found!');
 end;
 
 procedure TfrmPreferences.btnChangeDefFreqClick(Sender: TObject);
@@ -2296,7 +2296,7 @@ begin
     if FileExists(dlgOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
       edtWsjtPath.Text := dlgOpen.FileName
     else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
 end;
 
 procedure TfrmPreferences.btnAlertCallsignsClick(Sender: TObject);
@@ -3245,14 +3245,14 @@ begin
   if (f = '') or (f[length(f)] = '/') then
       Begin
        edtWebBrowser.Text :='';
-       ShowMessage('File:'+f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.')
+       dmUtils.ShowTheMessage('File',f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.')
       end
     else
      begin
        p:= GetEnv('PATH');
        edtWebBrowser.Text:=FileSearch (f,p);
        if (edtWebBrowser.Text ='') then
-         ShowMessage('File:'+f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.');
+         dmUtils.ShowTheMessage('File',f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.');
      end;
 end;
 

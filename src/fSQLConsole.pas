@@ -152,7 +152,7 @@ begin
     if FileExists(dlgOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
       mSQL.Lines.LoadFromFile(dlgOpen.FileName)
     else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
 end;
 
 procedure TfrmSQLConsole.acNextExecute(Sender: TObject);

@@ -4640,7 +4640,7 @@ procedure TfrmNewQSO.acCWTypeExecute(Sender: TObject);
 begin
   frmCWType.Show;
   if (CWint=nil) then
-     ShowMessage('CW interface:  No keyer defined for current radio!');
+     dmUtils.ShowTheMessage('CW interface','No keyer defined'+LineEnding+'for current radio!',5000);
 end;
 
 procedure TfrmNewQSO.FormActivate(Sender: TObject);
@@ -4906,7 +4906,7 @@ begin
         or cqrini.ReadBool('OnlineLog','UdUP',False)
         or cqrini.ReadBool('OnlineLog','QrzUP',False)) then
            Begin
-                ShowMessage('You do not have online log(s) defined for upload!');
+                dmUtils.ShowTheMessage('Upload','Log(s) not defined for upload!',5000);
                 Exit;
            end;
 
@@ -6021,7 +6021,7 @@ begin
             frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
             frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
             frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-            else ShowMessage('CW interface:  No keyer defined for current radio!');
+            else dmUtils.ShowTheMessage('CW interface','No keyer defined'+LineEnding+'for current radio!',5000);
        end;
       end;
     key := 0;

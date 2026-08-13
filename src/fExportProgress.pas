@@ -580,7 +580,7 @@ begin   //TfrmExportProgress
   finally
     CloseFile(f);
     if ExportType <> 2 then
-      dmUtils.ShowTheMessage('Export complete!', 'File: ' + FileName,5000)
+      dmUtils.ShowTheMessage('Export complete!', 'Saved to'+LineEnding+'File: ' + FileName,7000,True,'AdifExport')
    else
     begin
       dir      := ExtractFilePath(FileName);
@@ -1370,7 +1370,7 @@ begin
     dmData.Q.Close;
     if dmData.trQ.Active then
       dmData.trQ.Rollback;
-    dmUtils.ShowTheMessage('Export complete!', 'File: ' + FileName,5000);
+    dmUtils.ShowTheMessage('Export complete!', 'Saved to'+LineEnding+'File: ' + FileName,7000,True,'HtmlExport');
     Close
   end
 end;

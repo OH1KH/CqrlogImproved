@@ -338,10 +338,10 @@ begin
       if LocalDbg then
         Writeln(dmData.qIOTAList.SQL.Text);
 
-      if length(Result[1]) > 250 then ShowMessage(Result[0]);
-      if length(Result[2]) > 15 then ShowMessage(Result[0]);
+      if length(Result[1]) > 250 then dmUtils.ShowTheMessage('Iota',Result[0]);
+      if length(Result[2]) > 15 then dmUtils.ShowTheMessage('Iota',Result[0]);
       if length(Result) > 3 then
-        if length(Result[3]) > 15 then ShowMessage(Result[0]);
+        if length(Result[3]) > 15 then dmUtils.ShowTheMessage('Iota',Result[0]);
       dmData.qIOTAList.ExecSQL;
     end;
     dmData.trIOTAList.Commit;
@@ -705,7 +705,7 @@ Begin
              closeFile(eFile);
              s.clear;
              except
-               ShowMessage('Error writing '+eName);
+               dmUtils.ShowTheMessage('Error','Error writing '+LineEnding+eName);
              end;
 end;
 procedure TfrmImportProgress.ImportLoTWAdif;

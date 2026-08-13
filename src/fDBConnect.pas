@@ -373,7 +373,7 @@ begin
               dmData.trQ.Rollback
             end;
             dmData.trQ.Commit;
-            ShowMessage('Config copied successfully')
+            dmUtils.ShowTheMessage('Config', 'Copied successfully',5000,True,'ConfigCopy')
             finally
               dmData.Q.Close;
               l.Free
@@ -552,7 +552,7 @@ begin
    'will be DELETED!'+LineEnding+LineEnding+'Do you really want to do this ?'),'Question ...', mb_YesNo + mb_IconQuestion + mb_DefButton1) in [idNo, idCancel] then exit;
 
   dmData.TruncateTables(dmData.qLogList.Fields[0].AsInteger);
-  ShowMessage('Log is empty')
+  dmUtils.ShowTheMessage('Clear','Log is empty',5000,True,'ClearLog')
 end;
 
 procedure TfrmDBConnect.mnuClearQsosClick(Sender: TObject);
@@ -562,7 +562,7 @@ begin
     'will be DELETED!'+LineEnding+LineEnding+'Do you really want to do this ?'),'Question ...', mb_YesNo + mb_IconQuestion + mb_DefButton1) in [idNo, idCancel] then exit;
 
   dmData.TruncateTables(dmData.qLogList.Fields[0].AsInteger,False);
-  ShowMessage('All qsos deleted')
+  dmUtils.ShowTheMessage('Clear','All qsos deleted!',5000,True,'DeleteAllQsos')
 end;
 
 procedure TfrmDBConnect.mnuExportClick(Sender: TObject);
@@ -588,7 +588,7 @@ begin
       if pos('.INI',UpperCase(n))=0 then
           n:=n+'.ini';
       l.SaveToFile(n);
-      ShowMessage('Config file saved to '+n
+      dmUtils.ShowTheMessage('Config','Saved to '+n
       +#10+#13+#10+#13+'Warning !'+#10+#13+'File may contain passwords'+#10+#13+'in plain text format')
     finally
       dmData.Q.Close;
@@ -622,21 +622,21 @@ begin
           dmData.trQ.Rollback
         end;
         dmData.trQ.Commit;
-        ShowMessage('Config file imported successfully')
+        dmUtils.ShowTheMessage('Config', LineEnding+'File imported successfully!',7000,True,'ConfigImport');
         finally
           dmData.Q.Close;
           l.Free
         end
       end
         else
-              ShowMessage('File not found!');
+              dmUtils.ShowTheMessage('Error','File not found!',5000);
    end
 end;
 
 procedure TfrmDBConnect.mnuRepairClick(Sender : TObject);
 begin
   dmData.RepairTables(dmData.qLogList.Fields[0].AsInteger);
-  ShowMessage('Done, tables fixed')
+  dmUtils.ShowTheMessage('Repair','Done, tables fixed',5000,True,'TablesFixed')
 end;
 
 procedure TfrmDBConnect.tmrAutoConnectTimer(Sender: TObject);

@@ -155,7 +155,7 @@ begin
         l.Add(sgrdMem.Cells[0,i]+';'+sgrdMem.Cells[1,i]+';'+sgrdMem.Cells[2,i]+';'+sgrdMem.Cells[3,i]);
 
       l.SaveToFile(dlgSave.FileName);
-      ShowMessage('File saved to '+dlgSave.FileName)
+      dmUtils.ShowTheMessage('Export','File saved to '+dlgSave.FileName,7000,True,'RadioMemExport')
     finally
       FreeAndNil(l)
     end
@@ -234,13 +234,13 @@ begin
               AddToGrid(d[i].freq, d[i].mode, d[i].width,d[i].info)
             end;
 
-            ShowMessage('File has been imported')
+            dmUtils.ShowTheMessage('Import','File has been imported',7000,True,'RadioMemImport')
           finally
             CloseFile(f)
           end
         end
        else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
    end;
 end;
 
@@ -340,7 +340,7 @@ begin
                    Break;
                  end;
             end;
-          if not found then ShowMessage('None found!');
+          if not found then dmUtils.ShowTheMessage('Error','None found!');
          end;
 end;
 

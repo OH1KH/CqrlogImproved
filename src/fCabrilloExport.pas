@@ -840,7 +840,7 @@ begin
      if FileExists(dlgCabOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
          loadCabLay(dlgCabOpen.FileName)
      else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
 end;
 procedure TfrmCabrilloExport.saveCabLay(filename:String);
 var

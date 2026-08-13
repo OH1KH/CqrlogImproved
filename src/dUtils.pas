@@ -125,7 +125,6 @@ type
     procedure LoadRigListCombo(CurrentRigId : String; RigList : TStringList; RigComboBox : TComboBox);
     procedure ModeConvListsCreate(SetUp:boolean);
     procedure MakeMissingModeFile(num:integer);
-    procedure TheButtonClick(Sender: TObject);
 
     function GetTagValue(Data, tg: string): string;
     function GetQRZSession(var ErrMsg: string): boolean;
@@ -343,7 +342,7 @@ type
         procedure ShowQRZInBrowser(call: string);
         procedure ShowQSLWithExtViewer(Call: string;AltImg:String='');
         procedure ShowStatistic(ref_adif,old_stat_adif:Word; g:TStringGrid; call:String='');
-        procedure ShowTheMessage(Title:String; Message:String; Tme:longint);
+        procedure ShowTheMessage(Title:String; Message:String; Tme:longint=7000; NeverShow:Boolean=False; SaveName:String='');
         procedure ShowUsrUrl;
         procedure SortArray(l,r : Integer);
         procedure SortList(l: TStringList);
@@ -362,7 +361,7 @@ implementation
   {$R *.lfm}
 
 { TdmUtils }
-uses dData, dDXCC, fEnterFreq, fTRXControl, uMyini, fNewQSO, uVersion, fContest;
+uses dData, dDXCC, fEnterFreq, fTRXControl, uMyini, fNewQSO, uVersion, fContest,fCustomMessage;
 
 procedure TdmUtils.FillNewBandModeLimits;  //write band's mode base values to new mode frequency table using old values
   var f:integer;
@@ -5887,7 +5886,7 @@ begin
     prg := cqrini.ReadString('ExtView', 'txt', '');
     if prg<>'' then
       dmUtils.RunOnBackground(prg + ' ' + AnsiQuotedStr(f, '"'))
-     else ShowMessage('No external text viewer defined!'+#10+'See: prefrences/External viewers');
+     else dmUtils.ShowTheMessage('Error','No text viewer defined!'+#10+'See: prefrences/External viewers');
   finally
    //done
   end;
@@ -5982,60 +5981,23 @@ Begin
   ADate := DateTimeToStr(DateOf(UnixTODateTime(DateTimeToUnix(Date)-(hours * 3600))));
   ATime := copy(TimeToStr(TimeOf(UnixTODateTime(DateTimeToUnix(Date)-(hours * 3600)))),1,5);
 end;
-procedure  TdmUtils.ShowTheMessage(Title:String; Message:String; Tme:longint);   //time in milliseconds
-var
- TheForm: TForm;
- TheButton: TButton;
- TheLabel: Tlabel;
-
+procedure  TdmUtils.ShowTheMessage(Title:String; Message:String; Tme:longint=7000; NeverShow:Boolean=False; SaveName:String='');   //time in milliseconds
 Begin
-  WaitTime:=Tme;
-  TheForm:=TForm.Create(nil);
-  With TheForm do
-  Begin
-   SetBounds(100, 100, 220, 150);
-   TheForm.Caption:=Title;
-   //TheForm.Position := poScreenCenter;
-   TheForm.FormStyle := fsSystemStayOnTop;
-   TheForm.Position:= poWorkAreaCenter;
-  end;
-  TheButton:=TButton.create(TheForm);
-  With TheButton do
-  Begin
-   Caption:='OK    ('+IntToStr(WaitTime div 1000)+')';
-   SetBounds(114, 114, 100, 30);
-   Anchors := [akBottom, akRight];
-   Parent:=TheForm;
-   OnClick:=@TheButtonClick;
-  end;
-  TheLabel:=Tlabel.Create(TheForm);
-  With TheLabel do
-  Begin
-   SetBounds(50,10,170,100);
-   Caption:=Message;
-   AutoSize:=true;
-   Anchors := [akLeft, akRight];
-   Parent:=TheForm;
-   WordWrap:=true;
-  end;
+  frmCustomMessage :=TfrmCustomMessage.Create(nil);
+  frmCustomMessage.ShowCdx:=NeverShow;
+  frmCustomMessage.CondxName:= SaveName;
+  frmCustomMessage.Message:=Message;
+  frmCustomMessage.Head:=Title;
+  frmCustomMessage.OpenTime:=Tme div 1000;   //in secs
+  try
+    frmCustomMessage.ShowModal
+  finally
+    FreeAndNil(frmCustomMessage)
+  end
 
-  TheForm.Show;
 
-  While WaitTime>0 do
-   Begin
-    Application.ProcessMessages;
-    sleep(100);
-    WaitTime:=WaitTime-100;
-    TheButton.Caption:='OK    ('+IntToStr(WaitTime div 1000)+')';
-   end;
-  TheForm.Close;
-  FreeAndNil(TheForm);
 end;
 
-procedure TdmUtils.TheButtonClick(Sender: TObject);
-begin
-  WaitTime:=0;
-end;
 function  TdmUtils.IsFileThere(ASearch: string;out ResultFile: string): boolean;
 Begin
  if FileExists(ASearch,true) then
@@ -6045,7 +6007,7 @@ Begin
    end
   else
    begin
-      ShowMessage('File: '+ASearch+' is not found!');
+      dmUtils.ShowTheMessage('File:',ASearch+' is not found!');
       ResultFile:=ASearch;
       Result:=False;
    end;

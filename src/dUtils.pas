@@ -5983,9 +5983,12 @@ Begin
 end;
 procedure  TdmUtils.ShowTheMessage(Title:String; Message:String; Tme:longint=7000; NeverShow:Boolean=False; SaveName:String='');   //time in milliseconds
 Begin
+  if (SaveName<>'') and cqrini.ReadBool('CustomMessage', SaveName, False) then       //never show this message again
+                                                                              Exit;
+
   frmCustomMessage :=TfrmCustomMessage.Create(nil);
   frmCustomMessage.ShowCdx:=NeverShow;
-  frmCustomMessage.CondxName:= SaveName;
+  frmCustomMessage.SaveName:= SaveName;
   frmCustomMessage.Message:=Message;
   frmCustomMessage.Head:=Title;
   frmCustomMessage.OpenTime:=Tme div 1000;   //in secs

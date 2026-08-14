@@ -2249,6 +2249,7 @@ end;
 
 procedure TfrmMain.acExADIFExecute(Sender: TObject);
 begin
+  dlgSave.InitialDir:=cqrini.ReadString('Filedialogs','AdifExport',dmData.UsrHomeDir);
   dlgSave.DefaultExt := '.adi';
   dlgSave.Filter     := 'ADIF|*.adi;*.ADI|All files|*';
   if dlgSave.Execute then
@@ -2269,6 +2270,7 @@ begin
        else
          FileName:=dlgSave.FileName;
       ExportType := 0;
+      cqrini.WriteString('Filedialogs','AdifExport',ExtractFilePath(dlgSave.FileName));
       ShowModal
     finally
       Free
@@ -2280,6 +2282,7 @@ end;
 
 procedure TfrmMain.acExHTMLExecute(Sender: TObject);
 begin
+  dlgSave.InitialDir:=cqrini.ReadString('Filedialogs','HtmlExport',dmData.UsrHomeDir);
   dlgSave.DefaultExt := '.html';
   dlgSave.Filter     := 'html|*.html;*.HTML|All files|*';
 
@@ -2301,6 +2304,7 @@ begin
        else
          FileName:=dlgSave.FileName;
       ExportType := 1;
+      cqrini.WriteString('Filedialogs','HtmlExport',ExtractFilePath(dlgSave.FileName));
       ShowModal
     finally
       Free
@@ -2320,6 +2324,7 @@ end;
 
 procedure TfrmMain.acImportADIFExecute(Sender: TObject);
 begin
+  dlgOpen.InitialDir:=cqrini.ReadString('Filedialogs','AdifImport',dmData.UsrHomeDir);
   dlgOpen.Filter     := 'ADIF|*.adi;*.ADI;*.adif;*.ADIF|All files|*';
   dlgOpen.DefaultExt := '.adi';
   if dlgOpen.Execute then
@@ -2333,6 +2338,7 @@ begin
           lblErrors.Caption := '0';
           lblCount.Caption := '0';
           lblFilteredOutCount.Caption := '0';
+          cqrini.WriteString('Filedialogs','AdifImport',ExtractFilePath(dlgOpen.FileName));
           ShowModal
         finally
           Free

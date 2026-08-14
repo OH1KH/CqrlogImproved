@@ -28,7 +28,7 @@ type
   public
    Head       : String;
    Message    : String;
-   CondxName  : String; //name to save chckebox value
+   SaveName  : String; //name to save chckebox value
    ShowCdx    : boolean;//show checkbox
    OpenTime   : integer;
 
@@ -52,8 +52,6 @@ begin
   chkCondx.Visible   := ShowCdx;
   if not chkCondx.Visible then
           frmCustomMessage.Height:=frmCustomMessage.Height-25;
-  if (CondxName<>'') and cqrini.ReadBool('CustomMessage', CondxName, False) then
-                                                                     Self.Close;
 
   timecount          := 0;
   btnOK.Caption      :='('+IntToStr(OpenTime-timecount)+') OK';
@@ -82,16 +80,16 @@ end;
 procedure TfrmCustomMessage.FormClose(Sender: TObject;
   var CloseAction: TCloseAction);
 begin
-   if (CondxName<>'') and  chkCondx.Visible then
+   if (SaveName<>'') and  chkCondx.Checked then
       begin
-             cqrini.WriteBool('CustomMessage', CondxName, True);
+             cqrini.WriteBool('CustomMessage', SaveName, chkCondx.Checked);
       end;
 end;
 
 procedure TfrmCustomMessage.FormCreate(Sender: TObject);
 begin
   showCdx:=False;
-  CondxName:='';
+  SaveName:='';
   Message:='';
   OpenTime:=-1;   //set this from parent after creating form
 end;

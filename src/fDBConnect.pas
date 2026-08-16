@@ -589,7 +589,7 @@ begin
           n:=n+'.ini';
       l.SaveToFile(n);
       dmUtils.ShowTheMessage('Config','Saved to '+n
-      +#10+#13+#10+#13+'Warning !'+#10+#13+'File may contain passwords'+#10+#13+'in plain text format')
+      +LineEnding+'Warning !'+LineEnding+'File may contain passwords'+LineEnding+'in plain text format')
     finally
       dmData.Q.Close;
       dmData.trQ.Rollback;

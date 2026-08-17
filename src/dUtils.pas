@@ -3617,6 +3617,8 @@ begin
     else
     begin
       m.LoadFromStream(http.Document);
+      if LocalDbg then
+                      writeln(m.text);
       if (Pos('<Error>Session Timeout</Error>', m.Text) > 0)
         or (Pos('Invalid session key', m.Text) > 0)then      //[2026-02-23 05:56:37] [33m[!] QRZ API ERROR: Invalid session key[0m
       begin
@@ -3634,7 +3636,18 @@ begin
                else
                 Begin
                   nick := GetTagValue(m.Text, '<nickname>');
-                  if nick ='' then  nick := GetTagValue(m.Text, '<fname>');
+                  if LocalDbg then
+                      writeln('Nick: ',UTF8Length(nick),' :',nick);
+                  if nick ='' then                              // no nickname then first name
+                        Begin
+                          nick := GetTagValue(m.Text, '<fname>');
+                          writeln('Nick(fname): ',UTF8Length(nick),' :',nick);
+                        end;
+                 if nick ='' then                                   // no first name then family name
+                        Begin
+                          nick := GetTagValue(m.Text, '<name>');
+                          writeln('Nick(name): ',UTF8Length(nick),' :',nick);
+                        end;
                 end;
 
         if Utf8Length(nick) > 40 then
@@ -4311,11 +4324,11 @@ var
   p: word;
 begin
   Result := '';
-  EndTag := '</' + copy(tg, 2, Length(tg) - 1);
+  EndTag := '</' + UTF8copy(tg, 2, UTF8Length(tg) - 1);
   p := Pos(tg, Data);
   if p > 0 then
   begin
-    Result := copy(Data, p + Length(tg), Pos(EndTag, Data) - p - Length(tg));
+    Result := UTF8copy(Data, p + UTF8Length(tg), UTF8Pos(EndTag, Data) - p - UTF8Length(tg));
     Result := Trim(Result);
     if LocalDbg then
     begin

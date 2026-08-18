@@ -827,32 +827,48 @@ begin
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
+var
+  P       :TPoint;
 
-  if key = VK_F2 then                                    //VK_F2
-    begin
-     acNewQSO.Execute;
-     Key:=0;
+begin
+                     //from QSOlist-menu-shortcut keys (fMain.lfm)
+                                                           //VK_F1
+                                                           //VK_F2
+                                                           //VK_F3
+                                                           //VK_F4
+                                                           //VK_F5
+                                                           //VK_F7
+                                                           //VK_F8
+
+  if (Key = VK_F10) then                                   //VK_F10
+   begin
+     P := dbgrdMain.ClientToScreen(Point(dbgrdMain.Width div 2, pnlCounts.Height));
+     popWebSearch.PopUp(P.x,P.y);
+     key := 0;
      Exit;
-    end;
-  if key = VK_F6 then                                    //VK_f6
-    begin
-     acCallBook.Execute;
-     key:=0;
-     Exit;
-    end;
+   end;
+
+                     //from QSOlist-menu-shortcut keys (fMain.lfm)
+                                                           //Shift + VK_F10
+                                                           //VK_F12
+                                                           //Shift + VK_F12
+
+
+                                                           //Ctrl-A
+                                                           //Ctrl-D
+                                                           //Ctrl-F
+                                                           //Ctrl-H
+                                                           //Ctrl-P
+                                                           //Ctrl-Q
+                                                           //Ctrl-R
+
+                                                           //Alt-F
 
  if (Shift = [ssCTRL]) then                              //Ctrl+ key
  begin
   if (Key = VK_N) then                                   //VK_N
   begin
     mnuDoNotSendClick(nil);
-    key := 0;
-    Exit;
-  end;
-   if (key = VK_H) then                                  //VK_H
-  begin
-    ShowHelp;
     key := 0;
     Exit;
   end;

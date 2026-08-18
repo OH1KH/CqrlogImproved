@@ -6096,8 +6096,10 @@ begin
         key := 0;
         Exit;
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_A
+
+
 
       if (key = VK_D) then                                          //VK_D
       begin
@@ -6117,13 +6119,15 @@ begin
         key := 0;
         Exit;
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_J
                                                                     //VK_K
                                                                     //VK_M
                                                                     //VK_N
                                                                     //VK_P
                                                                     //VK_Q
+
+
 
       if (key = VK_R) then                                          //VK_R
       begin
@@ -6144,9 +6148,11 @@ begin
         end;
         key := 0;
         Exit;
+
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_T
+
 
       if (key = VK_U) then                                          //VK_U
       begin

@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
   Left = 159
-  Height = 366
+  Height = 341
   Top = 83
   Width = 912
   HelpType = htKeyword
@@ -10,7 +10,7 @@ object frmMain: TfrmMain
   ActiveControl = pnlCounts
   AutoScroll = True
   Caption = 'Cqrlog_Improved for Linux'
-  ClientHeight = 366
+  ClientHeight = 341
   ClientWidth = 912
   Constraints.MinHeight = 148
   Constraints.MinWidth = 536
@@ -14996,7 +14996,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Side = asrBottom
     Left = 0
     Height = 19
-    Top = 347
+    Top = 322
     Width = 912
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
@@ -15027,7 +15027,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = sbMain
     Left = 0
     Height = 46
-    Top = 295
+    Top = 270
     Width = 912
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 6
@@ -15256,7 +15256,7 @@ object frmMain: TfrmMain
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlDetails
     Left = 0
-    Height = 115
+    Height = 90
     Top = 70
     Width = 912
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -15575,7 +15575,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = pnlButtons
     Left = 0
     Height = 110
-    Top = 185
+    Top = 160
     Width = 912
     Anchors = [akLeft, akRight, akBottom]
     ClientHeight = 110
@@ -16461,7 +16461,9 @@ object frmMain: TfrmMain
           EA00D8923900D892390000000000000000004F4F4F0095959500939393004A4A
           4A00000000000000000000000000000000000000000000000000
         }
+        Hint = 'Callbook search'
         ImageIndex = 12
+        ShortCut = 116
         OnClick = acCallBookExecute
       end
       object MenuItem40: TMenuItem
@@ -16596,6 +16598,7 @@ object frmMain: TfrmMain
       object mnuHelpIndex: TMenuItem
         Caption = 'Help index Alt+H'
         ImageIndex = 14
+        ShortCut = 16456
         OnClick = mnuHelpIndexClick
       end
       object MenuItem37: TMenuItem
@@ -16603,6 +16606,7 @@ object frmMain: TfrmMain
       end
       object mnuAbout: TMenuItem
         Action = acAbout
+        ShortCut = 16449
         OnClick = acAboutExecute
       end
     end
@@ -16704,7 +16708,6 @@ object frmMain: TfrmMain
     object acCallBook: TAction
       Caption = 'Callbook'
       Hint = 'QRZ.com callbook search'
-      ShortCut = 117
       OnExecute = acCallBookExecute
     end
     object acTRXControl: TAction
@@ -17319,6 +17322,7 @@ object frmMain: TfrmMain
     object mnuIK3AQR: TMenuItem
       Caption = 'Search on IK3QAR qsl manager page'
       ImageIndex = 22
+      ShortCut = 8313
       OnClick = mnuIK3AQRClick
     end
     object mnueQSLView: TMenuItem

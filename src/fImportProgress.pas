@@ -22,6 +22,7 @@ uses
 
 const
   C_EErrorFile ='errors_eQSL.adi';
+  C_ESWLFile   ='SWL_eQSL.adi';
   C_LErrorFile ='errors_LoTW.adi';
 
 type
@@ -659,11 +660,14 @@ procedure TfrmImportProgress.WriteErrorRecord(f:char;call,band,modeorig,submodeo
 var
   l,
   tmp:String;
-  eFile  :TextFile;
-  eName  :string;
+  eFile,
+  sFile:TextFile;
+  eName,
+  sName:string;
 
 Begin
-             eName := dmData.UsrHomeDir + C_EErrorFile;
+             eName   := dmData.UsrHomeDir + C_EErrorFile;
+             sName := dmData.UsrHomeDir + C_ESWLFile;
              tmp:=LineEnding
                   +'------------------------------------------------'+LineEnding
                   +'QSO NOT FOUND in log'+LineEnding
@@ -695,13 +699,23 @@ Begin
 
              s.Add('<APP_CQRLOG_ERROR:'+l+'>'+tmp);
              AssignFile(eFile,eName);
+             AssignFile(sFile,sName);
              try
              if FileExistsUTF8(eName) then
                Append(eFile)
               else
                Rewrite(eFile);
 
-             write(eFile,s.text);
+             if FileExistsUTF8(sName) then
+               Append(sFile)
+              else
+               Rewrite(sFile);
+
+             if pos('<APP_EQSL_SWL:1>Y',s.text)=0 then
+                                           write(eFile,s.text)
+                                         else
+                                           write(sFile,s.text);
+             closeFile(sFile);
              closeFile(eFile);
              s.clear;
              except

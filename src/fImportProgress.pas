@@ -48,6 +48,7 @@ type
   private
     running,
     LocalDbg : Boolean;
+    eQSL_SWLs: Boolean;
     FileSize : Int64;
     procedure ImportDXCCTables;
     procedure RegenerateDXCCStat;
@@ -714,7 +715,10 @@ Begin
              if pos('<APP_EQSL_SWL:1>Y',s.text)=0 then
                                            write(eFile,s.text)
                                          else
+                                          begin
+                                           eQSL_SWLs :=true;
                                            write(sFile,s.text);
+                                          end;
              closeFile(sFile);
              closeFile(eFile);
              s.clear;
@@ -1107,7 +1111,8 @@ var
   grid,
   state,
   county,
-  Buf         : String;
+  Buf,
+  msg      : String;
 
   PosCall,
   PosBand,
@@ -1126,8 +1131,12 @@ var
   t_log       : TDateTime;
 
 begin
-   if FileExistsUTF8(dmData.UsrHomeDir + C_EErrorFile) then
+  if FileExistsUTF8(dmData.UsrHomeDir + C_EErrorFile) then
      DeleteFile(dmData.UsrHomeDir + C_EErrorFile);
+  if FileExistsUTF8(dmData.UsrHomeDir + C_ESWLFile) then
+     DeleteFile(dmData.UsrHomeDir + C_ESWLFile);
+  eQSL_SWLs := false;
+
   l := TStringList.Create;
   l.Add('<ADIF_VER:5>3.1.0');
   l.Add('<CREATED_TIMESTAMP:15>'+FormatDateTime('YYYYMMDD hhmmss',dmUtils.GetDateTime(0)));
@@ -1292,11 +1301,18 @@ begin
     CloseFile(f);
     if ErrorCount > 0 then
     begin
-      //l.SaveToFile(dmData.UsrHomeDir + C_EErrorFile); //this is done now right after error record appear
-      if Application.MessageBox(PChar(IntToStr(ErrorCount)+' QSO(s) were not found in your log.'+LineEnding+'QSO(s) are stored to '+dmData.UsrHomeDir + C_EErrorFile +
-                                LineEnding+LineEnding+'Do you want to show the file?'),'Question ....',mb_YesNo+mb_IconQuestion)=idYes then
-      frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile)
-    end
+      msg:=IntToStr(ErrorCount)+' QSO(s) were not found in your log.'+LineEnding+'QSO(s) are stored to :'+LineEnding+dmData.UsrHomeDir + C_EErrorFile;
+      if eQSL_SWLs then
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show the file(s)?'
+                  else
+                   msg:=msg+LineEnding+LineEnding+'Do you want to show the file?';
+
+      if Application.MessageBox(PChar(msg),'Question ....',mb_YesNo+mb_IconQuestion)=idYes then
+                             Begin
+                              if eQSL_SWLs then
+                                           frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
+                              frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
+    end                      end;
   finally
     l.Free;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then

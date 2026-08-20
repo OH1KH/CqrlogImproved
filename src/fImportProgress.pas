@@ -49,7 +49,7 @@ type
   private
     running,
     LocalDbg : Boolean;
-    eQSL_SWLs: Boolean;
+    eQSL_SWLs: integer;
     FileSize : Int64;
     procedure ImportDXCCTables;
     procedure RegenerateDXCCStat;
@@ -717,7 +717,7 @@ Begin
                                            write(eFile,s.text)
                                          else
                                           begin
-                                           eQSL_SWLs :=true;
+                                           inc(eQSL_SWLs);
                                            write(sFile,s.text);
                                           end;
              closeFile(sFile);
@@ -1113,7 +1113,9 @@ var
   state,
   county,
   Buf,
-  msg      : String;
+  msg,
+  bte,
+  bts         : String;
 
   PosCall,
   PosBand,
@@ -1130,13 +1132,13 @@ var
   t_eQSL_min,
   t_eQSL_max,
   t_log       : TDateTime;
-
+  res         : TModalResult;
 begin
   if FileExistsUTF8(dmData.UsrHomeDir + C_EErrorFile) then
      DeleteFile(dmData.UsrHomeDir + C_EErrorFile);
   if FileExistsUTF8(dmData.UsrHomeDir + C_ESWLFile) then
      DeleteFile(dmData.UsrHomeDir + C_ESWLFile);
-  eQSL_SWLs := false;
+  eQSL_SWLs := 0;
 
   l := TStringList.Create;
   l.Add('<ADIF_VER:5>3.1.0');
@@ -1302,18 +1304,57 @@ begin
     CloseFile(f);
     if ErrorCount > 0 then
     begin
-      msg:=IntToStr(ErrorCount)+' QSO(s) were not found in your log.'+LineEnding+'QSO(s) are stored to :'+LineEnding+dmData.UsrHomeDir + C_EErrorFile;
-      if eQSL_SWLs then
-                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show the file(s)?'
-                  else
-                   msg:=msg+LineEnding+LineEnding+'Do you want to show the file?';
+       msg:=IntToStr(ErrorCount)+' QSO';
+       if ErrorCount > 1 then
+                     msg:=msg+'(s) were'
+                   else
+                     msg:=msg+' was';
+       msg:=msg+' not found from your log.'+LineEnding+'Stored to :';
+       if (eQSL_SWLs>0) and ((ErrorCount-eQSL_SWLs) > 0) then   //both err and SWL
+                  begin
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_EErrorFile+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show files?';
+                   if (ErrorCount-eQSL_SWLs)> 1 then
+                                              bte:= IntToStr(ErrorCount-eQSL_SWLs)+' QSOs'
+                                            else
+                                              bte:= IntToStr(ErrorCount-eQSL_SWLs)+' QSO';
+                   if eQSL_SWLs > 1 then
+                                              bts:= IntToStr(eQSL_SWLs)+' SWLs'
+                                            else
+                                              bts:= IntToStr(eQSL_SWLs)+' SWL';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No',  402, PChar(bts), 401, PChar(bte), 403, PChar(IntToStr(ErrorCount)+' Both')], 0);
+                  end;
 
-      if Application.MessageBox(PChar(msg),'Question ....',mb_YesNo+mb_IconQuestion)=idYes then
-                             Begin
-                              if eQSL_SWLs then
-                                           frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
-                              frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
-    end                      end;
+
+       if (eQSL_SWLs=0) then             //no SWLs
+                  begin
+                   if ErrorCount > 1 then
+                                              bte:= IntToStr(ErrorCount)+' QSOs'
+                                            else
+                                              bte:= IntToStr(ErrorCount)+' QSO';
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_EErrorFile+LineEnding+LineEnding+'Do you want to show the file?';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No', 401, PChar(bte)], 0);
+                  end;
+
+        if (eQSL_SWLs=ErrorCount) then     //all SWLs
+                  begin
+                   if ErrorCount > 1 then
+                                              bts:= IntToStr(ErrorCount)+' SWLs'
+                                            else
+                                              bts:= IntToStr(ErrorCount)+' SWL';
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show the file?';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No', 402, PChar(bts)], 0);
+                  end;
+
+       case res of
+           401  :  frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
+           402  :  frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
+           403  :  Begin
+                    frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
+                    frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
+                   end;
+        end;
+
+    end
   finally
     l.Free;
     if cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False) then

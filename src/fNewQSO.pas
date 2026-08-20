@@ -30,8 +30,9 @@ const
   cMyLoc   = 'My Loc (CTRL+L): ';
   cOperator ='Operator (ALT+O): ';
   cQSLMgrVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/qslmgr/ver.dat';
-  cDOKVersionCheckUrl = 'https://www.df2et.de/cqrlog/ver.dat';
-  cCntyVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/ctyfiles/ver.dat';
+  cDOKVersionCheckUrl    = 'https://www.df2et.de/cqrlog/ver.dat';
+  cCntyVersionCheckUrl   = 'https://ok2cqr.github.io/cqrlog-cnty-files/ver.dat';
+  //cCntyVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/ctyfiles/ver.dat';
 
 type
   TRemoteModeType = (rmtFldigi, rmtWsjt, rmtADIF);

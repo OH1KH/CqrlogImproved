@@ -115,29 +115,29 @@ type
     BitBtn5:    TBitBtn;
     btnSort:    TBitBtn;
     dbgrdMain:  TDBGrid;
+    dbtAward: TDBText;
     dbtComment: TDBText;
-    dbtAward:   TDBText;
-    dbtQSLRDate: TDBText;
     dbtLoTWQSLR: TDBText;
-    dbtQSLSDate: TDBText;
     dbtLoTWQSLS: TDBText;
+    dbtQSLRDate: TDBText;
+    dbtQSLSDate: TDBText;
     Image1:     TImage;
     imgMain:    TImageList;
     imgMain1:   TImageList;
-    lblProfile: TLabel;
+    lblAward: TLabel;
+    lblCommentForQSO: TLabel;
     lblDist: TLabel;
     lblDistance: TLabel;
     lblLongest: TLabel;
     lblLongestDist: TLabel;
+    lblLoTWQSLRDate: TLabel;
+    lblLoTWQSLSDate: TLabel;
     lblProf: TLabel;
+    lblProfile: TLabel;
+    lblQSLRDate: TLabel;
+    lblQSLSDate: TLabel;
     lblQSOInLog:     TLabel;
     lblDXCCWorked:     TLabel;
-    lblCommentForQSO:    TLabel;
-    lblAward:    TLabel;
-    lblQSLSDate:    TLabel;
-    lblQSLRDate:    TLabel;
-    lblLoTWQSLSDate: TLabel;
-    lblLoTWQSLRDate: TLabel;
     lblDXCCConfirmed:     TLabel;
     lblDXCCCmf: TLabel;
     lblDXCC:    TLabel;
@@ -301,16 +301,16 @@ type
     mnuCancelFilter: TMenuItem;
     mnuFile:    TMenuItem;
     dlgOpen:    TOpenDialog;
-    Panel1:     TPanel;
     Panel3: TPanel;
+    pnlAllDetails: TPanel;
     pnlCounts: TPanel;
-    pnlDistance: TPanel;
-    pnlDetails: TPanel;
     pnlButtons: TPanel;
     Panel2:     TPanel;
     dlgSave:    TSaveDialog;
-    pnlProfile: TPanel;
+    pnlDetails: TPanel;
+    pnlDistance: TPanel;
     pnlLoTW: TPanel;
+    pnlProfile: TPanel;
     pnlQSL: TPanel;
     popWebSearch: TPopupMenu;
     sbMain:     TStatusBar;
@@ -1956,7 +1956,7 @@ begin
     if dmData.qCQRLOG.FieldByName('qsodate').AsDateTime < dmData.QSOColorDate then
       dbgrdMain.Canvas.Font.Color := dmData.QSOColor
   end;
-
+  CheckAttachment;
   dbgrdMain.DefaultDrawColumnCell(Rect,DataCol,Column,State)
 end;
 
@@ -2693,13 +2693,13 @@ procedure TfrmMain.ShowFields;
   end;
 
 begin
-  pnlDetails.Height:=56;
+  pnlAllDetails.Height:= 1+pnlDetails.Height;
   pnlDistance.Visible := cqrini.ReadBool('Columns', 'Distance', False);
-  if pnlDistance.Visible then
-                           pnlDetails.Height:=pnlDetails.Height+pnlDistance.Height+1;
   pnlProfile.Visible := cqrini.ReadBool('Columns', 'Profile', False);
   if pnlProfile.Visible then
-                           pnlDetails.Height:=pnlDetails.Height+pnlProfile.Height+1;
+                           pnlAllDetails.Height:=pnlAllDetails.Height+pnlProfile.Height+1;
+  if pnlDistance.Visible then
+                           pnlAllDetails.Height:=pnlAllDetails.Height +pnlDistance.Height+1;
 
   dbgrdMain.DataSource := dmData.dsrMain;
   dbgrdMain.ResetColWidths;
@@ -2876,6 +2876,8 @@ begin
       lblDist.Caption := qrb
    end
 end;
+
+
 function TfrmMain.CalcQrb(Myloc,loc:string;showUnits:boolean):string;
  var
   qrb,             //distance

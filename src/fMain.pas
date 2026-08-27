@@ -1643,15 +1643,16 @@ end;
 
 procedure TfrmMain.acPnlDetailsExecute(Sender: TObject);
 begin
-  if pnlDetails.Visible then
+  if pnlAllDetails.Visible then
   begin
-    pnlDetails.Visible   := False;
+    pnlAllDetails.Visible   := False;
     mnuShowDetails.Checked := False;
   end
   else
   begin
-    pnlDetails.Visible   := True;
+    pnlAllDetails.Visible   := True;
     mnuShowDetails.Checked := True;
+    ReloadGrid;
   end;
 end;
 

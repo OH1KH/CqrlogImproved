@@ -955,7 +955,7 @@
     <Version Value="11"/>
     <SearchPaths>
       <Libraries Value="$(LazarusDir)/lcl"/>
-      <OtherUnitFiles Value="lnet/lib;synapse"/>
+      <OtherUnitFiles Value="lnet/lib;synapse;dxcc-parser"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>

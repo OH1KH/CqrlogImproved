@@ -8117,12 +8117,9 @@ begin
         if dmData.DebugLevel>=1 then Writeln('Waiting WsjtDecode to end/Disableremotemode');
       end;
       mnuWsjtxmonitor.Visible := False;    //we do not show "monitor" in view-submenu when not active
+      cqrini.WriteBool('Window','MonWsjtx',((frmMonWsjtx <> nil) and frmMonWsjtx.Showing));
       if (frmMonWsjtx <> nil) then
-       begin
-        if frmMonWsjtx.Showing then frmMonWsjtx.hide // and close monitor
-         else cqrini.WriteBool('Window','MonWsjtx',false);
-        FreeAndNil(frmMonWsjtx); //to release flooding richmemo
-       end;
+                                   frmMonWsjtx.Close;
       if Assigned(WsjtxSock) then FreeAndNil(WsjtxSock);  // to release UDP socket
       if multicast then if Assigned(WsjtxSockS) then FreeAndNil(WsjtxSockS);  // to release UDP multicast TX socket
       mnuRemoteModeWsjt.Checked:= False;

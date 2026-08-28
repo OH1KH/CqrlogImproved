@@ -14974,7 +14974,6 @@ object frmMonWsjtx: TfrmMonWsjtx
   OnClose = FormClose
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
-  OnHide = FormHide
   OnShow = FormShow
   object pnlMap: TPanel
     AnchorSideLeft.Control = Owner

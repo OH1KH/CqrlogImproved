@@ -1289,6 +1289,7 @@ begin
   cqrini.WriteString('NewQSO', 'RemQSO', edtComments.Text);
   cqrini.WriteString('NewQSO', 'Op', edtOperator.Text);
   cqrini.WriteString('NewQSO', 'UsrBtn', edtUsrBtn.Text);
+  frmNewQSO.sbtnUsrbtn.Hint:=edtUsrBtn.Text;
   cqrini.WriteBool('NewQSO', 'UseSpaceBar', chkUseSpaceBar.Checked);
   cqrini.WriteBool('NewQSO', 'RefreshAfterSave', chkRefreshAfterSave.Checked);
   cqrini.WriteBool('NewQSO', 'UseRigPwr', chkUseRigPwr.Checked);

@@ -365,6 +365,7 @@ type
     sbtnQRZ: TSpeedButton;
     sbtnQSL: TSpeedButton;
     sbtnRefreshTime: TSpeedButton;
+    sbtnCallbookToggle: TSpeedButton;
     sbtnUsrbtn: TSpeedButton;
     sgrdCallStatistic: TStringGrid;
     sgrdStatistic: TStringGrid;
@@ -596,6 +597,7 @@ type
     procedure pgDetailsChange(Sender: TObject);
     procedure popEditQSOPopup(Sender: TObject);
     procedure sbtnAttachClick(Sender: TObject);
+    procedure sbtnCallbookToggleClick(Sender: TObject);
     procedure sbtnLocatorMapClick(Sender: TObject);
     procedure sbtnQSLClick(Sender: TObject);
     procedure sbtnQRZClick(Sender: TObject);
@@ -1508,6 +1510,8 @@ begin
   acShowStatBar.Checked := sbNewQSO.Visible;
 
   dmData.LoadQSODateColorSettings;
+
+  frmNewQSO.sbtnUsrbtn.Hint:= cqrini.ReadString('NewQSO', 'UsrBtn','User Button');
 
   if cqrini.ReadBool('CW', 'NoReset', false) then     //is set: user does not want reset CW keyer at rig switch/init
                                         InitializeCW; //so we have to do it at least once: Here.
@@ -7467,14 +7471,53 @@ begin
   frmCWKeys.fraCWKeys.UpdateFKeyLabels
 end;
 
+procedure TfrmNewQSO.sbtnCallbookToggleClick(Sender: TObject);
+begin
+    sbtnCallbookToggle.Enabled:=false;
+    if cqrini.ReadBool('Callbook','HamQTH',True) then
+     Begin
+        cqrini.WriteBool('Callbook','HamQTH',False);
+        cqrini.WriteBool('Callbook','QRZ',True);
+        ChangeCallBookCaption;
+        exit;
+     end;
+    if cqrini.ReadBool('Callbook','QRZ',True) then
+     Begin
+        cqrini.WriteBool('Callbook','QRZ',False);
+        cqrini.WriteBool('Callbook','QRZCQ',True);
+        ChangeCallBookCaption;
+        Exit;
+     end;
+    if cqrini.ReadBool('Callbook','QRZCQ',True) then
+     Begin
+        cqrini.WriteBool('Callbook','QRZCQ',False);
+        cqrini.WriteBool('Callbook','HamQTH',True);
+        ChangeCallBookCaption;
+        Exit;
+     end;
+end;
+
 procedure TfrmNewQSO.ChangeCallBookCaption;
 begin
+  sbtnCallbookToggle.Images:=Self.imgMain1;
   if cqrini.ReadBool('Callbook','HamQTH',True) then
-    lblCallbookInformation.Caption := 'Callbook (HamQTH.com):';
+    begin
+     lblCallbookInformation.Caption := 'Callbook (HamQTH.com):';
+     sbtnCallbookToggle.ImageIndex:=19;
+    end;
   if cqrini.ReadBool('Callbook','QRZ',True) then
-    lblCallbookInformation.Caption := 'Callbook (qrz.com):';
+    begin
+     lblCallbookInformation.Caption := 'Callbook (qrz.com):';
+     sbtnCallbookToggle.ImageIndex:=20;
+    end;
   if cqrini.ReadBool('Callbook','QRZCQ',True) then
-    lblCallbookInformation.Caption := 'Callbook (qrzCQ.com):';
+    begin
+      lblCallbookInformation.Caption := 'Callbook (qrzCQ.com):';
+      sbtnCallbookToggle.ImageIndex:=23;
+    end;
+
+   sbtnCallbookToggle.Refresh;
+   sbtnCallbookToggle.Enabled:=true;
 end;
 
 procedure TfrmNewQSO.CalculateLocalSunRiseSunSet;

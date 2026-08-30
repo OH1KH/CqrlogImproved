@@ -4,7 +4,6 @@ object frmSelectDXCC: TfrmSelectDXCC
   Top = 173
   Width = 651
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsDialog
   Caption = 'Select country'
   ClientHeight = 501
   ClientWidth = 651
@@ -15048,9 +15047,11 @@ object frmSelectDXCC: TfrmSelectDXCC
         Top = 0
         Width = 641
         Align = alClient
+        AutoEdit = False
         Color = clWindow
         Columns = <>
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiselect, dgDisableDelete, dgDisableInsert, dgThumbTracking]
+        ReadOnly = True
         Scrollbars = ssAutoBoth
         TabOrder = 0
       end
@@ -15067,7 +15068,7 @@ object frmSelectDXCC: TfrmSelectDXCC
         Align = alClient
         Color = clWindow
         Columns = <>
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgDisableInsert, dgThumbTracking]
         TabOrder = 0
       end
     end

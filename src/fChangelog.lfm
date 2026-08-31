@@ -3,8 +3,8 @@ object frmChangelog: TfrmChangelog
   Height = 463
   Top = 275
   Width = 798
-  HorzScrollBar.Page = 174
-  VertScrollBar.Page = 90
+  HorzScrollBar.Page = 127
+  VertScrollBar.Page = 459
   AutoScroll = True
   Caption = 'Changelog'
   ClientHeight = 463
@@ -15011,22 +15011,17 @@ object frmChangelog: TfrmChangelog
     end
   end
   object IpHtmlPanel1: TIpHtmlPanel
-    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Control = Panel1
     AnchorSideTop.Control = Panel1
     AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Owner
+    AnchorSideRight.Control = Panel1
     AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 2
+    Left = 0
     Height = 423
-    Top = 38
-    Width = 794
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Left = 2
-    BorderSpacing.Top = 2
-    BorderSpacing.Right = 2
-    BorderSpacing.Bottom = 2
+    Top = 36
+    Width = 798
+    Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsSingle
     DataProvider = IpFileDataProvider1
     FixedTypeface = 'Courier New'
@@ -15042,7 +15037,6 @@ object frmChangelog: TfrmChangelog
     PrintSettings.Preview.Width = 1080
     PrintSettings.Preview.Height = 675
     TabOrder = 1
-    UsePaintBuffer = False
   end
   object IpFileDataProvider1: TIpFileDataProvider
     Left = 63

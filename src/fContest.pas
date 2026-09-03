@@ -1769,7 +1769,7 @@ Begin
     'CW' :if Assigned(frmNewQSO.CWint)  then
             frmNewQSO.CWint.SendText(dmUtils.GetCWMessage(dmUtils.GetDescKeyFromCode(Key),edtCall.Text,
             edtRSTs.Text, edtSTX.Text,edtSTXStr.Text, edtSRX.Text, edtSRXstr.Text, frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-            else ShowMessage('CW interface:  No keyer defined for current radio!');
+            else dmUtils.ShowTheMessage('CW interface','No keyer defined for'+LineEnding+'current radio!');
      'SSB',
      'AM',
      'FM': frmNewQSO.RunVK(dmUtils.GetDescKeyFromCode(Key));

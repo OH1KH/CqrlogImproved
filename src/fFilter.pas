@@ -776,7 +776,7 @@ begin
        if DirectLoad then btnOkClick(nil);
      end
     else
-      ShowMessage('File not found!');
+      dmUtils.ShowTheMessage('Error','File not found!');
    end;
 end;
 

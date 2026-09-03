@@ -21,8 +21,10 @@ uses
   LazFileUtils, LazUTF8;
 
 const
-  C_EErrorFile ='errors_eQSL.adi';
-  C_LErrorFile ='errors_LoTW.adi';
+  C_EErrorFile       = 'errors_eQSL.adi';
+  C_ESWLFile         = 'SWL_eQSL.adi';
+  C_LErrorFile       = 'errors_LoTW.adi';
+  cCntyVersionUrl   = 'https://ok2cqr.github.io/cqrlog-cnty-files/cqrlog-cty.tar.gz';
 
 type
   TImportProgressType = (imptRegenerateDXCC, imptImportDXCCTables, imptDownloadDXCCData, imptImportLoTWAdif,
@@ -47,6 +49,7 @@ type
   private
     running,
     LocalDbg : Boolean;
+    eQSL_SWLs: integer;
     FileSize : Int64;
     procedure ImportDXCCTables;
     procedure RegenerateDXCCStat;
@@ -196,7 +199,7 @@ begin
         dmDXCC.qDXCCRef.ExecSQL;
       end;
     end;
-    List.AddStrings(f);
+    List.AddStrings(f);       //1st add: current country list
     dmDXCC.trDXCCRef.Commit;
     ////////////////////////////////////////////////////////////// countrydel.tab
     dmDXCC.trDXCCRef.StartTransaction;
@@ -234,23 +237,23 @@ begin
     lblComment.Caption := 'Importing file Callresolution.tbl ...';
     Application.ProcessMessages;
     f.LoadFromFile(Directory+'CallResolution.tbl');
-    List.AddStrings(f);
+    List.AddStrings(f);         //2nd. add CallResolution
     ////////////////////////////////////////////////////////////////// AreaOK1RR.tab
 
     f.Clear;
     f.LoadFromFile(Directory+'AreaOK1RR.tbl');
-    List.AddStrings(f);
+    List.AddStrings(f);        //3rd. add AreaOK1RR
 
     for y:=0 to List.Count-1 do
     begin
-      if List.Strings[y][1] = '%' then
+      if List.Strings[y][1] = '%' then  //go through list and if line starts % duplicate it with one of ABCDEFGHIJKLMNOPQRSTUVWXYZ at beginning
       begin
-        for i:=65 to 90 do
+        for i:=65 to 90 do    //A-Z
           list.Add(chr(i)+copy(list.Strings[y],2,Length(list.Strings[y])-1));
       end;
     end;
 
-    List.SaveToFile(dmData.HomeDir+'dxcc_data'+PathDelim+'country.tab');
+    List.SaveToFile(dmData.HomeDir+'dxcc_data'+PathDelim+'country.tab');   //finally save the whole List stringist to file dxcc_data/Counry.tab.
 
     //////////////////////////////////////////////////////////// ambigous.tbl;
     CopyFile(Directory+'Ambiguous.tbl',dmData.HomeDir+'dxcc_data'+PathDelim+'ambiguous.tab');
@@ -338,10 +341,10 @@ begin
       if LocalDbg then
         Writeln(dmData.qIOTAList.SQL.Text);
 
-      if length(Result[1]) > 250 then ShowMessage(Result[0]);
-      if length(Result[2]) > 15 then ShowMessage(Result[0]);
+      if length(Result[1]) > 250 then dmUtils.ShowTheMessage('Iota',Result[0]);
+      if length(Result[2]) > 15 then dmUtils.ShowTheMessage('Iota',Result[0]);
       if length(Result) > 3 then
-        if length(Result[3]) > 15 then ShowMessage(Result[0]);
+        if length(Result[3]) > 15 then dmUtils.ShowTheMessage('Iota',Result[0]);
       dmData.qIOTAList.ExecSQL;
     end;
     dmData.trIOTAList.Commit;
@@ -405,7 +408,7 @@ begin
       end
       else begin
         old_adif := dmData.Q1.Fields[3].AsInteger;
-        id       := dmData.qCQRLOG.Fields[0].AsInteger;
+        id       := dmData.Q1.Fields[0].AsInteger;
         adif     := dmDXCC.id_country(dmData.Q1.Fields[2].AsString, dmUtils.StrToDateFormat(
                                       dmData.Q1.Fields[1].AsString),
                                       tmp, cont, tmp, waz, tmp, itu, tmp, tmp);
@@ -464,7 +467,7 @@ begin
     HTTP.UserName  := cqrini.ReadString('Program','User','');
     HTTP.Password  := cqrini.ReadString('Program','Passwd','');
 
-    if HTTP.HTTPMethod('GET', 'http://www.ok2cqr.com/linux/cqrlog/ctyfiles/cqrlog-cty.tar.gz') then
+    if HTTP.HTTPMethod('GET', cCntyVersionUrl) then
     begin
       http.Document.Seek(0,soBeginning);
       m.CopyFrom(http.Document,HTTP.Document.Size);
@@ -659,11 +662,14 @@ procedure TfrmImportProgress.WriteErrorRecord(f:char;call,band,modeorig,submodeo
 var
   l,
   tmp:String;
-  eFile  :TextFile;
-  eName  :string;
+  eFile,
+  sFile:TextFile;
+  eName,
+  sName:string;
 
 Begin
-             eName := dmData.UsrHomeDir + C_EErrorFile;
+             eName   := dmData.UsrHomeDir + C_EErrorFile;
+             sName := dmData.UsrHomeDir + C_ESWLFile;
              tmp:=LineEnding
                   +'------------------------------------------------'+LineEnding
                   +'QSO NOT FOUND in log'+LineEnding
@@ -695,17 +701,30 @@ Begin
 
              s.Add('<APP_CQRLOG_ERROR:'+l+'>'+tmp);
              AssignFile(eFile,eName);
+             AssignFile(sFile,sName);
              try
              if FileExistsUTF8(eName) then
                Append(eFile)
               else
                Rewrite(eFile);
 
-             write(eFile,s.text);
+             if FileExistsUTF8(sName) then
+               Append(sFile)
+              else
+               Rewrite(sFile);
+
+             if pos('<APP_EQSL_SWL:1>Y',s.text)=0 then
+                                           write(eFile,s.text)
+                                         else
+                                          begin
+                                           inc(eQSL_SWLs);
+                                           write(sFile,s.text);
+                                          end;
+             closeFile(sFile);
              closeFile(eFile);
              s.clear;
              except
-               ShowMessage('Error writing '+eName);
+               dmUtils.ShowTheMessage('Error','Error writing '+LineEnding+eName);
              end;
 end;
 procedure TfrmImportProgress.ImportLoTWAdif;
@@ -1093,7 +1112,10 @@ var
   grid,
   state,
   county,
-  Buf         : String;
+  Buf,
+  msg,
+  bte,
+  bts         : String;
 
   PosCall,
   PosBand,
@@ -1110,10 +1132,14 @@ var
   t_eQSL_min,
   t_eQSL_max,
   t_log       : TDateTime;
-
+  res         : TModalResult;
 begin
-   if FileExistsUTF8(dmData.UsrHomeDir + C_EErrorFile) then
+  if FileExistsUTF8(dmData.UsrHomeDir + C_EErrorFile) then
      DeleteFile(dmData.UsrHomeDir + C_EErrorFile);
+  if FileExistsUTF8(dmData.UsrHomeDir + C_ESWLFile) then
+     DeleteFile(dmData.UsrHomeDir + C_ESWLFile);
+  eQSL_SWLs := 0;
+
   l := TStringList.Create;
   l.Add('<ADIF_VER:5>3.1.0');
   l.Add('<CREATED_TIMESTAMP:15>'+FormatDateTime('YYYYMMDD hhmmss',dmUtils.GetDateTime(0)));
@@ -1278,10 +1304,56 @@ begin
     CloseFile(f);
     if ErrorCount > 0 then
     begin
-      //l.SaveToFile(dmData.UsrHomeDir + C_EErrorFile); //this is done now right after error record appear
-      if Application.MessageBox(PChar(IntToStr(ErrorCount)+' QSO(s) were not found in your log.'+LineEnding+'QSO(s) are stored to '+dmData.UsrHomeDir + C_EErrorFile +
-                                LineEnding+LineEnding+'Do you want to show the file?'),'Question ....',mb_YesNo+mb_IconQuestion)=idYes then
-      frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile)
+       msg:=IntToStr(ErrorCount)+' QSO';
+       if ErrorCount > 1 then
+                     msg:=msg+'(s) were'
+                   else
+                     msg:=msg+' was';
+       msg:=msg+' not found from your log.'+LineEnding+'Stored to :';
+       if (eQSL_SWLs>0) and ((ErrorCount-eQSL_SWLs) > 0) then   //both err and SWL
+                  begin
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_EErrorFile+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show files?';
+                   if (ErrorCount-eQSL_SWLs)> 1 then
+                                              bte:= IntToStr(ErrorCount-eQSL_SWLs)+' QSOs'
+                                            else
+                                              bte:= IntToStr(ErrorCount-eQSL_SWLs)+' QSO';
+                   if eQSL_SWLs > 1 then
+                                              bts:= IntToStr(eQSL_SWLs)+' SWLs'
+                                            else
+                                              bts:= IntToStr(eQSL_SWLs)+' SWL';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No',  402, PChar(bts), 401, PChar(bte), 403, PChar(IntToStr(ErrorCount)+' Both')], 0);
+                  end;
+
+
+       if (eQSL_SWLs=0) then             //no SWLs
+                  begin
+                   if ErrorCount > 1 then
+                                              bte:= IntToStr(ErrorCount)+' QSOs'
+                                            else
+                                              bte:= IntToStr(ErrorCount)+' QSO';
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_EErrorFile+LineEnding+LineEnding+'Do you want to show the file?';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No', 401, PChar(bte)], 0);
+                  end;
+
+        if (eQSL_SWLs=ErrorCount) then     //all SWLs
+                  begin
+                   if ErrorCount > 1 then
+                                              bts:= IntToStr(ErrorCount)+' SWLs'
+                                            else
+                                              bts:= IntToStr(ErrorCount)+' SWL';
+                   msg:=msg+LineEnding+dmData.UsrHomeDir + C_ESWLFile+LineEnding+LineEnding+'Do you want to show the file?';
+                   res := QuestionDlg('Question:', PChar(msg), mtConfirmation, [400, 'No', 402, PChar(bts)], 0);
+                  end;
+
+       case res of
+           401  :  frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
+           402  :  frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
+           403  :  Begin
+                    frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_EErrorFile);
+                    frmAdifImport.OpenInTextEditor(dmData.UsrHomeDir + C_ESWLFile);
+                   end;
+        end;
+
     end
   finally
     l.Free;

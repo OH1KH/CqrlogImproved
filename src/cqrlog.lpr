@@ -26,7 +26,7 @@ uses
   fWorkedGrids, fPropDK0WCY, fRemind, fContest, fMonWsjtx, fXfldigi,
   dMembership, dSatellite, uRigControl, uRotControl, azidis3, aziloc, fDOKStat,
   fCabrilloExport, uDbUtils, dQTHProfile, uConnectionInfo, znacmech, gline2,
-  fDbSqlSel, fProgress, fDbError, fCountyStat, LazVersion;
+  fDbSqlSel, fProgress, fDbError, fCountyStat, fCustomMessage, LazVersion, uDebugLog;
 var
   Splash    : TfrmSplash;
   SFL       : integer;
@@ -113,7 +113,7 @@ begin
          Writeln('you need to set common database server for logs and use ');
          Writeln('"Preferences/program/Configuration storage settings" to separate');
          Writeln('each Cqrlog saving their own settings.');
-         ShowMessage('Cqrlog is already running !!');
+         dmUtils.ShowTheMessage('Cqrlog','Cqrlog is already running!',5000);
          Exit;
        end;
 

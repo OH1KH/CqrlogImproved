@@ -125,9 +125,8 @@ type
     procedure LoadRigListCombo(CurrentRigId : String; RigList : TStringList; RigComboBox : TComboBox);
     procedure ModeConvListsCreate(SetUp:boolean);
     procedure MakeMissingModeFile(num:integer);
-    procedure TheButtonClick(Sender: TObject);
 
-    function GetTagValue(Data, tg: string): string;
+    function GetNodeValue(Data, tg: string): string;
     function GetQRZSession(var ErrMsg: string): boolean;
     function GetQRZCQSession(var ErrMsg: string): boolean;
     function GetHamQTHSession(var ErrMsg: string): boolean;
@@ -343,7 +342,7 @@ type
         procedure ShowQRZInBrowser(call: string);
         procedure ShowQSLWithExtViewer(Call: string;AltImg:String='');
         procedure ShowStatistic(ref_adif,old_stat_adif:Word; g:TStringGrid; call:String='');
-        procedure ShowTheMessage(Title:String; Message:String; Tme:longint);
+        procedure ShowTheMessage(Title:String; Message:String; Tme:longint=7000; NeverShow:Boolean=False; SaveName:String='');
         procedure ShowUsrUrl;
         procedure SortArray(l,r : Integer);
         procedure SortList(l: TStringList);
@@ -362,7 +361,7 @@ implementation
   {$R *.lfm}
 
 { TdmUtils }
-uses dData, dDXCC, fEnterFreq, fTRXControl, uMyini, fNewQSO, uVersion, fContest;
+uses dData, dDXCC, fEnterFreq, fTRXControl, uMyini, fNewQSO, uVersion, fContest,fCustomMessage;
 
 procedure TdmUtils.FillNewBandModeLimits;  //write band's mode base values to new mode frequency table using old values
   var f:integer;
@@ -3618,6 +3617,8 @@ begin
     else
     begin
       m.LoadFromStream(http.Document);
+      if LocalDbg then
+                      writeln(m.text);
       if (Pos('<Error>Session Timeout</Error>', m.Text) > 0)
         or (Pos('Invalid session key', m.Text) > 0)then      //[2026-02-23 05:56:37] [33m[!] QRZ API ERROR: Invalid session key[0m
       begin
@@ -3631,32 +3632,43 @@ begin
           exit;
 
         if (cqrini.ReadBool('NewQSO', 'NFname', False)) then
-                 nick := GetTagValue(m.Text, '<fname>') + ' ' + GetTagValue(m.Text, '<name>')
+                 nick := GetNodeValue(m.Text, '<fname>') + ' ' + GetNodeValue(m.Text, '<name>')
                else
                 Begin
-                  nick := GetTagValue(m.Text, '<nickname>');
-                  if nick ='' then  nick := GetTagValue(m.Text, '<fname>');
+                  nick := GetNodeValue(m.Text, '<nickname>');
+                  if LocalDbg then
+                      writeln('Nick: ',UTF8Length(nick),' :',nick);
+                  if nick ='' then                              // no nickname then first name
+                        Begin
+                          nick := GetNodeValue(m.Text, '<fname>');
+                          writeln('Nick(fname): ',UTF8Length(nick),' :',nick);
+                        end;
+                 if nick ='' then                                   // no first name then family name
+                        Begin
+                          nick := GetNodeValue(m.Text, '<name>');
+                          writeln('Nick(name): ',UTF8Length(nick),' :',nick);
+                        end;
                 end;
 
         if Utf8Length(nick) > 40 then
           nick := UTF8copy(nick,1,40);
 
 
-        qth := GetTagValue(m.Text, '<addr2>');
-        state := GetTagValue(m.Text, '<state>');
-        zip := GetTagValue(m.Text, '<zip>');
-        address := GetTagValue(m.Text, '<fname>') + ' ' + GetTagValue(m.Text, '<name>') +
-          LineEnding + GetTagValue(m.Text, '<addr1>') + LineEnding +
-          GetTagValue(m.Text, '<addr2>');
+        qth := GetNodeValue(m.Text, '<addr2>');
+        state := GetNodeValue(m.Text, '<state>');
+        zip := GetNodeValue(m.Text, '<zip>');
+        address := GetNodeValue(m.Text, '<fname>') + ' ' + GetNodeValue(m.Text, '<name>') +
+          LineEnding + GetNodeValue(m.Text, '<addr1>') + LineEnding +
+          GetNodeValue(m.Text, '<addr2>');
         if (state <> '') then
           address := address + ', ' + state;
         address := address + ' ' + zip;
-        county := GetTagValue(m.Text, '<county>');
-        grid := UpperCase(GetTagValue(m.Text, '<grid>'));
-        qsl := GetTagValue(m.Text, '<qslmgr>');
-        iota := GetTagValue(m.Text, '<iota>');
-        waz := GetTagValue(m.Text, '<cqzone>');
-        itu := GetTagValue(m.Text, '<ituzone>')
+        county := GetNodeValue(m.Text, '<county>');
+        grid := UpperCase(GetNodeValue(m.Text, '<grid>'));
+        qsl := GetNodeValue(m.Text, '<qslmgr>');
+        iota := GetNodeValue(m.Text, '<iota>');
+        waz := GetNodeValue(m.Text, '<cqzone>');
+        itu := GetNodeValue(m.Text, '<ituzone>')
       end
     end
   finally
@@ -3715,25 +3727,25 @@ begin
         if Pos('<Error>Not found:', m.Text) > 0 then
           exit;
 
-        nick:= GetTagValue(m.Text, '<name>');
+        nick:= GetNodeValue(m.Text, '<name>');
         if Utf8Length(nick) > 40 then
           nick := UTF8copy(nick,1,40);
 
-        qth := GetTagValue(m.Text, '<qth>');
-        state := GetTagValue(m.Text, '<state>');
-        zip := GetTagValue(m.Text, '<zip>');
-        address := GetTagValue(m.Text, '<name>') + LineEnding +
-          GetTagValue(m.Text, '<address>') + LineEnding;
+        qth := GetNodeValue(m.Text, '<qth>');
+        state := GetNodeValue(m.Text, '<state>');
+        zip := GetNodeValue(m.Text, '<zip>');
+        address := GetNodeValue(m.Text, '<name>') + LineEnding +
+          GetNodeValue(m.Text, '<address>') + LineEnding;
         if (state <> '') then
           address := address + ', ' + state;
         address := address + ' ' + zip;
-        county := GetTagValue(m.Text, '<county>');
-        grid := UpperCase(GetTagValue(m.Text, '<locator>'));
-        qsl := GetTagValue(m.Text, '<manager>');
-        iota := GetTagValue(m.Text, '<iota>');
-        waz := GetTagValue(m.Text, '<cq>');
-        itu := GetTagValue(m.Text, '<itu>');
-        dok := GetTagValue(m.Text, '<dok>')
+        county := GetNodeValue(m.Text, '<county>');
+        grid := UpperCase(GetNodeValue(m.Text, '<locator>'));
+        qsl := GetNodeValue(m.Text, '<manager>');
+        iota := GetNodeValue(m.Text, '<iota>');
+        waz := GetNodeValue(m.Text, '<cq>');
+        itu := GetNodeValue(m.Text, '<itu>');
+        dok := GetNodeValue(m.Text, '<dok>')
       end
     end
   finally
@@ -4306,17 +4318,25 @@ begin
     Result := GetHamQTHInfo(call, nick, qth, address, zip, grid, state, county, qsl, iota, waz, itu, dok, ErrMsg)
 end;
 
-function TdmUtils.GetTagValue(Data, tg: string): string;
+function TdmUtils.GetNodeValue(Data, tg: string): string;
 var
-  EndTag: string;
-  p: word;
+  EndTag       : string;
+  ValueStart,
+  ValueLen,
+  StartTagLen,
+  EndTaglen    : integer;
 begin
   Result := '';
-  EndTag := '</' + copy(tg, 2, Length(tg) - 1);
-  p := Pos(tg, Data);
-  if p > 0 then
+  if UTF8Pos(tg, Data)=0 then
+                       exit;
+  StartTagLen:= UTF8Length(tg);
+  EndTag     := '</' + UTF8copy(tg, 2, StartTagLen - 1);
+  EndTaglen  := UTF8Length(EndTag);
+  ValueStart := UTF8Pos(tg, Data)+StartTagLen;
+  ValueLen   := UTF8Pos(EndTag, Data) - ValueStart;
+  if ValueLen > 0 then
   begin
-    Result := copy(Data, p + Length(tg), Pos(EndTag, Data) - p - Length(tg));
+    Result := UTF8copy(Data, ValueStart, ValueLen);
     Result := Trim(Result);
     if LocalDbg then
     begin
@@ -4473,10 +4493,10 @@ begin
         Writeln(m.Text);
       //I'd like to parse it as normal XML but it seems XML support in Freepascal
       //2.4.0 is broken :-(
-      ErrMsg := GetTagValue(m.Text, '<Error>');
+      ErrMsg := GetNodeValue(m.Text, '<Error>');
       if (ErrMsg = '') then
       begin
-        fHamQTHSession := GetTagValue(m.Text, '<session_id>');
+        fHamQTHSession := GetNodeValue(m.Text, '<session_id>');
         if fHamQTHSession = '' then
           ErrMsg := 'Tag "<session_id>" not found!'
         else
@@ -4546,41 +4566,41 @@ begin
         end;
 
           if (cqrini.ReadBool('NewQSO', 'NFname', False)) then
-                 nick := GetTagValue(m.Text, '<adr_name>')
+                 nick := GetNodeValue(m.Text, '<adr_name>')
                else
                 Begin
-                  nick := GetTagValue(m.Text, '<nick>');
-                  if nick ='' then  nick := GetTagValue(m.Text, '<adr_name>');
+                  nick := GetNodeValue(m.Text, '<nick>');
+                  if nick ='' then  nick := GetNodeValue(m.Text, '<adr_name>');
                 end;
 
         if Utf8Length(nick) > 40 then
           nick := UTF8copy(nick,1,40);
 
 
-        qth := GetTagValue(m.Text, '<qth>');
-        state := GetTagValue(m.Text, '<us_state>');
-        zip := GetTagValue(m.Text, '<adr_zip>');
-        address := GetTagValue(m.Text, '<adr_name>') + LineEnding +
-          GetTagValue(m.Text, '<adr_street1>') + LineEnding;
-        tmp := GetTagValue(m.Text, '<adr_street2>');
+        qth := GetNodeValue(m.Text, '<qth>');
+        state := GetNodeValue(m.Text, '<us_state>');
+        zip := GetNodeValue(m.Text, '<adr_zip>');
+        address := GetNodeValue(m.Text, '<adr_name>') + LineEnding +
+          GetNodeValue(m.Text, '<adr_street1>') + LineEnding;
+        tmp := GetNodeValue(m.Text, '<adr_street2>');
         if tmp <> '' then
           address := address + tmp + LineEnding;
-        tmp := GetTagValue(m.Text, '<adr_street3>');
+        tmp := GetNodeValue(m.Text, '<adr_street3>');
         if tmp <> '' then
           address := address + tmp + LineEnding;
-        address := address + GetTagValue(m.Text, '<adr_city>');
+        address := address + GetNodeValue(m.Text, '<adr_city>');
         if (state <> '') then
           address := address + ', ' + state;
         address := address + ' ' + zip;
-        county := GetTagValue(m.Text, '<us_county>');
-        grid := UpperCase(GetTagValue(m.Text, '<grid>'));
-        qsl := GetTagValue(m.Text, '<qsl_via>');
-        iota := GetTagValue(m.Text, '<iota>');
-        waz := GetTagValue(m.Text, '<cq>');
-        itu := GetTagValue(m.Text, '<itu>');
+        county := GetNodeValue(m.Text, '<us_county>');
+        grid := UpperCase(GetNodeValue(m.Text, '<grid>'));
+        qsl := GetNodeValue(m.Text, '<qsl_via>');
+        iota := GetNodeValue(m.Text, '<iota>');
+        waz := GetNodeValue(m.Text, '<cq>');
+        itu := GetNodeValue(m.Text, '<itu>');
         //DL7OAP: DOK can be 'H24', 'h 24' or 'H-24', etc.
         //thats why we clean it with RegExp so only letters and figures are left
-        dok := GetTagValue(m.Text, '<dok>');
+        dok := GetNodeValue(m.Text, '<dok>');
         if (trim(dok) <> '') then
            dok := ReplaceRegExpr('[^a-zA-Z0-9]', dok, '', True); //ARegExpr, AInputStr, AReplaceStr
         dok := LeftStr(UpperCase(dok),12); // now all upcase and cut to maximal length of 12 of dok field
@@ -5887,7 +5907,7 @@ begin
     prg := cqrini.ReadString('ExtView', 'txt', '');
     if prg<>'' then
       dmUtils.RunOnBackground(prg + ' ' + AnsiQuotedStr(f, '"'))
-     else ShowMessage('No external text viewer defined!'+#10+'See: prefrences/External viewers');
+     else dmUtils.ShowTheMessage('Error','No text viewer defined!'+#10+'See: prefrences/External viewers');
   finally
    //done
   end;
@@ -5982,60 +6002,26 @@ Begin
   ADate := DateTimeToStr(DateOf(UnixTODateTime(DateTimeToUnix(Date)-(hours * 3600))));
   ATime := copy(TimeToStr(TimeOf(UnixTODateTime(DateTimeToUnix(Date)-(hours * 3600)))),1,5);
 end;
-procedure  TdmUtils.ShowTheMessage(Title:String; Message:String; Tme:longint);   //time in milliseconds
-var
- TheForm: TForm;
- TheButton: TButton;
- TheLabel: Tlabel;
-
+procedure  TdmUtils.ShowTheMessage(Title:String; Message:String; Tme:longint=7000; NeverShow:Boolean=False; SaveName:String='');   //time in milliseconds
 Begin
-  WaitTime:=Tme;
-  TheForm:=TForm.Create(nil);
-  With TheForm do
-  Begin
-   SetBounds(100, 100, 220, 150);
-   TheForm.Caption:=Title;
-   //TheForm.Position := poScreenCenter;
-   TheForm.FormStyle := fsSystemStayOnTop;
-   TheForm.Position:= poWorkAreaCenter;
-  end;
-  TheButton:=TButton.create(TheForm);
-  With TheButton do
-  Begin
-   Caption:='OK    ('+IntToStr(WaitTime div 1000)+')';
-   SetBounds(114, 114, 100, 30);
-   Anchors := [akBottom, akRight];
-   Parent:=TheForm;
-   OnClick:=@TheButtonClick;
-  end;
-  TheLabel:=Tlabel.Create(TheForm);
-  With TheLabel do
-  Begin
-   SetBounds(50,10,170,100);
-   Caption:=Message;
-   AutoSize:=true;
-   Anchors := [akLeft, akRight];
-   Parent:=TheForm;
-   WordWrap:=true;
-  end;
+  if (SaveName<>'') and cqrini.ReadBool('CustomMessage', SaveName, False) then       //never show this message again
+                                                                              Exit;
 
-  TheForm.Show;
+  frmCustomMessage :=TfrmCustomMessage.Create(nil);
+  frmCustomMessage.ShowCdx:=NeverShow;
+  frmCustomMessage.SaveName:= SaveName;
+  frmCustomMessage.Message:=Message;
+  frmCustomMessage.Head:=Title;
+  frmCustomMessage.OpenTime:=Tme div 1000;   //in secs
+  try
+    frmCustomMessage.ShowModal
+  finally
+    FreeAndNil(frmCustomMessage)
+  end
 
-  While WaitTime>0 do
-   Begin
-    Application.ProcessMessages;
-    sleep(100);
-    WaitTime:=WaitTime-100;
-    TheButton.Caption:='OK    ('+IntToStr(WaitTime div 1000)+')';
-   end;
-  TheForm.Close;
-  FreeAndNil(TheForm);
+
 end;
 
-procedure TdmUtils.TheButtonClick(Sender: TObject);
-begin
-  WaitTime:=0;
-end;
 function  TdmUtils.IsFileThere(ASearch: string;out ResultFile: string): boolean;
 Begin
  if FileExists(ASearch,true) then
@@ -6045,7 +6031,7 @@ Begin
    end
   else
    begin
-      ShowMessage('File: '+ASearch+' is not found!');
+      dmUtils.ShowTheMessage('File:',ASearch+' is not found!');
       ResultFile:=ASearch;
       Result:=False;
    end;

@@ -147,7 +147,7 @@ begin
      Begin
       if  edtDXOnlyPref.Text='' then
        Begin
-        ShowMessage('"Only these prefix" is selected but prefix list is empty!');
+        dmUtils.ShowTheMessage('Error','"Only these prefix" is'+LineEnding+'selected but prefix'+LineEnding+'list is empty!');
         exit;
        end;
      end;

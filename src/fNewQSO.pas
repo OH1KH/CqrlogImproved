@@ -30,8 +30,9 @@ const
   cMyLoc   = 'My Loc (CTRL+L): ';
   cOperator ='Operator (ALT+O): ';
   cQSLMgrVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/qslmgr/ver.dat';
-  cDOKVersionCheckUrl = 'https://www.df2et.de/cqrlog/ver.dat';
-  cCntyVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/ctyfiles/ver.dat';
+  cDOKVersionCheckUrl    = 'https://www.df2et.de/cqrlog/ver.dat';
+  cCntyVersionCheckUrl   = 'https://ok2cqr.github.io/cqrlog-cnty-files/ver.dat';
+  //cCntyVersionCheckUrl = 'http://www.ok2cqr.com/linux/cqrlog/ctyfiles/ver.dat';
 
 type
   TRemoteModeType = (rmtFldigi, rmtWsjt, rmtADIF);
@@ -364,6 +365,7 @@ type
     sbtnQRZ: TSpeedButton;
     sbtnQSL: TSpeedButton;
     sbtnRefreshTime: TSpeedButton;
+    sbtnCallbookToggle: TSpeedButton;
     sbtnUsrbtn: TSpeedButton;
     sgrdCallStatistic: TStringGrid;
     sgrdStatistic: TStringGrid;
@@ -595,6 +597,7 @@ type
     procedure pgDetailsChange(Sender: TObject);
     procedure popEditQSOPopup(Sender: TObject);
     procedure sbtnAttachClick(Sender: TObject);
+    procedure sbtnCallbookToggleClick(Sender: TObject);
     procedure sbtnLocatorMapClick(Sender: TObject);
     procedure sbtnQSLClick(Sender: TObject);
     procedure sbtnQRZClick(Sender: TObject);
@@ -1508,6 +1511,8 @@ begin
 
   dmData.LoadQSODateColorSettings;
 
+  frmNewQSO.sbtnUsrbtn.Hint:= cqrini.ReadString('NewQSO', 'UsrBtn','User Button');
+
   if cqrini.ReadBool('CW', 'NoReset', false) then     //is set: user does not want reset CW keyer at rig switch/init
                                         InitializeCW; //so we have to do it at least once: Here.
 
@@ -2307,6 +2312,7 @@ procedure TfrmNewQSO.tmrUploadAllTimer(Sender: TObject);
 begin
   if (not frmLogUploadStatus.thRunning) then
   begin
+
     case WhatUpNext of
       upHamQTH :  begin
                     if UploadAll then
@@ -4639,7 +4645,7 @@ procedure TfrmNewQSO.acCWTypeExecute(Sender: TObject);
 begin
   frmCWType.Show;
   if (CWint=nil) then
-     ShowMessage('CW interface:  No keyer defined for current radio!');
+     dmUtils.ShowTheMessage('CW interface','No keyer defined'+LineEnding+'for current radio!',5000);
 end;
 
 procedure TfrmNewQSO.FormActivate(Sender: TObject);
@@ -4899,6 +4905,16 @@ end;
 
 procedure TfrmNewQSO.acUploadToAllExecute(Sender: TObject);
 begin
+     if not (cqrini.ReadBool('OnlineLog','HaUP',False)
+        or cqrini.ReadBool('OnlineLog','ClUP',False)
+        or cqrini.ReadBool('OnlineLog','HrUP',False)
+        or cqrini.ReadBool('OnlineLog','UdUP',False)
+        or cqrini.ReadBool('OnlineLog','QrzUP',False)) then
+           Begin
+                dmUtils.ShowTheMessage('Upload','Log(s) not defined for upload!',5000);
+                Exit;
+           end;
+
   if not tmrUploadAll.Enabled then
   begin
     UploadAll            := True;
@@ -6010,7 +6026,7 @@ begin
             frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
             frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
             frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-            else ShowMessage('CW interface:  No keyer defined for current radio!');
+            else dmUtils.ShowTheMessage('CW interface','No keyer defined'+LineEnding+'for current radio!',5000);
        end;
       end;
     key := 0;
@@ -6085,8 +6101,10 @@ begin
         key := 0;
         Exit;
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_A
+
+
 
       if (key = VK_D) then                                          //VK_D
       begin
@@ -6106,13 +6124,15 @@ begin
         key := 0;
         Exit;
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_J
                                                                     //VK_K
                                                                     //VK_M
                                                                     //VK_N
                                                                     //VK_P
                                                                     //VK_Q
+
+
 
       if (key = VK_R) then                                          //VK_R
       begin
@@ -6133,9 +6153,11 @@ begin
         end;
         key := 0;
         Exit;
+
       end;
-                            //from NewQso-menu-shortcut keys (NewQso.lfm):
+                            //from NewQso-menu-shortcut keys (fNewQso.lfm):
                                                                     //VK_T
+
 
       if (key = VK_U) then                                          //VK_U
       begin
@@ -7449,14 +7471,53 @@ begin
   frmCWKeys.fraCWKeys.UpdateFKeyLabels
 end;
 
+procedure TfrmNewQSO.sbtnCallbookToggleClick(Sender: TObject);
+begin
+    sbtnCallbookToggle.Enabled:=false;
+    if cqrini.ReadBool('Callbook','HamQTH',True) then
+     Begin
+        cqrini.WriteBool('Callbook','HamQTH',False);
+        cqrini.WriteBool('Callbook','QRZ',True);
+        ChangeCallBookCaption;
+        exit;
+     end;
+    if cqrini.ReadBool('Callbook','QRZ',True) then
+     Begin
+        cqrini.WriteBool('Callbook','QRZ',False);
+        cqrini.WriteBool('Callbook','QRZCQ',True);
+        ChangeCallBookCaption;
+        Exit;
+     end;
+    if cqrini.ReadBool('Callbook','QRZCQ',True) then
+     Begin
+        cqrini.WriteBool('Callbook','QRZCQ',False);
+        cqrini.WriteBool('Callbook','HamQTH',True);
+        ChangeCallBookCaption;
+        Exit;
+     end;
+end;
+
 procedure TfrmNewQSO.ChangeCallBookCaption;
 begin
+  sbtnCallbookToggle.Images:=Self.imgMain1;
   if cqrini.ReadBool('Callbook','HamQTH',True) then
-    lblCallbookInformation.Caption := 'Callbook (HamQTH.com):';
+    begin
+     lblCallbookInformation.Caption := 'Callbook (HamQTH.com):';
+     sbtnCallbookToggle.ImageIndex:=19;
+    end;
   if cqrini.ReadBool('Callbook','QRZ',True) then
-    lblCallbookInformation.Caption := 'Callbook (qrz.com):';
+    begin
+     lblCallbookInformation.Caption := 'Callbook (qrz.com):';
+     sbtnCallbookToggle.ImageIndex:=20;
+    end;
   if cqrini.ReadBool('Callbook','QRZCQ',True) then
-    lblCallbookInformation.Caption := 'Callbook (qrzCQ.com):';
+    begin
+      lblCallbookInformation.Caption := 'Callbook (qrzCQ.com):';
+      sbtnCallbookToggle.ImageIndex:=23;
+    end;
+
+   sbtnCallbookToggle.Refresh;
+   sbtnCallbookToggle.Enabled:=true;
 end;
 
 procedure TfrmNewQSO.CalculateLocalSunRiseSunSet;
@@ -8099,12 +8160,9 @@ begin
         if dmData.DebugLevel>=1 then Writeln('Waiting WsjtDecode to end/Disableremotemode');
       end;
       mnuWsjtxmonitor.Visible := False;    //we do not show "monitor" in view-submenu when not active
+      cqrini.WriteBool('Window','MonWsjtx',((frmMonWsjtx <> nil) and frmMonWsjtx.Showing));
       if (frmMonWsjtx <> nil) then
-       begin
-        if frmMonWsjtx.Showing then frmMonWsjtx.hide // and close monitor
-         else cqrini.WriteBool('Window','MonWsjtx',false);
-        FreeAndNil(frmMonWsjtx); //to release flooding richmemo
-       end;
+                                   frmMonWsjtx.Close;
       if Assigned(WsjtxSock) then FreeAndNil(WsjtxSock);  // to release UDP socket
       if multicast then if Assigned(WsjtxSockS) then FreeAndNil(WsjtxSockS);  // to release UDP multicast TX socket
       mnuRemoteModeWsjt.Checked:= False;

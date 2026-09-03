@@ -145,7 +145,7 @@ begin
           except
            on E : EDatabaseError do
             Begin
-              ShowMessage('Can not create filter view!');
+              dmUtils.ShowTheMessage('Error','Can not create filter view!');
               Exit;
             end;
           end;

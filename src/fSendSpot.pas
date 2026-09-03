@@ -121,7 +121,7 @@ begin
             Begin
               btnUsr.Hint:=UsrString;
               cqrini.WriteString('DXCluster', 'UsrMsg', UsrString);
-              if length(UsrString)>25 then ShowMessage('Your string might be too long!'+LineEnding+'Length: '+IntToStr(length(UsrString))+'chrs')
+              if length(UsrString)>25 then dmUtils.ShowTheMessage('Note!','Your text might be'+LineEnding+'too long!'+LineEnding+'Length: '+IntToStr(length(UsrString))+'chrs')
             end
     end;
 end;
@@ -145,7 +145,7 @@ procedure TfrmSendSpot.FormShow(Sender: TObject);
 begin
   if not (frmDXCluster.ConTelnet) then
    Begin
-     ShowMessage('You must connect to telnet DXCluster first!');
+     dmUtils.ShowTheMessage('Error','You must connect to'+lineEnding+'telnet DXCluster first!');
      btnCancel.Click;
    end;
   UsrString := cqrini.ReadString('DXCluster', 'UsrMsg', '');

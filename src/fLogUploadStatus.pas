@@ -763,7 +763,7 @@ begin
         Writeln('SyncMsg   :',SyncMsg);
    end;
 
-   frmNewQSO.ReturnToNewQSO;
+   //frmNewQSO.ReturnToNewQSO;  //keeps popping NewQSO to the Top with every msg line printed
 
    if ((SyncUpdate<>'') or (SyncMsg<>'')) then
       tmrClose.Enabled:=False;
@@ -885,6 +885,8 @@ begin
   else begin
     if not Showing then  //status window has to be visible when working
       Show;
+    if cqrini.ReadBool('OnlineLog','KeepMin',False) then
+                                                    Self.WindowState:=wsMinimized;
     UploadThread := TUploadThread.Create(True);
     UploadThread.WhereToUpload := where;
     UploadThread.ToAll         := ToAll;

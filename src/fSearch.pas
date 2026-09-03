@@ -90,7 +90,7 @@ var
 
 procedure NoneFound;
 Begin
-  ShowMessage(edtText.Text + ' not found');
+  dmUtils.ShowTheMessage('Search',edtText.Text +LineEnding+' not found!');
   frmMain.acCancelFilterExecute(nil);
   sql:='';
   Close;

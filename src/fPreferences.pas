@@ -107,6 +107,7 @@ type
     cb30cm: TCheckBox;
     cgLimit: TCheckGroup;
     cbNoKeyerReset: TCheckBox;
+    chkKeepMin: TCheckBox;
     chkgClub: TCheckGroup;
     chkgQrz: TCheckGroup;
     chkgUdp: TCheckGroup;
@@ -1071,6 +1072,7 @@ type
     procedure btnSplitClick(Sender: TObject);
     procedure btnForceMembershipUpdateClick(Sender : TObject);
     procedure cbNoKeyerResetChange(Sender: TObject);
+    procedure chkKeepMinChange(Sender: TObject);
     procedure chkCbSHClick(Sender: TObject);
     procedure chkEqSHClick(Sender: TObject);
     procedure chkLoSHClick(Sender: TObject);
@@ -1287,6 +1289,7 @@ begin
   cqrini.WriteString('NewQSO', 'RemQSO', edtComments.Text);
   cqrini.WriteString('NewQSO', 'Op', edtOperator.Text);
   cqrini.WriteString('NewQSO', 'UsrBtn', edtUsrBtn.Text);
+  frmNewQSO.sbtnUsrbtn.Hint:=edtUsrBtn.Text;
   cqrini.WriteBool('NewQSO', 'UseSpaceBar', chkUseSpaceBar.Checked);
   cqrini.WriteBool('NewQSO', 'RefreshAfterSave', chkRefreshAfterSave.Checked);
   cqrini.WriteBool('NewQSO', 'UseRigPwr', chkUseRigPwr.Checked);
@@ -1760,6 +1763,7 @@ begin
   cqrini.WriteString('OnlineLog','QrzUrl',edtQrzUrl.Text);
   cqrini.WriteInteger('OnlineLog','QrzIgn', ReadIgnoreGroup(chkgQrz));
 
+  cqrini.WriteBool('OnlineLog','KeepMin',chkKeepMin.Checked);
   cqrini.WriteBool('OnlineLog','CloseAfterUpload',chkCloseAfterUpload.Checked);
   cqrini.WriteBool('OnlineLog','AutoClean',chkAutoClean.Checked);
   cqrini.WriteBool('OnlineLog','IgnoreLoTWeQSL',chkIgnoreLoTW.Checked);
@@ -2233,7 +2237,7 @@ begin
       if FileExists(dlgOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
          edtFldigiPath.Text := dlgOpen.FileName
       else
-       ShowMessage('File not found!');
+       dmUtils.ShowTheMessage('Error','File not found!');
 end;
 
 procedure TfrmPreferences.btnChangeDefFreqClick(Sender: TObject);
@@ -2293,7 +2297,7 @@ begin
     if FileExists(dlgOpen.FileName) then  //with QT5 opendialog user can enter filename that may not exist
       edtWsjtPath.Text := dlgOpen.FileName
     else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
 end;
 
 procedure TfrmPreferences.btnAlertCallsignsClick(Sender: TObject);
@@ -2684,6 +2688,11 @@ begin
     and (cmbIfaceType.ItemIndex = 4) //type is HamLib
      then cbNoKeyerReset.Checked := false; //restart is always needed  when radio changes
   CWKeyerChanged := True
+end;
+
+procedure TfrmPreferences.chkKeepMinChange(Sender: TObject);
+begin
+
 end;
 
 procedure TfrmPreferences.chkCbSHClick(Sender: TObject);
@@ -3237,14 +3246,14 @@ begin
   if (f = '') or (f[length(f)] = '/') then
       Begin
        edtWebBrowser.Text :='';
-       ShowMessage('File:'+f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.')
+       dmUtils.ShowTheMessage('File',f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.')
       end
     else
      begin
        p:= GetEnv('PATH');
        edtWebBrowser.Text:=FileSearch (f,p);
        if (edtWebBrowser.Text ='') then
-         ShowMessage('File:'+f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.');
+         dmUtils.ShowTheMessage('File',f+' is not found!'+LineEnding+'Check file name,'+LineEnding+'or give full path.');
      end;
 end;
 
@@ -3798,6 +3807,7 @@ begin
   WriteIgnoreGroup       (chkgQrz,cqrini.ReadInteger('OnlineLog','QrzIgn',0));
   chkQrzUpEnabledChange  (nil);
 
+  chkKeepMin.Checked          := cqrini.ReadBool('OnlineLog','KeepMin',False);
   chkCloseAfterUpload.Checked := cqrini.ReadBool('OnlineLog','CloseAfterUpload',False);
   chkAutoClean.Checked        := cqrini.ReadBool('OnlineLog','AutoClean',False);
   chkIgnoreLoTW.Checked       := cqrini.ReadBool('OnlineLog','IgnoreLoTWeQSL',False);

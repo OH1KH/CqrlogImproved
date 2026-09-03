@@ -124,7 +124,6 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
-    procedure FormHide(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure chknoTxtChange(Sender: TObject);
     procedure mnuSort1Click(Sender: TObject);
@@ -487,6 +486,7 @@ begin
     SaveFormPos('Cq');  //to be same as intial save
   dmUtils.SaveWindowPos(Self);
   CloseAction:= caFree;
+  frmMonWsjtx:=nil;
 end;
  
 procedure TfrmMonWsjtx.Setbitmap(bm: TBitmap; col: Tcolor);
@@ -819,7 +819,7 @@ begin
   sgMonitor.Visible:= not(chknoTxt.Checked and not chkMap.Checked);
   lblInfo.Visible := not sgMonitor.Visible;
 
-  if not LockMap then    //do not run automaticly on init or leave form
+  if not LockMap then    //do not run automatically on init or leave form
   begin
     cqrini.WriteBool('MonWsjtx', 'MapMode', chkMap.Checked);
 
@@ -1442,24 +1442,10 @@ begin
   tbFollow.Checked:=True;
 end;
 
-procedure TfrmMonWsjtx.FormHide(Sender: TObject);
+procedure TfrmMonWsjtx.FormShow(Sender: TObject);
 begin
   //decodetest(true);  //release these for decode tests
   //decodetest(false);
-  exit;
-  LockMap := True;
-  if chkMap.Checked then
-    SaveFormPos('Map')
-  else
-    SaveFormPos('Cq');  //to be same as intial save
-  dmUtils.SaveWindowPos(Self);
-  writeln('------------- hide form');
-  frmMonWsjtx.hide;
-end;
-
-
-procedure TfrmMonWsjtx.FormShow(Sender: TObject);
-begin
   dmUtils.LoadWindowPos(Self);
   //overrides font loading
   sgMonitor.Font.Name := cqrini.ReadString('MonWsjtx', 'Font', 'Monospace');

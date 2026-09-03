@@ -92,6 +92,7 @@ type
     function PassedKey(key:char):boolean;
     procedure blocksend;
     procedure SetSpeedChange(change:integer);
+    procedure CWError;
   public
     { public declarations }
     procedure UpdateTop;
@@ -105,6 +106,11 @@ implementation
 
 { TfrmCWType }
 uses fTRXControl,fNewQSO,dUtils,dData, uMyIni, fContest;
+
+procedure TfrmCWType.CWError;
+Begin
+   dmUtils.ShowTheMessage('Radio/CW','Not in CW mode!'+LineEnding+'or'+LineEnding+'No keyer defined!');
+end;
 
 procedure TfrmCWType.UpdateTop;
 Begin
@@ -199,7 +205,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF10MouseEnter(Sender: TObject);
@@ -218,7 +224,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF10MouseLeave(Sender: TObject);
@@ -241,7 +247,7 @@ begin
           frmContest.lblCqFreq.Caption := FormatFloat('0.00',frmTRXControl.GetFreqkHz);
         end;
      end
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF2MouseEnter(Sender: TObject);
@@ -265,7 +271,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF3MouseEnter(Sender: TObject);
@@ -289,7 +295,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF4MouseEnter(Sender: TObject);
@@ -313,7 +319,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF5MouseEnter(Sender: TObject);
@@ -337,7 +343,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF6MouseEnter(Sender: TObject);
@@ -361,7 +367,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF7MouseEnter(Sender: TObject);
@@ -385,7 +391,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF8MouseEnter(Sender: TObject);
@@ -409,7 +415,7 @@ begin
       frmNewQSO.edtHisRST.Text, frmNewQSO.edtContestSerialSent.Text,frmNewQSO.edtContestExchangeMessageSent.Text,
       frmNewQSO.edtContestSerialReceived.Text,frmNewQSO.edtContestExchangeMessageReceived.Text,
       frmNewQSO.edtName.Text,frmNewQSO.lblGreeting.Caption,''))
-    else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+    else CWError;
 end;
 
 procedure TfrmCWType.btnF9MouseEnter(Sender: TObject);
@@ -552,7 +558,7 @@ Begin
      if LocalDbg then Writeln('Blocksend out:'+msg);
      if Assigned(frmNewQSO.CWint) and (frmNewQSO.cmbMode.Text='CW') then
        frmNewQSO.CWint.SendText(msg)
-      else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+      else CWError;
     end;
    WasMemoLen :=length(m.lines.text);
 end;
@@ -589,7 +595,7 @@ begin
                  0:               Begin
                                        if Assigned(frmNewQSO.CWint) and (frmNewQSO.cmbMode.Text='CW') then
                                          frmNewQSO.CWint.SendText(l) //letter mode
-                                        else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+                                        else CWError;
                                        WasMemoLen :=length(m.lines.text);
                                   end;
                  1:               Begin  //word mode , first word is send character by character
@@ -606,7 +612,7 @@ begin
                                       Begin
                                       if Assigned(frmNewQSO.CWint) and (frmNewQSO.cmbMode.Text='CW') then
                                        frmNewQSO.CWint.SendText(l)
-                                       else ShowMessage('Radio:   Not in CW mode!'+LineEnding+'or'+LineEnding+'CW interface:   No keyer defined! ');
+                                       else CWError;
                                       WasMemoLen :=length(m.lines.text);
                                       end;
                                   end;

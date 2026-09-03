@@ -529,6 +529,7 @@ begin
   trmQ.Commit;
 
   PrepareEmptyLogUploadStatusTables(mQ);
+  trmQ.Commit;
 
   RefreshLogList(nr)
 end;
@@ -1504,7 +1505,7 @@ begin
   if trQ.Active then trQ.Rollback;
   if (((QRbefore='') or (QRbefore='!')) and (qsl_r='Q')) then
      Begin
-      Q.SQL.Text :='UPDATE cqrlog_main set qslr_date=current_date';
+      Q.SQL.Text :='UPDATE cqrlog_main set qslr_date=current_date where id_cqrlog_main=' + IntToStr(idx);
       trQ.StartTransaction;
       Q.ExecSQL;
       trQ.Commit;
@@ -3073,6 +3074,7 @@ begin
       if old_version < 8 then
       begin
         PrepareEmptyLogUploadStatusTables(Q1);
+        trQ1.Commit
       end;
 
       if old_version < 9 then
@@ -3299,10 +3301,19 @@ begin
                 Q1.Open;
                 max := Q1.Fields[0].AsInteger;
                 Q1.Close;
-                Q1.SQL.Text := 'insert into upload_status (logname, id_log_changes) values ('+QuotedStr(C_UDPLOG)+','+IntToStr(max)+')';
-                if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
-                Q1.ExecSQL;
-                trQ1.Commit;
+                trQ1.Rollback;
+                if (max=0) then  //there is no log_changes table (tnx Tom:Sp2L)
+                   Begin
+                     PrepareEmptyLogUploadStatusTables(Q1);
+                     trQ1.Commit;
+                   end
+                 else
+                  begin
+                    Q1.SQL.Text := 'insert into upload_status (logname, id_log_changes) values ('+QuotedStr(C_UDPLOG)+','+IntToStr(max)+')';
+                    if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+                    Q1.ExecSQL;
+                    trQ1.Commit;
+                  end;
               end;
       end;
 
@@ -3397,7 +3408,7 @@ begin
        if old_version < 21 then    //ignorelog to pass by update on defined log
       begin                        //ignore is binary flag (1) in order
         trQ1.StartTransaction;     //HamQTH,CLublog,Hrdlog,Udplog,Qrzlog -> %11111 (Hamlog is MSB, Qrzlog LSB)
-        Q1.SQL.Text := 'alter table log_changes add ignorelog int(1) default 0';
+        Q1.SQL.Text := 'alter table log_changes add column if not exists ignorelog int(1) default 0';
         if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
         Q1.ExecSQL;
         trQ1.Commit

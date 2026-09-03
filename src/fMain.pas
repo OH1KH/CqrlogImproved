@@ -115,29 +115,29 @@ type
     BitBtn5:    TBitBtn;
     btnSort:    TBitBtn;
     dbgrdMain:  TDBGrid;
+    dbtAward: TDBText;
     dbtComment: TDBText;
-    dbtAward:   TDBText;
-    dbtQSLRDate: TDBText;
     dbtLoTWQSLR: TDBText;
-    dbtQSLSDate: TDBText;
     dbtLoTWQSLS: TDBText;
+    dbtQSLRDate: TDBText;
+    dbtQSLSDate: TDBText;
     Image1:     TImage;
     imgMain:    TImageList;
     imgMain1:   TImageList;
-    lblProfile: TLabel;
+    lblAward: TLabel;
+    lblCommentForQSO: TLabel;
     lblDist: TLabel;
     lblDistance: TLabel;
     lblLongest: TLabel;
     lblLongestDist: TLabel;
+    lblLoTWQSLRDate: TLabel;
+    lblLoTWQSLSDate: TLabel;
     lblProf: TLabel;
+    lblProfile: TLabel;
+    lblQSLRDate: TLabel;
+    lblQSLSDate: TLabel;
     lblQSOInLog:     TLabel;
     lblDXCCWorked:     TLabel;
-    lblCommentForQSO:    TLabel;
-    lblAward:    TLabel;
-    lblQSLSDate:    TLabel;
-    lblQSLRDate:    TLabel;
-    lblLoTWQSLSDate: TLabel;
-    lblLoTWQSLRDate: TLabel;
     lblDXCCConfirmed:     TLabel;
     lblDXCCCmf: TLabel;
     lblDXCC:    TLabel;
@@ -301,16 +301,16 @@ type
     mnuCancelFilter: TMenuItem;
     mnuFile:    TMenuItem;
     dlgOpen:    TOpenDialog;
-    Panel1:     TPanel;
     Panel3: TPanel;
+    pnlAllDetails: TPanel;
     pnlCounts: TPanel;
-    pnlDistance: TPanel;
-    pnlDetails: TPanel;
     pnlButtons: TPanel;
     Panel2:     TPanel;
     dlgSave:    TSaveDialog;
-    pnlProfile: TPanel;
+    pnlDetails: TPanel;
+    pnlDistance: TPanel;
     pnlLoTW: TPanel;
+    pnlProfile: TPanel;
     pnlQSL: TPanel;
     popWebSearch: TPopupMenu;
     sbMain:     TStatusBar;
@@ -591,7 +591,7 @@ end;
 
 procedure TfrmMain.lblQSOCountClick(Sender: TObject);
 begin
-    ShowMessage(IntToStr(dbgrdMain.SelectedRows.Count)+' selected QSOs');
+    dmUtils.ShowTheMessage('Count',IntToStr(dbgrdMain.SelectedRows.Count)+' selected QSOs');
 end;
 
 procedure TfrmMain.mnuCEClick(Sender: TObject);
@@ -621,7 +621,7 @@ begin
       dmDXCluster.ReloadDXCCTables
      end
     else
-     ShowMessage('File not found!');
+     dmUtils.ShowTheMessage('Error','File not found!');
   end
   else
     BringToFront
@@ -827,32 +827,48 @@ begin
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
+var
+  P       :TPoint;
 
-  if key = VK_F2 then                                    //VK_F2
-    begin
-     acNewQSO.Execute;
-     Key:=0;
+begin
+                     //from QSOlist-menu-shortcut keys (fMain.lfm)
+                                                           //VK_F1
+                                                           //VK_F2
+                                                           //VK_F3
+                                                           //VK_F4
+                                                           //VK_F5
+                                                           //VK_F7
+                                                           //VK_F8
+
+  if (Key = VK_F10) then                                   //VK_F10
+   begin
+     P := dbgrdMain.ClientToScreen(Point(dbgrdMain.Width div 2, pnlCounts.Height));
+     popWebSearch.PopUp(P.x,P.y);
+     key := 0;
      Exit;
-    end;
-  if key = VK_F6 then                                    //VK_f6
-    begin
-     acCallBook.Execute;
-     key:=0;
-     Exit;
-    end;
+   end;
+
+                     //from QSOlist-menu-shortcut keys (fMain.lfm)
+                                                           //Shift + VK_F10
+                                                           //VK_F12
+                                                           //Shift + VK_F12
+
+
+                                                           //Ctrl-A
+                                                           //Ctrl-D
+                                                           //Ctrl-F
+                                                           //Ctrl-H
+                                                           //Ctrl-P
+                                                           //Ctrl-Q
+                                                           //Ctrl-R
+
+                                                           //Alt-F
 
  if (Shift = [ssCTRL]) then                              //Ctrl+ key
  begin
   if (Key = VK_N) then                                   //VK_N
   begin
     mnuDoNotSendClick(nil);
-    key := 0;
-    Exit;
-  end;
-   if (key = VK_H) then                                  //VK_H
-  begin
-    ShowHelp;
     key := 0;
     Exit;
   end;
@@ -1169,7 +1185,7 @@ begin
         end
        end
      else
-       ShowMessage('File not found!');
+       dmUtils.ShowTheMessage('Error','File not found!');
   end
   else
     BringToFront
@@ -1192,7 +1208,7 @@ begin
         end
      end
     else
-        ShowMessage('File not found!');
+        dmUtils.ShowTheMessage('Error','File not found!');
   end
 end;
 
@@ -1627,15 +1643,16 @@ end;
 
 procedure TfrmMain.acPnlDetailsExecute(Sender: TObject);
 begin
-  if pnlDetails.Visible then
+  if pnlAllDetails.Visible then
   begin
-    pnlDetails.Visible   := False;
+    pnlAllDetails.Visible   := False;
     mnuShowDetails.Checked := False;
   end
   else
   begin
-    pnlDetails.Visible   := True;
+    pnlAllDetails.Visible   := True;
     mnuShowDetails.Checked := True;
+    ReloadGrid;
   end;
 end;
 
@@ -1940,7 +1957,7 @@ begin
     if dmData.qCQRLOG.FieldByName('qsodate').AsDateTime < dmData.QSOColorDate then
       dbgrdMain.Canvas.Font.Color := dmData.QSOColor
   end;
-
+  CheckAttachment;
   dbgrdMain.DefaultDrawColumnCell(Rect,DataCol,Column,State)
 end;
 
@@ -2249,6 +2266,7 @@ end;
 
 procedure TfrmMain.acExADIFExecute(Sender: TObject);
 begin
+  dlgSave.InitialDir:=cqrini.ReadString('Filedialogs','AdifExport',dmData.UsrHomeDir);
   dlgSave.DefaultExt := '.adi';
   dlgSave.Filter     := 'ADIF|*.adi;*.ADI|All files|*';
   if dlgSave.Execute then
@@ -2269,6 +2287,7 @@ begin
        else
          FileName:=dlgSave.FileName;
       ExportType := 0;
+      cqrini.WriteString('Filedialogs','AdifExport',ExtractFilePath(dlgSave.FileName));
       ShowModal
     finally
       Free
@@ -2280,6 +2299,7 @@ end;
 
 procedure TfrmMain.acExHTMLExecute(Sender: TObject);
 begin
+  dlgSave.InitialDir:=cqrini.ReadString('Filedialogs','HtmlExport',dmData.UsrHomeDir);
   dlgSave.DefaultExt := '.html';
   dlgSave.Filter     := 'html|*.html;*.HTML|All files|*';
 
@@ -2301,6 +2321,7 @@ begin
        else
          FileName:=dlgSave.FileName;
       ExportType := 1;
+      cqrini.WriteString('Filedialogs','HtmlExport',ExtractFilePath(dlgSave.FileName));
       ShowModal
     finally
       Free
@@ -2320,6 +2341,7 @@ end;
 
 procedure TfrmMain.acImportADIFExecute(Sender: TObject);
 begin
+  dlgOpen.InitialDir:=cqrini.ReadString('Filedialogs','AdifImport',dmData.UsrHomeDir);
   dlgOpen.Filter     := 'ADIF|*.adi;*.ADI;*.adif;*.ADIF|All files|*';
   dlgOpen.DefaultExt := '.adi';
   if dlgOpen.Execute then
@@ -2333,6 +2355,7 @@ begin
           lblErrors.Caption := '0';
           lblCount.Caption := '0';
           lblFilteredOutCount.Caption := '0';
+          cqrini.WriteString('Filedialogs','AdifImport',ExtractFilePath(dlgOpen.FileName));
           ShowModal
         finally
           Free
@@ -2340,7 +2363,7 @@ begin
         acRefreshExecute(nil);
       end
     else
-       ShowMessage('File not found!');
+      dmUtils.ShowTheMessage('Error','File not found!');
     end
     else
       BringToFront
@@ -2671,13 +2694,13 @@ procedure TfrmMain.ShowFields;
   end;
 
 begin
-  pnlDetails.Height:=56;
+  pnlAllDetails.Height:= 1+pnlDetails.Height;
   pnlDistance.Visible := cqrini.ReadBool('Columns', 'Distance', False);
-  if pnlDistance.Visible then
-                           pnlDetails.Height:=pnlDetails.Height+pnlDistance.Height+1;
   pnlProfile.Visible := cqrini.ReadBool('Columns', 'Profile', False);
   if pnlProfile.Visible then
-                           pnlDetails.Height:=pnlDetails.Height+pnlProfile.Height+1;
+                           pnlAllDetails.Height:=pnlAllDetails.Height+pnlProfile.Height+1;
+  if pnlDistance.Visible then
+                           pnlAllDetails.Height:=pnlAllDetails.Height +pnlDistance.Height+1;
 
   dbgrdMain.DataSource := dmData.dsrMain;
   dbgrdMain.ResetColWidths;
@@ -2692,9 +2715,6 @@ begin
   ChangeVis('RST_R', cqrini.ReadBool('Columns', 'RST_R', True));
   ChangeVis('NAME', cqrini.ReadBool('Columns', 'Name', True));
   ChangeVis('QTH', cqrini.ReadBool('Columns', 'QTH', True));
-  ChangeVis('QSL_S', cqrini.ReadBool('Columns', 'QSL_S', True));
-  ChangeVis('QSL_R', cqrini.ReadBool('Columns', 'QSL_R', True));
-  ChangeVis('QSL_VIA', cqrini.ReadBool('Columns', 'QSL_VIA', False));
   ChangeVis('LOC', cqrini.ReadBool('Columns', 'Locator', False));
   ChangeVis('MY_LOC', cqrini.ReadBool('Columns', 'MyLoc', False));
   ChangeVis('IOTA', cqrini.ReadBool('Columns', 'IOTA', False));
@@ -2710,14 +2730,17 @@ begin
   ChangeVis('LOTW_QSLRDATE', cqrini.ReadBool('Columns', 'LoTWQSLRDate', False));
   ChangeVis('LOTW_QSLS', cqrini.ReadBool('Columns', 'LoTWQSLS', False));
   ChangeVis('LOTW_QSLR', cqrini.ReadBool('Columns', 'LOTWQSLR', False));
-  ChangeVis('CONT', cqrini.ReadBool('Columns', 'Cont', False));
+  ChangeVis('EQSL_QSLSDATE',cqrini.ReadBool('Columns','eQSLQSLSDate',False));
+  ChangeVis('EQSL_QSLRDATE',cqrini.ReadBool('Columns','eQSLQSLRDate',False));
+  ChangeVis('EQSL_QSL_SENT',cqrini.ReadBool('Columns','eQSLQSLS',False));
+  ChangeVis('EQSL_QSL_RCVD',cqrini.ReadBool('Columns','eQSLQSLR',False));
   ChangeVis('QSLS_DATE',cqrini.ReadBool('Columns','QSLSDate',False));
   ChangeVis('QSLR_DATE',cqrini.ReadBool('Columns','QSLRDate',False));
-  ChangeVis('EQSL_QSL_SENT',cqrini.ReadBool('Columns','eQSLQSLS',False));
-  ChangeVis('EQSL_QSLSDATE',cqrini.ReadBool('Columns','eQSLQSLSDate',False));
-  ChangeVis('EQSL_QSL_RCVD',cqrini.ReadBool('Columns','eQSLQSLR',False));
-  ChangeVis('EQSL_QSLRDATE',cqrini.ReadBool('Columns','eQSLQSLRDate',False));
+  ChangeVis('QSL_S', cqrini.ReadBool('Columns', 'QSL_S', True));
+  ChangeVis('QSL_R', cqrini.ReadBool('Columns', 'QSL_R', True));
   ChangeVis('QSLR',cqrini.ReadBool('Columns','QSLRAll',False));
+  ChangeVis('QSL_VIA', cqrini.ReadBool('Columns', 'QSL_VIA', False));
+  ChangeVis('CONT', cqrini.ReadBool('Columns', 'Cont', False));
   ChangeVis('COUNTRY',cqrini.ReadBool('Columns','Country',False));
   ChangeVis('PROP_MODE', cqrini.ReadBool('Columns', 'Propagation', False));
   ChangeVis('RXFREQ', cqrini.ReadBool('Columns', 'RXFreq', False));
@@ -2854,6 +2877,8 @@ begin
       lblDist.Caption := qrb
    end
 end;
+
+
 function TfrmMain.CalcQrb(Myloc,loc:string;showUnits:boolean):string;
  var
   qrb,             //distance

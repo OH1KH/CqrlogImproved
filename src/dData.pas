@@ -1505,7 +1505,7 @@ begin
   if trQ.Active then trQ.Rollback;
   if (((QRbefore='') or (QRbefore='!')) and (qsl_r='Q')) then
      Begin
-      Q.SQL.Text :='UPDATE cqrlog_main set qslr_date=current_date';
+      Q.SQL.Text :='UPDATE cqrlog_main set qslr_date=current_date where id_cqrlog_main=' + IntToStr(idx);
       trQ.StartTransaction;
       Q.ExecSQL;
       trQ.Commit;

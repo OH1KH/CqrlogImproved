@@ -375,6 +375,7 @@ type
     tabDXCCStat: TTabSheet;
     tabLOConfig: TTabSheet;
     tabSatellite: TTabSheet;
+    tmrStartUpRemote: TTimer;
     tmrADIF: TTimer;
     tmrWsjtx: TTimer;
     tmrUploadAll: TTimer;
@@ -613,11 +614,11 @@ type
     procedure tmrRadioTimer(Sender: TObject);
     procedure tmrStartStartTimer(Sender: TObject);
     procedure tmrStartTimer(Sender: TObject);
+    procedure tmrStartUpRemoteTimer(Sender: TObject);
     procedure tmrUploadAllTimer(Sender: TObject);
     procedure tmrWsjtxTimer(Sender: TObject);
   private
-    StartUpCount       : integer;
-    StartRun           : Boolean;
+    StartScriptRun     : Boolean;
     old_stat_adif      : Word;
     TabUsed            : Boolean;
     old_cmode          : String;
@@ -660,6 +661,7 @@ type
     UsrAssignedProfile : String;
     EditId             : longint;     //id_cqrlog_main of qso in edit mode
     DetailsCMBColorDone: string;     //changes done for DXCCdetails column color by currently used call+mode+band
+    FirstShow          : boolean;    //when form is shown first time after creation
     FirstClose         : boolean;    //When close button is clicked first time wit call in call column.
     multicast          : boolean;
 
@@ -704,7 +706,6 @@ type
     function CheckFreq(freq : String) : String;
     procedure WaitWeb(secs:integer);
     function RigCmd2DataMode(mode:String):String;
-    procedure StartUpRemote;
     procedure NewLogSplash;
 
   public
@@ -1664,10 +1665,10 @@ begin
   cmbProfiles.Text := dmData.GetDefaultProfileText;
   ChangeCallBookCaption;
   BringToFront;
-  if not StartRun then
+  if not StartScriptRun then
    Begin   //run "when cqrlog is starting" -script
     RunST('start.sh');
-    StartRun := true;
+    StartScriptRun := true;
    end;
 end;
 
@@ -1840,6 +1841,11 @@ begin
    dmUtils.UpdateCallBookcnf;  //renames old user and pass of ini file
    cbRetain.Checked := cqrini.ReadBool('NewQSO', 'RetainPropagation', False);
    FirstClose:=True;
+   if FirstShow then
+    Begin
+     tmrStartUpRemote.Enabled:=True;
+     FirstShow:=False;
+    end;
 end;
 
 procedure TfrmNewQSO.tmrEndStartTimer(Sender: TObject);
@@ -2299,13 +2305,30 @@ begin
   if not cbOffline.Checked then
   begin
     FillDateTimeFields;
-    StartUpRemote;
     if (cmbProfiles.Top<>7) then //this removes gap/overflow between panelAll and QthProfile selector when used font changes.
      begin
       i:= 7 - cmbProfiles.Top;
       pnlAll.Height:=pnlAll.Height+i;
      end;
   end
+end;
+
+procedure TfrmNewQSO.tmrStartUpRemoteTimer(Sender: TObject);
+var
+  StartKey:String;
+begin
+     tmrStartUpRemote.Enabled:=False;
+     if not Application.HasOption('r','remote') then exit
+      else
+       Begin
+         StartKey:= Application.GetOptionValue('r','remote');
+         if length(StartKey)>1 then  exit; //must be one letter
+         case UpperCase(StartKey[1]) of
+             'J' :  GoToRemoteMode(rmtWsjt);
+             'M' :  GoToRemoteMode(rmtFldigi);
+             'K' :  GoToRemoteMode(rmtADIF);
+         end;
+       end;
 end;
 
 procedure TfrmNewQSO.tmrUploadAllTimer(Sender: TObject);
@@ -3158,23 +3181,24 @@ end;
 
 procedure TfrmNewQSO.FormCreate(Sender: TObject);
 begin
-  StartRun := false;
-  CWint := nil;
+  StartScriptRun   := false;
+  CWint            := nil;
   tmrRadio.Enabled := False;
-  fViewQSO := False;
-  fEditQSO := False;
-  FromDXC  := False;
-  ShowWin  := False;
-  old_t_band := '';
-  old_t_mode := '';
-  old_prof   := -1;
-  old_prop   := '';
-  old_sat    := '';
-  old_rxfreq := '';
-  WhatUpNext := upHamQTH;
-  UploadAll  := False;
-  was_call   := '';
-  AnyRemoteOn := False;
+  fViewQSO         := False;
+  fEditQSO         := False;
+  FromDXC          := False;
+  ShowWin          := False;
+  old_t_band       := '';
+  old_t_mode       := '';
+  old_prof         := -1;
+  old_prop         := '';
+  old_sat          := '';
+  old_rxfreq       := '';
+  WhatUpNext       := upHamQTH;
+  UploadAll        := False;
+  was_call         := '';
+  AnyRemoteOn      := False;
+  FirstShow        := True;
 end;
 
 procedure TfrmNewQSO.btnSaveClick(Sender: TObject);
@@ -7943,28 +7967,7 @@ begin
   edtStartTime.Text := FormatDateTime('hh:mm',date);
   edtEndTime.Text   := FormatDateTime('hh:mm',date)
 end;
-procedure TfrmNewQSO.StartUpRemote;
-var
-  StartKey:String;
-Begin
-    if StartUpCount > 10 then exit; //done already
-    inc(StartUpCount);
-    if StartUpCount = 10 then
-     Begin
-       inc(StartUpCount); //to be 11
-       if not Application.HasOption('r','remote') then exit
-        else
-         Begin
-           StartKey:= Application.GetOptionValue('r','remote');
-           if length(StartKey)>1 then  exit; //must be one letter
-           case UpperCase(StartKey[1]) of
-               'J' :  GoToRemoteMode(rmtWsjt);
-               'M' :  GoToRemoteMode(rmtFldigi);
-               'K' :  GoToRemoteMode(rmtADIF);
-           end;
-         end;
-     end;
-end;
+
 procedure TfrmNewQSO.GoToRemoteMode(RemoteType : TRemoteModeType);
 var
   run  : Boolean = False;

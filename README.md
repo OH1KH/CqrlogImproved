@@ -9,3 +9,7 @@ You are free to use and modify this according to the rules of the open-source li
 
 MariaDB log databases may differ slightly, but they should be backward compatible for now. The database version numbers are higher than the originals, so whenever the original Cqrlog modifies its database structure, compatibility may break.
 
+# NOTE:
+
+If you are planning pull requests please do them against "devel" branch, not his main branch. Thank you!
+

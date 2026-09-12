@@ -3641,12 +3641,14 @@ begin
                   if nick ='' then                              // no nickname then first name
                         Begin
                           nick := GetNodeValue(m.Text, '<fname>');
-                          writeln('Nick(fname): ',UTF8Length(nick),' :',nick);
+                          if LocalDbg then
+                            writeln('Nick(fname): ',UTF8Length(nick),' :',nick);
                         end;
                  if nick ='' then                                   // no first name then family name
                         Begin
                           nick := GetNodeValue(m.Text, '<name>');
-                          writeln('Nick(name): ',UTF8Length(nick),' :',nick);
+                          if LocalDbg then
+                            writeln('Nick(name): ',UTF8Length(nick),' :',nick);
                         end;
                 end;
 

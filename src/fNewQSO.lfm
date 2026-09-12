@@ -1,7 +1,7 @@
 object frmNewQSO: TfrmNewQSO
-  Left = 285
+  Left = 262
   Height = 566
-  Top = 33
+  Top = 107
   Width = 965
   HelpType = htKeyword
   HelpKeyword = 'help/index.html'

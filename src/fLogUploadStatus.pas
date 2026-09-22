@@ -264,9 +264,7 @@ begin
          ClubCount:=  dmLogUpload.Q.FieldByName('act_count').AsInteger;
          ClubBulk:=  (ClubCount > 3);  //How many actions cause putlogs.php usage
          dmLogUpload.Q.Close;
-       end
-     else
-         ClubBulk:= False;
+       end;
 
       //CLubBulk:=true; //debug for testing, comment out for production
 

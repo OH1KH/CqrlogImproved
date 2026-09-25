@@ -2564,11 +2564,11 @@ function TfrmMonWsjtx.getCurMode(sMode: String): String;
       '#'     : getCurMode := 'JT65';
       '@'     : getCurMode := 'JT9';
       '&'     : getCurMode := 'MSK144';
-      ':'     : if frmNewQSO.RemoteName= 'WSJT-X' then
+      ':'     : if (frmNewQSO.RemoteName= 'WSJT-X') or (frmNewQSO.RemoteName= 'WS') then
                           getCurMode:='QRA64'
                        else
                           getCurMode:='FT4';
-      '+'     : if frmNewQSO.RemoteName= 'WSJT-X' then
+      '+'     : if (frmNewQSO.RemoteName= 'WSJT-X') or (frmNewQSO.RemoteName= 'WS') then
                           getCurMode:='FT4'
                        else
                           getCurMode:='T10';

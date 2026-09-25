@@ -2583,6 +2583,9 @@ begin
              end;
     RepStart := index; //for possibly reply creation
 
+    //release below to debug print the udp datagram
+    //frmMonWsjtx.BufDebug('Raw: ',Buf);
+
     if dmData.DebugLevel>=1 then Writeln('-----------------------decode start---------------------------------');
     if dmData.DebugLevel>=1 then Write('Header position:',index);
     MoveIndex(4);  // skip QT header

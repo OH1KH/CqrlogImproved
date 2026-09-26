@@ -52,21 +52,25 @@ const
   empty_freq = '0.00000';
   empty_azimuth = '0.0';
 
-  cMaxModes = 47; //One less than count 47 modes (loops have 0..MaxModes)
+  cMaxModes = 48; //One less than count 49 modes (loops have 0..MaxModes)
   cModes: array [0..cMaxModes] of string =
-    ('CW', 'SSB', 'FT8', 'FT4', 'FT2', 'RTTY', 'AM', 'AMTOR', 'ATV', 'CLOVER', 'CWQ',
-    'DIGITALVOICE', 'FM', 'FSK44', 'FSK441', 'FST4', 'GTOR', 'HELL', 'ISCAT', 'JS8', 'JT4',
-    'JT44', 'JT65', 'JT65A', 'JT65B', 'JT65C', 'JT6M', 'JT9', 'MFSK', 'MFSK16', 'MSK144',
-    'MT63', 'MTOR', 'OLIVIA', 'PACKET', 'PACTOR', 'PSK', 'PSK125', 'PSK250', 'PSK31', 'PSK63',
-    'QRA64', 'QRSS', 'ROS', 'SSTV', 'THRB', 'WSJT', 'WSPR');
+   (
+    'CW'     , 'SSB'          , 'FT8'   , 'FT4'   , 'FT2'    , 'RTTY'   , 'AM'     , 'AMTOR' , 'ATV'    , 'CLOVER',
+    'CWQ'    , 'DIGITALVOICE' , 'FM'    , 'FSK44' , 'FSK441' , 'FST4'   , 'GTOR'   , 'HELL'  , 'ISCAT'  , 'JS8',
+    'JT4'    , 'JT44'         , 'JT65'  , 'JT65A' , 'JT65B'  , 'JT65C'  , 'JT6M'   , 'JT9'   , 'JTTY'   , 'MFSK',
+    'MFSK16' , 'MSK144'       , 'MT63'  , 'MTOR'  , 'OLIVIA' , 'PACKET' , 'PACTOR' , 'PSK'   , 'PSK125' , 'PSK250',
+    'PSK31'  , 'PSK63'        , 'QRA64' , 'QRSS'  , 'ROS'    , 'SSTV'   , 'THRB'   , 'WSJT'  , 'WSPR'
+    );
 
   cMaxBandsCount = 31; //True count of bands. (loops have 0..MaxBandsCount-1)
                        //when you change this check also frmContest.CommonStatus.ContestBandPtr
   cBands: array[0..30] of string[10] =
-    ('2190M', '630M', '160M', '80M'  , '60M','40M'  , '30M', '20M'  , '17M' , '15M' ,
-     '12M'  , '10M' , '5M'  , '6M'   , '8M' ,'4M'   , '2M' , '1.25M', '70CM', '33CM',
-     '23CM' , '13CM', '9CM' , '6CM'  , '3CM','1.25CM','6MM', '4MM'  , '2.5MM','2MM',
-     '1MM');
+    (
+     '2190M' , '630M' , '160M', '80M'  , '60M' , '40M'    , '30M' , '20M'   , '17M'   , '15M' ,
+     '12M'   , '10M'  , '5M'  , '6M'   , '8M'  , '4M'     , '2M'  , '1.25M' , '70CM'  , '33CM',
+     '23CM'  , '13CM' , '9CM' , '6CM'  , '3CM' , '1.25CM' , '6MM' , '4MM'   , '2.5MM' , '2MM'  ,
+     '1MM'
+     );
   cDefaultFreq =
     '0.136|0.472|1.800|3.500|3.700|5.351|7.000|10.100|14.000|14.200|'+
     '18.100|21.000|21.200|24.890|28.000|28.500|40.000|50.000|60.0000|70.0500|'+

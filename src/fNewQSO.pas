@@ -664,6 +664,7 @@ type
     FirstShow          : boolean;    //when form is shown first time after creation
     FirstClose         : boolean;    //When close button is clicked first time wit call in call column.
     multicast          : boolean;
+    wsjtdebug          : boolean;    //debug of wsjt decode parts of source
 
     procedure showDOK(stat:boolean);
     procedure ShowDXCCInfo(ref_adif : Word = 0);
@@ -1846,6 +1847,12 @@ begin
      tmrStartUpRemote.Enabled:=True;
      FirstShow:=False;
     end;
+
+  //set debug rules for wsjtdecode parts of source (same as frmMonWsjtx)
+  if dmData.DebugLevel < 0 then
+        wsjtdebug := ((abs(dmData.DebugLevel) and 4) = 4 )
+       else
+        wsjtdebug := dmData.DebugLevel >= 1 ;
 end;
 
 procedure TfrmNewQSO.tmrEndStartTimer(Sender: TObject);
@@ -2556,7 +2563,7 @@ var
 begin
   if WsjtxDecodeRunning then
    begin
-     if dmData.DebugLevel>=1 then Writeln('WsjtDecode already running!');
+     if wsjtdebug then Writeln('WsjtDecode already running!');
      Exit;
    end
      else
@@ -2577,24 +2584,24 @@ begin
     index := pos(#$ad+#$bc+#$cb+#$da,Buf); //QTheader: magic number 0xadbccbda
     if index < 1 then
              begin
-              if dmData.DebugLevel>=1 then Writeln(index,':--------Not wjst message!!------------');
+              if wsjtdebug then Writeln(index,':--------Not wjst message!!------------');
               cbOffline.Caption:= 'Not wjst msg!';
               break;
              end;
     RepStart := index; //for possibly reply creation
 
     //release below to debug print the udp datagram
-    //frmMonWsjtx.BufDebug('Raw: ',Buf);
+    if wsjtdebug then frmMonWsjtx.BufDebug('Raw: ',Buf);
 
-    if dmData.DebugLevel>=1 then Writeln('-----------------------decode start---------------------------------');
-    if dmData.DebugLevel>=1 then Write('Header position:',index);
+    if wsjtdebug then Writeln('-----------------------decode start---------------------------------');
+    if wsjtdebug then Write('Header position:',index);
     MoveIndex(4);  // skip QT header
 
     ParNum :=  ui32Buf(index);
-    if dmData.DebugLevel>=1 then Write(' Schema number:',ParNum);
+    if wsjtdebug then Write(' Schema number:',ParNum);
 
     MsgType :=  ui32Buf(index);
-    if dmData.DebugLevel>=1 then Write(' Message type:', MsgType,' ');
+    if wsjtdebug then Write(' Message type:', MsgType,' ');
     if multicast then
                 cbOffline.Caption       := 'Wsjt-x remote #'+intToStr(MsgType)+', multicast'
            else
@@ -2611,7 +2618,7 @@ begin
 
     0 : begin //Heartbeat
           ParStr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('HeartBeat Id:', ParStr);
+          if wsjtdebug then Writeln('HeartBeat Id:', ParStr);
 
           if WsjtxMode = '' then
           begin
@@ -2619,7 +2626,7 @@ begin
             if (length(RepBuf) > 11 ) and (RepBuf[12] = #$00) then //we should have proper reply
             begin
               RepBuf[12] := #$07;    //quick hack: change message type from 0 to 7
-              if dmData.DebugLevel>=1 then Writeln('Changed message type from 0 to 7. Sending...')
+              if wsjtdebug then Writeln('Changed message type from 0 to 7. Sending...')
             end;
             if multicast then
                WsjtxsockS.SendString(RepBuf)
@@ -2632,7 +2639,7 @@ begin
           new := false;
           newstart := false;
           ParStr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Status Id:', ParStr);
+          if wsjtdebug then Writeln('Status Id:', ParStr);
           //----------------------------------------------------
           mhz := IntToStr(ui64Buf(index));
           case cqrini.ReadInteger('wsjt','freq',0) of
@@ -2646,7 +2653,7 @@ begin
                        Fdes :=Fdes/1000000.0;
                        mhz:=FloatToStrF(Fdes,ffFixed,8,5);
                      end;
-                  if dmData.DebugLevel>=1 then Writeln('Qrg :', mhz);
+                  if wsjtdebug then Writeln('Qrg :', mhz);
                   mhz := Trim(mhz)
                 end;
             2 : mhz := cqrini.ReadString('wsjt','deffreq','3.600')
@@ -2659,7 +2666,7 @@ begin
             newstart:= WsjtxBand=''; //clean start do not use for wsjtx cleaning
             WsjtxBand := ParStr
           end;
-          if dmData.DebugLevel>=1 then Writeln('Band :', WsjtxBand);
+          if wsjtdebug then Writeln('Band :', WsjtxBand);
           //----------------------------------------------------
           ParStr := StrBuf(index);
           if (ParStr<>WsjtxMode) then
@@ -2668,13 +2675,13 @@ begin
             newstart:= Wsjtxmode=''; //clean start do not use for wsjtx cleaning
             WsjtxMode := ParStr;
           end;
-          if dmData.DebugLevel>=1 then Writeln('Mode:', WsjtxMode);
+          if wsjtdebug then Writeln('Mode:', WsjtxMode);
            //----------------------------------------------------
           call := trim(StrBuf(index)); //to be sure...
-          if dmData.DebugLevel>=1 then Writeln('Call :', call);
+          if wsjtdebug then Writeln('Call :', call);
          //----------------------------------------------------
           rstS:= StrBuf(index);    //report
-          if dmData.DebugLevel>=1 then Writeln('Report: ',rstS);
+          if wsjtdebug then Writeln('Report: ',rstS);
           //----------------------------------------------------
           case cqrini.ReadInteger('wsjt','mode',1) of
             0 : begin
@@ -2686,45 +2693,45 @@ begin
             1 : TXmode := trim(StrBuf(index));
             2 : TXmode := cqrini.ReadString('wsjt','defmode','JT65')
           end;
-          if dmData.DebugLevel>=1 then Writeln('TXmode: ',Txmode);
+          if wsjtdebug then Writeln('TXmode: ',Txmode);
           //----------------------------------------------------
           TXEna := BoolBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('TXEnabled: ',TXEna);
+          if wsjtdebug then Writeln('TXEnabled: ',TXEna);
           //----------------------------------------------------
           TXOn := BoolBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Transmitting: ',TXOn);
+          if wsjtdebug then Writeln('Transmitting: ',TXOn);
           //----------------------------------------------------
           ParBool:= BoolBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Decoding: ', ParBool);
+          if wsjtdebug then Writeln('Decoding: ', ParBool);
           Parnum := int32Buf(index);
-          if dmData.DebugLevel>=1 then Writeln('Rx DF: ',Parnum);
+          if wsjtdebug then Writeln('Rx DF: ',Parnum);
           Parnum := int32Buf(index);
-          if dmData.DebugLevel>=1 then Writeln('Tx DF: ',Parnum);
+          if wsjtdebug then Writeln('Tx DF: ',Parnum);
           Parstr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('DE call: ',Parstr);
+          if wsjtdebug then Writeln('DE call: ',Parstr);
           Parstr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('DE grid: ',Parstr);
+          if wsjtdebug then Writeln('DE grid: ',Parstr);
           Parstr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('DX grid: ',Parstr);
+          if wsjtdebug then Writeln('DX grid: ',Parstr);
           ParBool:= BoolBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Tx Watchdog: ', ParBool);
+          if wsjtdebug then Writeln('Tx Watchdog: ', ParBool);
           Parstr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Sub-mode: ',Parstr);
+          if wsjtdebug then Writeln('Sub-mode: ',Parstr);
           ParBool:= BoolBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Fast mode: ', ParBool);
+          if wsjtdebug then Writeln('Fast mode: ', ParBool);
           ContestNr := ui8Buf(index);
-          if dmData.DebugLevel>=1 then Writeln('Contest nr: ', ContestNr);
+          if wsjtdebug then Writeln('Contest nr: ', ContestNr);
 
           //----------------------------------------------------
           if TXEna and TXOn then
           begin
-            if dmData.DebugLevel>=1 then Writeln('Status: TxEna, TxOn, DXCall is:',call);
+            if wsjtdebug then Writeln('Status: TxEna, TxOn, DXCall is:',call);
             if (frmMonWsjtx <> nil) then   //CQ-monitor exist
                if (frmMonWsjtx.DblClickCall <> call) then   //this works now also when calling started from wsjt-x main screen 2click
                                             begin    //we do not try to work same station any more as with 2click before
                                               if frmMonWsjtx.chkStopTx.Checked then frmMonWsjtx.DblClickCall := call
                                                 else frmMonWsjtx.DblClickCall :='';
-                                              if dmData.DebugLevel>=1 then Writeln('Change 2click call to:',frmMonWsjtx.DblClickCall);
+                                              if wsjtdebug then Writeln('Change 2click call to:',frmMonWsjtx.DblClickCall);
                                             end;
           end;
           //these can be altered always
@@ -2739,13 +2746,13 @@ begin
             begin
              if (call <> edtCall.Text) then
               Begin
-               if (DiffCalls < 3) then
-                  inc( DiffCalls )
-                else
+               if (DiffCalls > 2) or (WsjtxMode='JTTY') then
                  Begin
                   GetCallInfo(call,WsjtxMode,rstS);
                   DiffCalls := 0;
-                 end;
+                 end
+                else
+                inc( DiffCalls );
               end
              else //same calls
                  DiffCalls := 0;
@@ -2787,17 +2794,17 @@ begin
 
     2 : begin //Decode
           ParStr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Decode Id:', ParStr);
+          if wsjtdebug then Writeln('Decode Id:', ParStr);
           Repbuf := copy(Buf,RepStart,index-RepStart);  //Reply str head part
           new:= BoolBuf(index);
           RepStart := index;     //Reply new/old skip. Str tail start
           if not new then
           begin
-            if dmData.DebugLevel>=1 then Writeln('Old decode!')
+            if wsjtdebug then Writeln('Old decode!')
           end
           else
            begin
-            if dmData.DebugLevel>=1 then Writeln('New decode:') ;
+            if wsjtdebug then Writeln('New decode:') ;
          //----------------------------------------------------
           ParNum := ui32Buf(index);
           Min := ParNum div 60000;  //minutes from 00:00    UTC
@@ -2817,22 +2824,22 @@ begin
             TimeLine := TimeLine + '0' + intToStr(Sec)
           else
             TimeLine := TimeLine + intToStr(Sec);
-          if dmData.DebugLevel>=1 then Writeln(TimeLine);
+          if wsjtdebug then Writeln(TimeLine);
           //----------------------------------------------------
           Snr :=  int32Buf(index);
-          if dmData.DebugLevel>=1 then Writeln('snr:',ParNum );
+          if wsjtdebug then Writeln('snr:',ParNum );
           //----------------------------------------------------
           ParDou := DoubleBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('delta time:',ParDou);
+          if wsjtdebug then Writeln('delta time:',ParDou);
           //----------------------------------------------------
           Dfreq :=  ui32Buf(index);
-          if dmData.DebugLevel>=1 then Writeln('DeltaFreq:', ParNum);
+          if wsjtdebug then Writeln('DeltaFreq:', ParNum);
           //----------------------------------------------------
           mode := StrBuf(index);    //mode as letter: # @ & etc...
-          if dmData.DebugLevel>=1 then Writeln(mode);
+          if wsjtdebug then Writeln(mode);
           //----------------------------------------------------
           ParStr := trim(StrBuf(index));    //message          //MSK144 CQ has one space before CQ, need trim
-          if dmData.DebugLevel>=1 then Writeln(ParStr);
+          if wsjtdebug then Writeln(ParStr);
           //----------------------------------------------------
           if (pos('; ',ParStr)>0) then  //fox decode has 2 items per line separated by '; '
             Begin
@@ -2845,7 +2852,7 @@ begin
               if (Fox2Line = 0) then Repbuf := Repbuf+copy(Buf,RepStart,index-RepStart)  //Reply str tail part
                 else  Repbuf := '';  //only if it is not Fox 2 line
               FirstWord := copy(ParStr,1,pos(' ',ParStr)-1);
-              if dmData.DebugLevel>=1 then Writeln('Origin:',length(Buf),' Reply:',length(RepBuf),' FirstWd>',FirstWord,'<');//should be 1 less
+              if wsjtdebug then Writeln('Origin:',length(Buf),' Reply:',length(RepBuf),' FirstWd>',FirstWord,'<');//should be 1 less
                //if monitor runs ok
                if ( new and (frmMonWsjtx <> nil) and frmMonWsjtx.Showing and (WsjtxBand <>'')  and (WsjtxMode <>'')) then
                  Begin
@@ -2857,7 +2864,7 @@ begin
 
                        else  //if followed call
                        Begin
-                          if dmData.DebugLevel>=1 then Writeln('Other Decode');
+                          if wsjtdebug then Writeln('Other Decode');
                           frmMonWsjtx.AddOtherMessage(Timeline,ParStr,Repbuf,DFreq,Snr);
                        end;
                  end;
@@ -2871,7 +2878,7 @@ begin
 
     3 : begin //Clear
           ParStr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Clear Id:', ParStr);
+          if wsjtdebug then Writeln('Clear Id:', ParStr);
           if (frmMonWsjtx <> nil) and frmMonWsjtx.Showing then
            Begin
              frmMonWsjtx.clearSgMonitor;
@@ -2881,8 +2888,8 @@ begin
 
     5 : begin  //qso logged
           ParStr := StrBuf(index);
-          if dmData.DebugLevel>=1 then Writeln('Qso Logging Id:', ParStr);
-          if dmData.DebugLevel>=1 then Writeln('edtCall before started logging #5:',edtCall.Text );
+          if wsjtdebug then Writeln('Qso Logging Id:', ParStr);
+          if wsjtdebug then Writeln('edtCall before started logging #5:',edtCall.Text );
           //----------------------------------------------------
           //ClearAll;          THis removes QRZ data, not accepted!
           cbOffline.Checked := True;
@@ -2900,7 +2907,7 @@ begin
           edtDate.Clear;
           //----------------------------------------------------
            if TryJulianDateToDateTime(int64Buf(index),DTim)  then  //date
-             if dmData.DebugLevel>=1 then Writeln('End Date :',FormatDateTime('YYYY-MM-DD',DTim));
+             if wsjtdebug then Writeln('End Date :',FormatDateTime('YYYY-MM-DD',DTim));
            // we use end date here because dmData.QSLMgrFound() needs date.
            //if not set causes  "'' is not valid date error" sometimes (usually at first logged qso)
            //edtDate.Text is reset later below to be real qso start date
@@ -2919,20 +2926,20 @@ begin
              TimeLine := TimeLine + '0' + intToStr(Min)
            else
              TimeLine := TimeLine + intToStr(Min);
-           if dmData.DebugLevel>=1 then Writeln('End Time: ',TimeLine);
+           if wsjtdebug then Writeln('End Time: ',TimeLine);
            edtEndTime.Text := TimeLine;
            //----------------------------------------------------
            ParNum := ui8Buf(index);  //timespec local/utc   (not used in cqrlog)
-           if dmData.DebugLevel>=1 then Writeln('timespec: ', ParNum);
+           if wsjtdebug then Writeln('timespec: ', ParNum);
            //----------------------------------------------------
            if ParNum = 2 then  // time offset  (not used in cqrlog)
            begin
              ParNum := int32Buf(index);
-             if dmData.DebugLevel>=1 then Writeln('offset :', int32Buf(index))
+             if wsjtdebug then Writeln('offset :', int32Buf(index))
            end;
           //--------------------------------------------CALL--------
           call:= trim(StrBuf(index)); //to be sure...
-          if dmData.DebugLevel>=1 then Writeln('Call decoded #5:', call,'  edtCall:',edtCall.Text );
+          if wsjtdebug then Writeln('Call decoded #5:', call,'  edtCall:',edtCall.Text );
           if  edtCall.Text <> call then  //call (and web info) maybe there already ok from status packet
                            Begin
                              edtCall.Text := '';
@@ -2940,12 +2947,12 @@ begin
                              edtCall.Text := call;
                              c_lock:=False;
                              edtCallExit(nil);    //<--------this will fetch web info
-                             if dmData.DebugLevel>=1 then Writeln('Call was not there already');
+                             if wsjtdebug then Writeln('Call was not there already');
                              WaitWeb(2); // give time for web
                            end;
           //---------------------------------------------LOCATOR-------
           loc:= trim(StrBuf(index));
-          if dmData.DebugLevel>=1 then Writeln('Grid :', loc);
+          if wsjtdebug then Writeln('Grid :', loc);
           if dmUtils.IsLocOK(loc) then
               if pos(loc,edtGrid.Text)=0  then   //if qso loc does not fit to QRZ loc , or qrz loc is empty
                              edtGrid.Text := loc; //replace qrz loc, otherwise keep it
@@ -2963,7 +2970,7 @@ begin
                        Fdes :=Fdes/1000000;
                        mhz:=FloatToStrF(Fdes,ffFixed,8,5);
                      end;
-                  if dmData.DebugLevel>=1 then Writeln('Qrg :', mhz);
+                  if wsjtdebug then Writeln('Qrg :', mhz);
                   mhz := Trim(mhz);
                   if dmUtils.GetBandFromFreq(mhz) <> '' then
                     cmbFreq.Text := mhz
@@ -2977,7 +2984,7 @@ begin
             new := true;
             WsjtxBand := ParStr
           end;
-          if dmData.DebugLevel>=1 then Writeln('Band :', WsjtxBand);
+          if wsjtdebug then Writeln('Band :', WsjtxBand);
           //----------------------------------------------------
           mode:= trim(StrBuf(index));
           case cqrini.ReadInteger('wsjt','mode',1) of
@@ -2988,41 +2995,41 @@ begin
                    end;
                 end;
             1 : begin
-                  if dmData.DebugLevel>=1 then Writeln('Mode :', mode);
+                  if wsjtdebug then Writeln('Mode :', mode);
                   cmbMode.Text := mode
                 end;
             2 : cmbMode.Text := cqrini.ReadString('wsjt','defmode','JT65')
            end;
            //----------------------------------------------------
            rstS:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('RSTs :', rstS);
+           if wsjtdebug then Writeln('RSTs :', rstS);
            edtHisRST.Text := rstS;
            //----------------------------------------------------
            rstR:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('RSTr :', rstR);
+           if wsjtdebug then Writeln('RSTr :', rstR);
            edtMyRST.Text := rstR;
            //----------------------------------------------------
            pwr:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('Pwr :', pwr);
+           if wsjtdebug then Writeln('Pwr :', pwr);
            if pwr<>'' then edtPWR.Text := pwr;   //empty value leaves NewQSO/pwr valid
            //----------------------------------------------------
            note:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('Comments :', note);
+           if wsjtdebug then Writeln('Comments :', note);
            edtRemQSO.Text := note;
            //--------------------------------------------------
            sname:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('Name :', sname,'  edtName :',edtName.Text);
+           if wsjtdebug then Writeln('Name :', sname,'  edtName :',edtName.Text);
            if sname <>'' then  //if user gives name edtName from qrz.com get replaced
             Begin
               edtName.Text := sname;
             end;
-           if dmData.DebugLevel>=1 then Writeln('edtName before pressing save:',edtName.Text );
+           if wsjtdebug then Writeln('edtName before pressing save:',edtName.Text );
           //----------------------------------------------------
            if TryJulianDateToDateTime(int64Buf(index),DTim)  then
            //start date used
            dmUtils.DateInRightFormat(DTim,Mask,sDate);
            edtDate.Text:=sDate;
-           if dmData.DebugLevel>=1 then Writeln('Start Date :',sDate);
+           if wsjtdebug then Writeln('Start Date :',sDate);
           //-----------------------------------------TIME-----------
            ParNum := ui32Buf(index);    //set qso start time
            Min  := ParNum div 60000;  //minutes from 00:00    UTC
@@ -3037,16 +3044,16 @@ begin
              TimeLine := TimeLine + '0' + intToStr(Min)
            else
              TimeLine := TimeLine + intToStr(Min);
-           if dmData.DebugLevel>=1 then Writeln('Start Time: ',TimeLine);
+           if wsjtdebug then Writeln('Start Time: ',TimeLine);
            edtStartTime.Text := TimeLine;
             //----------------------------------------------------
            ParNum := ui8Buf(index);  //timespec local/utc   (not used in cqrlog)
-           if dmData.DebugLevel>=1 then Writeln('timespec: ', ParNum);
+           if wsjtdebug then Writeln('timespec: ', ParNum);
            //----------------------------------------------------
-           if dmData.DebugLevel>=1 then Writeln('Remote name: ', RemoteName);
+           if wsjtdebug then Writeln('Remote name: ', RemoteName);
            if Pos('WSJT',RemoteName)>0 then   //no contest in JTDX
             begin
-                 if dmData.DebugLevel>=1 then Writeln('Tail logging part entered');
+                 if wsjtdebug then Writeln('Tail logging part entered');
                  OpCall := UpperCase(trim(StrBuf(index)));  //operator callsign (in contest, club etc.)
                  if ((OpCall<>'') and (Op <> OpCall)) then
                   Begin           //wsjt-x operator setting wins cqrlog operator setting
@@ -3128,26 +3135,26 @@ begin
            end;
            //----------this is not yet in wsjt-x 2.2.2 and JTDX 2.1.0rc151------------------
            propmode:= trim(StrBuf(index));
-           if dmData.DebugLevel>=1 then Writeln('Prop Mode :', propmode);
+           if wsjtdebug then Writeln('Prop Mode :', propmode);
            if (cmbPropagation.Text='') then
                  Begin
                   cmbPropagation.Text := dmSatellite.GetPropLongName(propmode);
-                  if dmData.DebugLevel>=1 then Writeln('Prop Mode added!');
+                  if wsjtdebug then Writeln('Prop Mode added!');
                  end;
            //----------------------------------------------------
-           if dmData.DebugLevel>=1 then Writeln(' WSJTX decode #5 logging: press save');
+           if wsjtdebug then Writeln(' WSJTX decode #5 logging: press save');
            SaveRemote;
-           if dmData.DebugLevel>=1 then Writeln(' WSJTX decode #5 logging now ended');
+           if wsjtdebug then Writeln(' WSJTX decode #5 logging now ended');
            if ((frmMonWsjtx <> nil) and (frmMonWsjtx.DblClickCall <> '')) then //CQ-monitor exist
                                     begin
-                                      if dmData.DebugLevel>=1 then Writeln('Reset 2click call:',frmMonWsjtx.DblClickCall,' QSO logged');
+                                      if wsjtdebug then Writeln('Reset 2click call:',frmMonWsjtx.DblClickCall,' QSO logged');
                                       frmMonWsjtx.DblClickCall :='';
                                     end;
          end; //QSO logged in
 
      6 : begin //Close
            ParStr := StrBuf(index);
-           if dmData.DebugLevel>=1 then Writeln('Close Id:', ParStr);
+           if wsjtdebug then Writeln('Close Id:', ParStr);
            //wsjtx closed maybe need to disable remote mode  ?
            WsjtxDecodeRunning :=false;
            DisableRemoteMode;
@@ -3155,18 +3162,18 @@ begin
          end; //Close
 
      10 : Begin   //WSPRDecode. Not implemented
-            if dmData.DebugLevel>=1 then Writeln(' WSPRDecode. Not implemented');
+            if wsjtdebug then Writeln(' WSPRDecode. Not implemented');
           end;    //WSPRDecode
 
      12 : Begin   //Logged ADIF. Not implemented
-            if dmData.DebugLevel>=1 then Writeln(' Logged ADIF. Not implemented');
+            if wsjtdebug then Writeln(' Logged ADIF. Not implemented');
           end;    //Logged ADIF
 
     end; //case
      if mnuRemoteModeWsjt.Checked then         // must do this check. Otherwise at decode 6 ://Close  calling DisableRemoteMode
                    tmrWsjtx.Enabled  := True;  // causes exception if wsjt-x is closed but cqrlog still running.
                                                // Now end of decode and wsjt-x still running: Allow timer run again.
-     if dmData.DebugLevel>=1 then Writeln('-----------------------decode end-----------------------------------');
+     if wsjtdebug then Writeln('-----------------------decode end-----------------------------------');
      end;  //if WsjtxSock.lasterror=0 then
    end;  // while datagrams in buffer
   end; //waiting data
@@ -3176,7 +3183,7 @@ begin
 end;
 {
   The latest UDP message protocol as always is documented in the latest revision of the NetworkMessage.hpp header file:
-  https://sourceforge.net/p/wsjt/wsjtx/ci/master/tree/Network/NetworkMessage.hpp
+  https://github.com/WSJTX/wsjtx/blob/master/Network/NetworkMessage.hpp
 
   The reference implementations, particularly message_aggregator, can always be used to verify behaviour or
   to construct a recipe to replicate an issue.

@@ -526,7 +526,7 @@ begin
       end; //while not dmLogUpload.Q.Eof do
 
         if (ErrorCode > 0) then
-          ToMainThread('Failed - check reason! (maybe start with --debug=-256)','')
+          ToMainThread('Failed - check reason! (start from command console as: Cqrlog --debug=-256)','')
         else
           Begin
            ToMainThread('Done ...','');

@@ -3161,13 +3161,24 @@ begin
            Exit;
          end; //Close
 
-     10 : Begin   //WSPRDecode. Not implemented
-            if wsjtdebug then Writeln(' WSPRDecode. Not implemented');
-          end;    //WSPRDecode
+     7 : begin //Replay (in)
+           if wsjtdebug then Writeln('Replay Id:', ParStr);
+         end;
+     8 : begin //Halt Tx (in)
+           if wsjtdebug then Writeln('Halt Tx Id:', ParStr);
+         end;
+     9 : begin //Free text (in)
+           if wsjtdebug then Writeln('Free text Id:', ParStr);
+         end;
 
-     12 : Begin   //Logged ADIF. Not implemented
-            if wsjtdebug then Writeln(' Logged ADIF. Not implemented');
-          end;    //Logged ADIF
+
+   10 : Begin   //WSPRDecode. Not implemented
+          if wsjtdebug then Writeln(' WSPRDecode. Not implemented');
+        end;    //WSPRDecode
+
+   12 : Begin   //Logged ADIF. Not implemented
+          if wsjtdebug then Writeln(' Logged ADIF. Not implemented');
+        end;    //Logged ADIF
 
     end; //case
      if mnuRemoteModeWsjt.Checked then         // must do this check. Otherwise at decode 6 ://Close  calling DisableRemoteMode

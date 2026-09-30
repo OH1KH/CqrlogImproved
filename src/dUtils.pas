@@ -95,7 +95,7 @@ const
     'NAME_INTL',    'NOTES_INTL',     'QSLMSG_INTL',     'QTH_INTL',
     'RIG_INTL',     'SIG_INTL',       'SIG_INFO_INTL');
 
-   c_MODEFILE_DIR    = '';
+   C_MODEFILE_DIR    = 'mode_files';    //new directory for mode conversion files version >= cqrlog_Improved(146)
    C_SUBMODE_FILE    = 'submode_mode.txt';
    C_IMPORTMODE_FILE = 'import_mode.txt';
    C_EXCEPMODE_FILE  = 'exception_mode.txt';
@@ -112,18 +112,18 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
-    fTimeOffset: currency;
-    fGrayLineOffset: currency;
-    fQRZSession: string;
-    fHamQTHSession: string;
-    fQRZCQSession: string;
-    fSysUTC: boolean;
-    SubmodeMode: TStringList;
-    ImportMode : TStringlist;
-    ExceptMode : TStringlist;
-    WaitTime   : longint;
-    LocalDbg   : boolean;
-    LogTable   : String;
+    fTimeOffset       : currency;
+    fGrayLineOffset   : currency;
+    fQRZSession       : string;
+    fHamQTHSession    : string;
+    fQRZCQSession     : string;
+    fSysUTC           : boolean;
+    SubmodeMode       : TStringList;
+    ImportMode        : TStringlist;
+    ExceptMode        : TStringlist;
+    WaitTime          : longint;
+    LocalDbg          : boolean;
+    LogTable          : String;
 
     procedure LoadRigList(RigCtlBinaryPath : String;RigList : TStringList);
     procedure LoadRigListCombo(CurrentRigId : String; RigList : TStringList; RigComboBox : TComboBox);
@@ -5528,6 +5528,8 @@ Begin
                writeln('Cqrlog internal mode will be: ',Result);
 end;
 procedure TdmUtils.ModeConvListsCreate(SetUp:boolean);
+var
+   FileInfo: TSearchRec;
 
 Begin
    if not SetUp then
@@ -5542,19 +5544,55 @@ Begin
    ImportMode := TStringlist.Create;
    ExceptMode := TStringlist.Create;
 
+
+   //Cqrlog_improved (146)> Move modefiles to own directory where they are easier to find by user
+   if  C_MODEFILE_DIR<>'' then  //this is version > (145)
+    Begin
+     //do we have directory yet?
+     if FindFirst(dmData.HomeDir+C_MODEFILE_DIR, faDirectory, FileInfo)<> 0 then
+      Begin
+       if LocalDbg then
+          Writeln('No directory yet!') ;
+       if CreateDir(dmData.HomeDir+C_MODEFILE_DIR) then
+         if LocalDbg then
+            Writeln('Folder created successfully.');
+
+       //move files from old location
+       if FileSearch(C_SUBMODE_FILE,dmData.HomeDir,[])<>'' then
+          if RenameFile(dmData.HomeDir+C_SUBMODE_FILE, dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_SUBMODE_FILE) then
+                                                          if LocalDbg then
+                                                             Writeln(C_SUBMODE_FILE+' moved successfully!');
+       if FileSearch(C_IMPORTMODE_FILE,dmData.HomeDir,[])<>'' then
+          if RenameFile(dmData.HomeDir+C_IMPORTMODE_FILE, dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_IMPORTMODE_FILE) then
+                                                          if LocalDbg then
+                                                             Writeln(C_IMPORTMODE_FILE+' moved successfully!');
+       if FileSearch(C_EXCEPMODE_FILE,dmData.HomeDir,[])<>'' then
+          if RenameFile(dmData.HomeDir+C_EXCEPMODE_FILE, dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_EXCEPMODE_FILE) then
+                                                          if LocalDbg then
+                                                             Writeln(C_EXCEPMODE_FILE+' moved successfully!');
+       if FileSearch(C_READMEMODE_FILE,dmData.HomeDir,[])<>'' then
+          if RenameFile(dmData.HomeDir+C_READMEMODE_FILE, dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_READMEMODE_FILE) then
+                                                          if LocalDbg then
+                                                             Writeln(C_READMEMODE_FILE+' moved successfully!');
+      end;
+
+      FindClose(FileInfo);
+    end;
+
    //if we do not find one of these files we create it
-   if FileSearch(C_SUBMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR,[])='' then
-                                                                         MakeMissingModeFile(1);
-   if FileSearch(C_IMPORTMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR,[])='' then
-                                                                         MakeMissingModeFile(2);
-   if FileSearch(C_EXCEPMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR,[])='' then
-                                                                         MakeMissingModeFile(3);
-   if FileSearch(C_READMEMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR,[])='' then
+   if FileSearch(C_READMEMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR+PathDelim,[])='' then
                                                                          MakeMissingModeFile(4);
+   if FileSearch(C_SUBMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR+PathDelim,[])='' then
+                                                                         MakeMissingModeFile(1);
+   if FileSearch(C_IMPORTMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR+PathDelim,[])='' then
+                                                                         MakeMissingModeFile(2);
+   if FileSearch(C_EXCEPMODE_FILE,dmData.HomeDir+C_MODEFILE_DIR+PathDelim,[])='' then
+                                                                         MakeMissingModeFile(3);
+
    try
-      SubmodeMode.LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+C_SUBMODE_FILE);
-      ImportMode .LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+C_IMPORTMODE_FILE);
-      ExceptMode.LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+C_EXCEPMODE_FILE);
+      SubmodeMode.LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_SUBMODE_FILE);
+      ImportMode .LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_IMPORTMODE_FILE);
+      ExceptMode.LoadFromFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_EXCEPMODE_FILE);
    except
       on E : Exception do writeln('Could not load mode conversion files!');
    end;
@@ -5566,9 +5604,9 @@ Begin
      if  SubmodeMode.IndexOf('FT2=MFSK') < 0 then
          Begin
             SubmodeMode.Add('FT2=MFSK');
-            SubmodeMode.SaveToFile(dmData.HomeDir+C_MODEFILE_DIR+C_SUBMODE_FILE);
+            SubmodeMode.SaveToFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_SUBMODE_FILE);
             if LocalDbg then
-                 Writeln('Added  FT2=MFSK to '+dmData.HomeDir+C_MODEFILE_DIR+C_SUBMODE_FILE);
+                 Writeln('Added  FT2=MFSK to '+dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_SUBMODE_FILE);
          end;
    except
       on E : Exception do writeln('Could not add new submode=mode pair to file!');
@@ -5637,12 +5675,12 @@ Const
   'PKTFM=PKT',
   'PKTAM=PKT'
   );
-  R_file: array [1 .. 22] of string = (
+  R_file: array [1 .. 23] of string = (
   'Files to modify ADIF mode+submode to fit with Cqrlog.',
-  'Cqrlog internally uses submodes as mode. (only one database column -> mode)',
+  'Cqrlog internally uses submodes as mode. (only one database column exist -> mode)',
   '',
-  'These files are manually created and can be changed if needed:',
-  'Contents are read to TStringLists at program start.',
+  'These files can be changed if needed:',
+  'Contents from files are read into TStringLists at program start.',
   '',
   'submode_mode.txt',
   ' Submode=Mode',
@@ -5652,14 +5690,15 @@ Const
   ' Submode list for import only',
   ' Used to define deprecated submodes that are used ony for adif input.',
   ' These submodes do not export.',
+  ' Actually this list is not currently used for anything vers. >= CI_(145).',
    '',
    'exception_mode.txt',
    ' mode=cqrlogmode',
    ' Exceptions between "true" (sub)modes and internal cqrlog mode',
    ' Converts also in export "non adif" modes from rigctld like PACKET -> PKT',
    '',
-   'Two first files created by https://adif.org/312/ADIF_312_annotated.htm#Mode_Enumeration',
-   'informations 2022-04-29,'
+   'Two first file contents are created by https://adif.org/312/ADIF_312_annotated.htm#Mode_Enumeration',
+   'informations 2022-04-29'
   );
   var f:TextFile;
 
@@ -5688,10 +5727,10 @@ Const
     end;
 //--------------------------------------------------------
 Begin
-   if num=1 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+C_SUBMODE_FILE,S_file);
-   if num=2 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+C_IMPORTMODE_FILE,I_file);
-   if num=3 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+C_EXCEPMODE_FILE,E_file);
-   if num=4 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+C_READMEMODE_FILE,R_file);
+   if num=1 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_SUBMODE_FILE,S_file);
+   if num=2 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_IMPORTMODE_FILE,I_file);
+   if num=3 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_EXCEPMODE_FILE,E_file);
+   if num=4 then CreaFile(dmData.HomeDir+C_MODEFILE_DIR+PathDelim+C_READMEMODE_FILE,R_file);
 end;
 
 procedure TdmUtils.UpdateCallBookcnf;

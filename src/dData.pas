@@ -3417,7 +3417,7 @@ begin
       if TableExists('view_cqrlog_main_by_callsign') then
       begin
         trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view view_cqrlog_main_by_callsign';
+        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_callsign';
         if fDebugLevel>=1 then  Writeln(Q1.SQL.Text);
         Q1.ExecSQL;
         trQ1.Commit
@@ -3426,7 +3426,7 @@ begin
       if TableExists('view_cqrlog_main_by_qsodate') then
       begin
         trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view view_cqrlog_main_by_qsodate';
+        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate';
         if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
         Q1.ExecSQL;
         trQ1.Commit
@@ -3435,7 +3435,7 @@ begin
       if TableExists('view_cqrlog_main_by_qsodate_asc') then
       begin
         trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view view_cqrlog_main_by_qsodate_asc';
+        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate_asc';
         if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
         Q1.ExecSQL;
         trQ1.Commit

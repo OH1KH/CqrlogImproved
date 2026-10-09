@@ -264,7 +264,9 @@ begin
          ClubCount:=  dmLogUpload.Q.FieldByName('act_count').AsInteger;
          ClubBulk:=  (ClubCount > 3);  //How many actions cause putlogs.php usage
          dmLogUpload.Q.Close;
-       end;
+       end
+     else
+         ClubBulk:= False;
 
       //CLubBulk:=true; //debug for testing, comment out for production
 
@@ -524,7 +526,7 @@ begin
       end; //while not dmLogUpload.Q.Eof do
 
         if (ErrorCode > 0) then
-          ToMainThread('Failed - check reason! (maybe start with --debug=-256)','')
+          ToMainThread('Failed - check reason! (start from command console as: Cqrlog --debug=-256)','')
         else
           Begin
            ToMainThread('Done ...','');

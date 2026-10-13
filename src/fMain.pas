@@ -1004,6 +1004,7 @@ begin
     exit;
   try
     InRefresh := True;
+    sbMain.Panels[3].Text:=''; //refresh clears Ctrl+Mouse/Shift+arrows selection and should clear also status panel
     //if user push refresh data very quickly again and again, program may crash
     idx := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger;
     dmData.qCQRLOG.Close;

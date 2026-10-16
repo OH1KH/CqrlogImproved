@@ -2587,12 +2587,13 @@ var
 
   procedure HandleRecord;
    Begin
-        Myloc := Q.Fields[0].AsString;
-        if length(Myloc) = 4 then Myloc := Myloc +'MM';
-        loc := Q.Fields[1].AsString;
-        if length(loc) = 4 then loc := loc +'MM';
-        dmUtils.DistanceFromLocator(dmUtils.CompleteLoc(Myloc),loc,qrb,qrc);
-        if StrToIntDef(qrb,0) > LongestDist then  LongestDist := StrToIntDef(qrb,0);
+        qrb:='';
+        Myloc := dmUtils.CompleteLoc( Q.Fields[0].AsString);
+        loc := dmUtils.CompleteLoc( Q.Fields[1].AsString);
+        if ((dmUtils.IsLocOK(Myloc)) and (dmUtils.IsLocOK(loc))) then
+            dmUtils.DistanceFromLocator(dmUtils.CompleteLoc(Myloc),loc,qrb,qrc);
+        if StrToIntDef(qrb,0) > LongestDist then
+            LongestDist := StrToIntDef(qrb,0);
         SumDist:= SumDist + StrToIntDef(qrb,0);
   end;
 
@@ -2650,6 +2651,7 @@ begin
       trQ.RollBack
     end
 end;
+
 function TdmData.GetQSOCount : Integer;
 begin
   Q.Close;

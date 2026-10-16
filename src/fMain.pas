@@ -2850,35 +2850,37 @@ begin
   if not dmData.qCQRLOG.Active then
     exit;
   if dmData.qCQRLOG.RecordCount = 0 then
-  begin
-    acAttach.Enabled   := False;
-    acQSLImage.Enabled := False
-  end
-  else begin
+   begin
+     acAttach.Enabled   := False;
+     acQSLImage.Enabled := False
+   end
+  else
+   begin
     if DirectoryExists(dmUtils.GetCallAttachDir(dmData.qCQRLOG.Fields[4].AsString)) then
       acAttach.Enabled := True
     else
       acAttach.Enabled := False;
+
     if dmUtils.QSLFrontImageExists(dmUtils.GetCallForAttach(dmData.qCQRLOG.Fields[4].AsString)) <> '' then
       acQSLImage.Enabled := True
     else
-      acQSLImage.Enabled := False;                                                                  
-    if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
-      qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
-      lblProf.Caption:=qrb;
-    end;
+      acQSLImage.Enabled := False;
 
-  if pnlProfile.Visible then
-    if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
-      qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
-      lblProf.Caption:=qrb;
+    if pnlProfile.Visible then
+      begin
+      if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
+        qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
+        lblProf.Caption:=qrb;
+      end;
 
-  if pnlDistance.Visible then
-   begin
-      qrb := CalcQrb(dmData.qCQRLOG.Fields[19].AsString,dmData.qCQRLOG.Fields[18].AsString,True);
-      lblDistance.Visible:=(qrb<>'') and (sbMain.Panels[3].Text = '');
-      lblDist.Caption := qrb
-   end
+      if pnlDistance.Visible then
+       begin
+        qrb := CalcQrb(dmData.qCQRLOG.Fields[19].AsString,dmData.qCQRLOG.Fields[18].AsString,True);
+        lblDistance.Visible:=(qrb<>'') and (sbMain.Panels[3].Text = '');
+        lblDist.Caption := qrb
+       end;
+   end;
+
 end;
 
 

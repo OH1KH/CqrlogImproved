@@ -3051,7 +3051,7 @@ begin
            if wsjtdebug then Writeln('timespec: ', ParNum);
            //----------------------------------------------------
            if wsjtdebug then Writeln('Remote name: ', RemoteName);
-           if Pos('WSJT',RemoteName)>0 then   //no contest in JTDX
+           if Pos('WS',RemoteName)=1 then   //fits both WS and WSJT-X, no contest in JTDX (or is there in latest version? Q:2026-10-18?)
             begin
                  if wsjtdebug then Writeln('Tail logging part entered');
                  OpCall := UpperCase(trim(StrBuf(index)));  //operator callsign (in contest, club etc.)

@@ -14976,6 +14976,10 @@ object frmDatabaseUpdate: TfrmDatabaseUpdate
   OnDestroy = FormDestroy
   OnShow = FormShow
   object pnlQRZ: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 48
     Top = 0
@@ -14985,11 +14989,16 @@ object frmDatabaseUpdate: TfrmDatabaseUpdate
     TabOrder = 0
   end
   object btnCancel: TButton
-    Left = 168
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 186
     Height = 25
-    Top = 56
-    Width = 75
-    Anchors = [akTop, akLeft, akRight]
+    Top = 55
+    Width = 63
+    Anchors = [akLeft, akRight, akBottom]
+    BorderSpacing.Bottom = 6
     Caption = 'Cancel'
     TabOrder = 1
     OnClick = btnCancelClick

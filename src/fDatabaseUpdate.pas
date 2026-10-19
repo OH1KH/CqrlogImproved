@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, httpsend, inifiles, process, lcltype;
+  ExtCtrls, StdCtrls, httpsend, inifiles, process, lcltype, LazUTF8;
 
 type
 
@@ -91,7 +91,9 @@ var
   County    : String;
   tmp       : String;
   CallCount : integer;
+  S         : UTF8string;
 
+//------------------------------------------------------
   procedure DoUpgrade;
   begin
     dbCall   := dmData.qCallBook.FieldByName('callsign').AsString;
@@ -251,13 +253,13 @@ var
       end
     end;
 
-    dbName   := copy(dbName, 1, 40);
-    dbQTH    := copy(dbQTH, 1, 60);
-    dbQSLVia := copy(dbQSLVia, 1, 30);
-    dbAward  := copy(dbAward, 1, 50);
-    dbCounty := copy(dbCounty, 1, 30);
-    dbState  := copy(dbState, 1, 4);
-    dbRemQSO := copy(dbRemQSO, 1, 200);
+    dbName   := UTF8copy(dbName, 1, 40);
+    dbQTH    := UTF8copy(dbQTH, 1, 60);
+    dbQSLVia := UTF8copy(dbQSLVia, 1, 30);
+    dbAward  := UTF8copy(dbAward, 1, 50);
+    dbCounty := UTF8copy(dbCounty, 1, 30);
+    dbState  := UTF8copy(dbState, 1, 4);
+    dbRemQSO := UTF8copy(dbRemQSO, 1, 200);
 
     if (c_waz<>'') then
       dbWAZ := c_waz;
@@ -277,23 +279,37 @@ var
     if   dbWAZ       <>'' then tmp:=tmp+',waz='+QuotedStr(dbWAZ);
     if   dbITU       <>'' then tmp:=tmp+',itu='+QuotedStr(dbITU);
 
-    if tmp<>'' then
+    S:=tmp;   //placing tmp to S:UTF8String; fixes UTF8 errors like
+              // update cqrlog_main set name='✅⭐ JEAN-LUC . john . SCHOTS F4PAN ⭐',
+              //where the last star code had only first 2 bytes from 0xE2 0xAC 0x90 when fetch from QRZ.com
+              //Amazing!!!!
+
+    if S<>'' then
      Begin
-      if tmp[1]=',' then tmp:=copy(tmp,2,length(tmp));  //starts always without comma
-      dmData.Q1.SQL.Text := 'update cqrlog_main set '
-      +tmp
-      +' where id_cqrlog_main = ' + IntToStr(dbId);
-      dmData.trQ1.StartTransaction;
-      if dmData.DebugLevel >= 1 then
-          Writeln(dmData.Q1.SQL.Text);
-      dmData.Q1.ExecSQL;
-      dmData.trQ1.Commit;
-      dmData.trQ1.Rollback;
+        if tmp[1]=',' then tmp:=UTF8copy(tmp,2,length(tmp));  //starts always without comma
+        try
+          dmData.Q1.SQL.Text := 'update cqrlog_main set '
+          +tmp
+          +' where id_cqrlog_main = ' + IntToStr(dbId);
+          dmData.trQ1.StartTransaction;
+         // if dmData.DebugLevel >= 1 then
+              Writeln(dmData.Q1.SQL.Text);
+          dmData.Q1.ExecSQL;
+          dmData.trQ1.Commit;
+          dmData.trQ1.Rollback;
+        except
+          on E: Exception do
+            ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+        end;
     end;
-  end;
+end;
+//------------------procedure DoUpgrade;--------------------
+
+
 
 begin
   FreeOnTerminate:= True;
+  if(Terminated=TRUE) then exit;
   c_running := True;
   CallCount:=0;
   try
@@ -358,7 +374,7 @@ begin
           pnlQRZ.Caption := 'Updating filtered QSOs'
          else
              Begin
-              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs?';
+              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs? (Starting in 5 seconds...)';
               tmrQRZ.Interval:=5000;
               CanCancelAtStart:=True;
              end;

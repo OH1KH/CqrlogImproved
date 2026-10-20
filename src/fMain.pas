@@ -1089,7 +1089,7 @@ begin
        else lastid := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger
    end;
 
-  if Application.MessageBox('Update names from previous QSOs?','Question ...',mb_YesNo + mb_IconQuestion) = idYes then
+  if Application.MessageBox('Update Name from previous QSOs?'+LineEnding+'(I.E. not use Name from Callbook)','Question ...',mb_YesNo + mb_IconQuestion) = idYes then
     prenames := True;
 
   frmDatabaseUpdate := TfrmDatabaseUpdate.Create(self);
@@ -2701,8 +2701,6 @@ procedure TfrmMain.ShowFields;
   end;
 
 begin
-  //pnlDistance.Visible := cqrini.ReadBool('Columns', 'Distance', False);
-  //pnlProfile.Visible := cqrini.ReadBool('Columns', 'Profile', False);
   SetAllPanelHeight;
 
   dbgrdMain.DataSource := dmData.dsrMain;

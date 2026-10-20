@@ -1532,7 +1532,7 @@ begin
 
   dok  := UpperCase(copy(dok,1,12));
   cont := UpperCase(copy(cont,1,2));
-  qth  := copy(qth,1,60);
+  qth  := UTF8copy(qth,1,60);
   qsodate := (FormatDateTime('YYYY-MM-DD',date));
   Q.SQL.Text := 'UPDATE cqrlog_main set qsodate = '+ QuotedStr(qsodate) +', time_on = '+QuotedStr(time_on) +
            ', time_off = ' + QuotedStr(time_off) + ', callsign = '+QuotedStr(call) +
@@ -1542,9 +1542,9 @@ begin
            ', pwr = ' + QuotedStr(pwr) + ', waz = ' + sWAZ +
            ', itu = ' + sITU + ', loc = ' + QuotedStr(loc) +
            ', my_loc = ' + QuotedStr(my_loc) + ', county = ' + QuotedStr(county) +
-           ', remarks = ' + QuotedStr(Trim(remarks)) + ', adif = ' + IntToStr(adif) +
-           ', qso_dxcc = '+ IntToStr(changed) + ', name = ' +QuotedStr(Trim(stn_name)) +
-           ', qth = ' + QuotedStr(Trim(qth)) + ', award = ' + QuotedStr(award) +', band = ' + QuotedStr(band) +
+           ', remarks = ' + QuotedStr(UTF8Trim(remarks)) + ', adif = ' + IntToStr(adif) +
+           ', qso_dxcc = '+ IntToStr(changed) + ', name = ' +QuotedStr(UTF8Trim(stn_name)) +
+           ', qth = ' + QuotedStr(UTF8Trim(qth)) + ', award = ' + QuotedStr(award) +', band = ' + QuotedStr(band) +
            ', profile = ' + IntToStr(profile) + ', idcall = ' + QuotedStr(idcall) + ', state=' + QuotedStr(state) +
            ', cont = ' + QuotedStr(cont)+ ', prop_mode = ' + QuotedStr(PropMode) + ', satellite = ' + QuotedStr(Satellite)+
            ', rxfreq = ' + rx_freq + ', stx = ' + QuotedStr(stx)+ ', stx_string = ' + QuotedStr(stx_string) + ', srx = ' + QuotedStr(srx)+
@@ -1569,7 +1569,7 @@ const
   C_INS = 'insert into notes (callsign, longremarks) values (%s, %s)';
   C_UPD = 'update notes set longremarks = %s where callsign = %s';
 begin
-  text := Trim(text);
+  text := UTF8Trim(text);
   if fDebugLevel >=1 then Writeln('Note:',text);
   qComment.Close;
   if trComment.Active then trComment.Rollback;
@@ -1957,9 +1957,9 @@ begin
     if qProfiles.RecordCount > 0 then
     begin
       tmp := IntToStr(qProfiles.Fields[1].AsInteger)+'|';
-      tmp := tmp + trim(qProfiles.Fields[2].AsString)+'|';
-      tmp := tmp + trim(qProfiles.Fields[3].AsString)+'|';
-      tmp := tmp + trim(qProfiles.Fields[4].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[2].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[3].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[4].AsString)+'|';
       Result := tmp
     end
   finally

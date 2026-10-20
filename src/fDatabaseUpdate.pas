@@ -91,7 +91,6 @@ var
   County    : String;
   tmp       : String;
   CallCount : integer;
-  S         : UTF8string;
 
 //------------------------------------------------------
   procedure DoUpgrade;
@@ -128,12 +127,14 @@ var
       dmData.Q.Close;
       dmData.Q.SQL.Text := 'select max(id_cqrlog_main),callsign,name from cqrlog_main where name <> '+QuotedStr('')+
                            ' and callsign = '+QuotedStr(dbCall)+' group by callsign,name';
-      if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);
+      if dmData.DebugLevel>=1 then
+                              Writeln(dmData.Q.SQL.Text);
       dmData.trQ.StartTransaction;
       dmData.Q.Open();
       dbName := dmData.Q.Fields[2].AsString;
       dmData.trQ.RollBack
-    end;
+    end
+      else dbName:='';
 
     if dmData.DebugLevel >= 1 then
     begin
@@ -268,35 +269,26 @@ var
       dbITU := c_itu;
 
     tmp:='';
-    if   dbName      <>'' then tmp:='name='+QuotedStr(dbName);
-    if   dbQTH       <>'' then tmp:=tmp+',qth='+ QuotedStr(dbQTH);
-    if   dbQSLVia    <>'' then tmp:=tmp+',qsl_via='+ QuotedStr(dbQSLVia);
-    if   dbCounty    <>'' then tmp:=tmp+',county='+ QuotedStr(dbCounty);
-    if   dbAward     <>'' then tmp:=tmp+',award='+ QuotedStr(dbAward);
-    if   dbState     <>'' then tmp:=tmp+',state ='+ QuotedStr(dbState);
-    if   dbRemQSO    <>'' then tmp:=tmp+',remarks='+ QuotedStr(dbRemQSO);
-    if   dbIota      <>'' then tmp:=tmp+',iota='+QuotedStr(dbIota);
-    if   dbWAZ       <>'' then tmp:=tmp+',waz='+QuotedStr(dbWAZ);
-    if   dbITU       <>'' then tmp:=tmp+',itu='+QuotedStr(dbITU);
+    if   dbName      <>'' then tmp:='name='+QuotedStr(UTF8Copy(dbName,1,40)); //ensure that string fits to log database varchar columns NOT needed!!
+    if   dbQTH       <>'' then tmp:=tmp+',qth='+ QuotedStr(UTF8Copy(dbQTH,1,60));
+    if   dbQSLVia    <>'' then tmp:=tmp+',qsl_via='+ QuotedStr(UTF8Copy(dbQSLVia,1,40));
+    if   dbCounty    <>'' then tmp:=tmp+',county='+ QuotedStr(UTF8Copy(dbCounty,1,30));
+    if   dbAward     <>'' then tmp:=tmp+',award='+ QuotedStr(UTF8Copy(dbAward,1,50));
+    if   dbState     <>'' then tmp:=tmp+',state ='+ QuotedStr(UTF8Copy(dbState,1,4));
+    if   dbRemQSO    <>'' then tmp:=tmp+',remarks='+ QuotedStr(UTF8Copy(dbRemQSO,1,200));
+    if   dbIota      <>'' then tmp:=tmp+',iota='+QuotedStr(UTF8Copy(dbIota,1,6));
+    if   dbWAZ       <>'' then tmp:=tmp+',waz='+dbWAZ;  //these are integer(11) in log database
+    if   dbITU       <>'' then tmp:=tmp+',itu='+dbITU;
 
-    S:=tmp;   //placing tmp to S:UTF8String; fixes UTF8 errors like
-              // update cqrlog_main set name='✅⭐ JEAN-LUC . john . SCHOTS F4PAN ⭐',
-              //where the last star code had only first 2 bytes from 0xE2 0xAC 0x90 when fetch from QRZ.com
-              //Amazing!!!!
-
-    if S<>'' then
+    if tmp<>'' then
      Begin
-        if tmp[1]=',' then tmp:=UTF8copy(tmp,2,length(tmp));  //starts always without comma
+        if tmp[1]=',' then tmp:=UTF8copy(tmp,2,UTF8length(tmp));  //starts always without comma
         try
-          dmData.Q1.SQL.Text := 'update cqrlog_main set '
-          +tmp
-          +' where id_cqrlog_main = ' + IntToStr(dbId);
-          dmData.trQ1.StartTransaction;
-         // if dmData.DebugLevel >= 1 then
+          dmData.Q1.SQL.Text := 'update cqrlog_main set '+tmp
+                                +' where id_cqrlog_main = ' + IntToStr(dbId);
+          if dmData.DebugLevel >= 1 then
               Writeln(dmData.Q1.SQL.Text);
           dmData.Q1.ExecSQL;
-          dmData.trQ1.Commit;
-          dmData.trQ1.Rollback;
         except
           on E: Exception do
             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
@@ -326,7 +318,7 @@ begin
     MvToRem    := cqrini.ReadBool('NewQSO', 'MvToRem', True);
     c_SyncText := 'Working ...';
     Synchronize(@frmDatabaseUpdate.SynCallBook);
-    sleep(5100);
+    sleep(1000);
     while not dmData.qCallBook.EOF do
     begin
       inc(CallCount);
@@ -374,8 +366,8 @@ begin
           pnlQRZ.Caption := 'Updating filtered QSOs'
          else
              Begin
-              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs? (Starting in 5 seconds...)';
-              tmrQRZ.Interval:=5000;
+              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs? (Starting in 3 seconds...)';
+              tmrQRZ.Interval:=3000;
               CanCancelAtStart:=True;
              end;
   pnlQRZ.Repaint;

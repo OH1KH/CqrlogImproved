@@ -289,6 +289,7 @@ type
         function  WkdGrid(loc, band, mode: string): integer;
         function  WkdCall(call, band, mode: string): integer;
         function  WkdState(state, band, mode: string): integer;
+        function  IsValidUTF8(const S: string): boolean;
         procedure AddBandsToStatGrid(g:TStringGrid);
         procedure AdifAsciiTrim(var col:TEdit);
         procedure BandFromDbase;
@@ -3657,8 +3658,7 @@ begin
                 end;
 
         if Utf8Length(nick) > 40 then
-          nick := UTF8copy(nick,1,40);
-
+                            nick := UTF8copy(nick,1,40);
 
         qth := GetNodeValue(m.Text, '<addr2>');
         state := GetNodeValue(m.Text, '<state>');
@@ -6325,6 +6325,105 @@ begin
       dmData.trW.Rollback;
     end;
   if LocalDbg then  Writeln('WkdState is:', WkdState);
+end;
+function TdmUtils.IsValidUTF8(const S: string): boolean;      //AI code !
+var
+  i, Len: Integer;
+  c: Byte;
+  BytesToFollow: Integer;
+  CodePoint: LongWord;
+begin
+  if S='' then
+     Begin
+       Result:=False;
+       exit;
+     end;
+  Result := True;
+  i := 1;
+  Len := Length(S);
+  while i <= Len do
+  begin
+    c := Byte(S[i]);
+
+    if c <= $7F then
+    begin
+      // ASCII byte, valid single byte UTF-8
+      Inc(i);
+      Continue;
+    end
+    else if (c and $E0) = $C0 then
+    begin
+      BytesToFollow := 1;
+      CodePoint := c and $1F;
+    end
+    else if (c and $F0) = $E0 then
+    begin
+      BytesToFollow := 2;
+      CodePoint := c and $0F;
+    end
+    else if (c and $F8) = $F0 then
+    begin
+      BytesToFollow := 3;
+      CodePoint := c and $07;
+    end
+    else
+    begin
+      Result := False; // Invalid leading byte
+      Exit;
+    end;
+
+    // Check if enough bytes remain
+    if i + BytesToFollow > Len then
+    begin
+      Result := False; // Truncated sequence
+      Exit;
+    end;
+
+    Inc(i);
+    while BytesToFollow > 0 do
+    begin
+      c := Byte(S[i]);
+      if (c and $C0) <> $80 then
+      begin
+        Result := False; // Invalid continuation byte
+        Exit;
+      end;
+      CodePoint := (CodePoint shl 6) or (c and $3F);
+      Inc(i);
+      Dec(BytesToFollow);
+    end;
+
+    // Reject overlong encodings
+    if (CodePoint <= $7F) then
+    begin
+      Result := False;
+      Exit;
+    end
+    else if (CodePoint <= $7FF) and ((Byte(S[i - (2 + 1)]) and $E0) = $C0) then
+    begin
+      Result := False;
+      Exit;
+    end
+    else if (CodePoint <= $FFFF) and ((Byte(S[i - (3 + 1)]) and $F0) = $E0) then
+    begin
+      Result := False;
+      Exit;
+    end;
+
+    // Reject UTF-16 surrogates
+    if (CodePoint >= $D800) and (CodePoint <= $DFFF) then
+    begin
+      Result := False;
+      Exit;
+    end;
+
+    // Reject code points beyond Unicode max (U+10FFFF)
+    if CodePoint > $10FFFF then
+    begin
+      Result := False;
+      Exit;
+    end;
+  end;
 end;
 
 end.

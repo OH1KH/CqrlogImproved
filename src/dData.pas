@@ -553,7 +553,7 @@ begin
   if WGMWCon.Connected then  WGMWCon.Connected := False;
   if UpStatCon.Connected then  UpStatCon.Connected := False;
 
-  MainCon.CharSet      :='UTF8';
+  MainCon.CharSet      :='UTF8mb4';
   MainCon.HostName     := host;
   MainCon.Params.Text  := 'Port='+port;
   MainCon.UserName     := user;
@@ -566,7 +566,7 @@ begin
        MainCon.OnLog:=@GetLogEvent;
      end;
 
-  BandMapCon.CharSet      :='UTF8';
+  BandMapCon.CharSet      :='UTF8mb4';
   BandMapCon.HostName     := host;
   BandMapCon.Params.Text  := 'Port='+port;
   BandMapCon.UserName     := user;
@@ -579,7 +579,7 @@ begin
        BandMapCon.OnLog:=@GetLogEvent;
      end;
 
-  RbnMonCon.CharSet      :='UTF8';
+  RbnMonCon.CharSet      :='UTF8mb4';
   RbnMonCon.HostName     := host;
   RbnMonCon.Params.Text  := 'Port='+port;
   RbnMonCon.UserName     := user;
@@ -592,7 +592,7 @@ begin
        RbnMonCon.OnLog:=@GetLogEvent;
      end;
 
-  dbDXC.CharSet      :='UTF8';
+  dbDXC.CharSet      :='UTF8mb4';
   dbDXC.HostName     := host;
   dbDXC.Params.Text  := 'Port='+port;
   dbDXC.UserName     := user;
@@ -605,7 +605,7 @@ begin
        dbDXC.OnLog:=@GetLogEvent;
      end;
 
-  LogUploadCon.CharSet      :='UTF8';
+  LogUploadCon.CharSet      :='UTF8mb4';
   LogUploadCon.HostName     := host;
   LogUploadCon.Params.Text  := 'Port='+port;
   LogUploadCon.UserName     := user;
@@ -618,7 +618,7 @@ begin
        LogUploadCon.OnLog:=@GetLogEvent;
      end;
 
-  WGMWCon.CharSet      :='UTF8';
+  WGMWCon.CharSet      :='UTF8mb4';
   WGMWCon.HostName     := host;
   WGMWCon.Params.Text  := 'Port='+port;
   WGMWCon.UserName     := user;
@@ -631,7 +631,7 @@ begin
        WGMWCon.OnLog:=@GetLogEvent;
      end;
 
-  UpStatCon.CharSet      :='UTF8';
+  UpStatCon.CharSet      :='UTF8mb4';
   UpStatCon.HostName     := host;
   UpStatCon.Params.Text  := 'Port='+port;
   UpStatCon.UserName     := user;

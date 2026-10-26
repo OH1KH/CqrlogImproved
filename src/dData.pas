@@ -2915,7 +2915,8 @@ var
   err : Boolean = False;
   max : Integer;
 begin
-  if fDebugLevel>=1 then Writeln('[UpgradeMainDatabase] Old version: ', old_version,  '  cDB_MAIN_VER: ', cDB_MAIN_VER);
+  if fDebugLevel>=1 then
+                    Writeln('[UpgradeMainDatabase] Old version: ', old_version,  '  cDB_MAIN_VER: ', cDB_MAIN_VER);
 
   if old_version < cDB_MAIN_VER then
   begin
@@ -3416,32 +3417,20 @@ begin
         trQ1.Commit
       end;
 
-      if TableExists('view_cqrlog_main_by_callsign') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_callsign';
-        if fDebugLevel>=1 then  Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
+      //if TableExists('view_cqrlog_main_by_callsign') then
+      //we can give up testing TableExists as MariaDB has "drop view if exist" that can be used here
 
-      if TableExists('view_cqrlog_main_by_qsodate') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate';
-        if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
-
-      if TableExists('view_cqrlog_main_by_qsodate_asc') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate_asc';
-        if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
+      trQ1.StartTransaction;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_callsign';
+      if fDebugLevel>=1 then  Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate';
+      if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate_asc';
+      if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      trQ1.Commit;
 
       CreateViews;
 

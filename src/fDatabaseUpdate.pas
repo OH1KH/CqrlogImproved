@@ -269,8 +269,9 @@ var
       dbITU := c_itu;
 
     tmp:='';
-    if   dbName      <>'' then tmp:='name='+QuotedStr(UTF8Copy(dbName,1,40)); //ensure that string fits to log database varchar columns NOT needed!!
+    if   dbName      <>'' then tmp:='name='+QuotedStr(UTF8Copy(dbName,1,40));
     if   dbQTH       <>'' then tmp:=tmp+',qth='+ QuotedStr(UTF8Copy(dbQTH,1,60));
+    if   dbGrid      <>'' then tmp:=tmp+',loc='+ QuotedStr(UTF8Copy(dbGrid,1,10));
     if   dbQSLVia    <>'' then tmp:=tmp+',qsl_via='+ QuotedStr(UTF8Copy(dbQSLVia,1,40));
     if   dbCounty    <>'' then tmp:=tmp+',county='+ QuotedStr(UTF8Copy(dbCounty,1,30));
     if   dbAward     <>'' then tmp:=tmp+',award='+ QuotedStr(UTF8Copy(dbAward,1,50));

@@ -22,6 +22,7 @@ type
     btnHelp: TButton;
     btnHelp1: TButton;
     btnUpload: TButton;
+    chkAutoExportAndSign: TCheckBox;
     chkFileMarkAfterExport: TCheckBox;
     edtTqsl: TEdit;
     edtFileName: TEdit;
@@ -49,6 +50,7 @@ type
     tabLocalFile: TTabSheet;
     tabUpload: TTabSheet;
     tmrLoTW: TTimer;
+    procedure chkAutoExportAndSignClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnExportSignClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -170,7 +172,9 @@ begin
       if dmData.DebugLevel >= 1 then Writeln(l.Text);
     end
     else begin
-      mStat.Lines.Add('Error: '+IntToStr(http.Sock.LastError))
+      mStat.Lines.Add('Error: '+IntToStr(http.Sock.LastError));
+      chkAutoExportAndSign.Checked:=False;
+      cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
     end;
     if suc then
     begin
@@ -268,6 +272,16 @@ begin
        btnUpload.Enabled := True;
        btnUpload.Font.Style:=[fsBold,fsItalic];
        btnUpload.Repaint;
+       if  cqrini.ReadBool('LoTWExp', 'AutoExportAndSign', False) then
+         begin
+          if (pos('Success(0)',mStat.Text)>0) then
+             btnUploadClick(nil)
+            else
+             Begin
+              chkAutoExportAndSign.Checked:=False;
+              cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
+             end
+         end
       end
      else
       Begin
@@ -313,7 +327,8 @@ begin
 
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
-    rbWebExportNotExported.SetFocus
+    rbWebExportNotExported.SetFocus;
+  chkAutoExportAndSign.Checked := cqrini.ReadBool('LoTWExp', 'AutoExportAndSign', False);
 end;
 
 procedure TfrmLoTWExport.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -398,6 +413,12 @@ end;
 procedure TfrmLoTWExport.FormCreate(Sender: TObject);
 begin
   AProcess := TProcess.Create(nil)
+end;
+
+procedure TfrmLoTWExport.chkAutoExportAndSignClick(Sender: TObject);
+begin
+     chkAutoExportAndSign.Checked:= not chkAutoExportAndSign.Checked;
+     cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
 end;
 
 function TfrmLoTWExport.ExportToAdif : Word;

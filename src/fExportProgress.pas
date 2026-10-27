@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ComCtrls, iniFiles, ExtCtrls, db, dateutils, FileUtil, LazFileUtils,strutils;
+  ComCtrls, iniFiles, ExtCtrls, db, dateutils, FileUtil, LazFileUtils,strutils,
+  LazUTF8;
 
 type
 
@@ -184,7 +185,7 @@ var
   procedure SaveTag(TagData:String; var leng:word);
    begin
     Write(f, TagData);
-    leng := leng + Length(TagData);
+    leng := leng + UTF8Length(TagData);
     if leng>200 then
       begin
         Writeln(f);

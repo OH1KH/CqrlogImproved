@@ -553,7 +553,7 @@ begin
   if WGMWCon.Connected then  WGMWCon.Connected := False;
   if UpStatCon.Connected then  UpStatCon.Connected := False;
 
-  MainCon.CharSet      :='UTF8';
+  MainCon.CharSet      :='UTF8mb4';
   MainCon.HostName     := host;
   MainCon.Params.Text  := 'Port='+port;
   MainCon.UserName     := user;
@@ -566,7 +566,7 @@ begin
        MainCon.OnLog:=@GetLogEvent;
      end;
 
-  BandMapCon.CharSet      :='UTF8';
+  BandMapCon.CharSet      :='UTF8mb4';
   BandMapCon.HostName     := host;
   BandMapCon.Params.Text  := 'Port='+port;
   BandMapCon.UserName     := user;
@@ -579,7 +579,7 @@ begin
        BandMapCon.OnLog:=@GetLogEvent;
      end;
 
-  RbnMonCon.CharSet      :='UTF8';
+  RbnMonCon.CharSet      :='UTF8mb4';
   RbnMonCon.HostName     := host;
   RbnMonCon.Params.Text  := 'Port='+port;
   RbnMonCon.UserName     := user;
@@ -592,7 +592,7 @@ begin
        RbnMonCon.OnLog:=@GetLogEvent;
      end;
 
-  dbDXC.CharSet      :='UTF8';
+  dbDXC.CharSet      :='UTF8mb4';
   dbDXC.HostName     := host;
   dbDXC.Params.Text  := 'Port='+port;
   dbDXC.UserName     := user;
@@ -605,7 +605,7 @@ begin
        dbDXC.OnLog:=@GetLogEvent;
      end;
 
-  LogUploadCon.CharSet      :='UTF8';
+  LogUploadCon.CharSet      :='UTF8mb4';
   LogUploadCon.HostName     := host;
   LogUploadCon.Params.Text  := 'Port='+port;
   LogUploadCon.UserName     := user;
@@ -618,7 +618,7 @@ begin
        LogUploadCon.OnLog:=@GetLogEvent;
      end;
 
-  WGMWCon.CharSet      :='UTF8';
+  WGMWCon.CharSet      :='UTF8mb4';
   WGMWCon.HostName     := host;
   WGMWCon.Params.Text  := 'Port='+port;
   WGMWCon.UserName     := user;
@@ -631,7 +631,7 @@ begin
        WGMWCon.OnLog:=@GetLogEvent;
      end;
 
-  UpStatCon.CharSet      :='UTF8';
+  UpStatCon.CharSet      :='UTF8mb4';
   UpStatCon.HostName     := host;
   UpStatCon.Params.Text  := 'Port='+port;
   UpStatCon.UserName     := user;
@@ -1532,7 +1532,7 @@ begin
 
   dok  := UpperCase(copy(dok,1,12));
   cont := UpperCase(copy(cont,1,2));
-  qth  := copy(qth,1,60);
+  qth  := UTF8copy(qth,1,60);
   qsodate := (FormatDateTime('YYYY-MM-DD',date));
   Q.SQL.Text := 'UPDATE cqrlog_main set qsodate = '+ QuotedStr(qsodate) +', time_on = '+QuotedStr(time_on) +
            ', time_off = ' + QuotedStr(time_off) + ', callsign = '+QuotedStr(call) +
@@ -1542,9 +1542,9 @@ begin
            ', pwr = ' + QuotedStr(pwr) + ', waz = ' + sWAZ +
            ', itu = ' + sITU + ', loc = ' + QuotedStr(loc) +
            ', my_loc = ' + QuotedStr(my_loc) + ', county = ' + QuotedStr(county) +
-           ', remarks = ' + QuotedStr(Trim(remarks)) + ', adif = ' + IntToStr(adif) +
-           ', qso_dxcc = '+ IntToStr(changed) + ', name = ' +QuotedStr(Trim(stn_name)) +
-           ', qth = ' + QuotedStr(Trim(qth)) + ', award = ' + QuotedStr(award) +', band = ' + QuotedStr(band) +
+           ', remarks = ' + QuotedStr(UTF8Trim(remarks)) + ', adif = ' + IntToStr(adif) +
+           ', qso_dxcc = '+ IntToStr(changed) + ', name = ' +QuotedStr(UTF8Trim(stn_name)) +
+           ', qth = ' + QuotedStr(UTF8Trim(qth)) + ', award = ' + QuotedStr(award) +', band = ' + QuotedStr(band) +
            ', profile = ' + IntToStr(profile) + ', idcall = ' + QuotedStr(idcall) + ', state=' + QuotedStr(state) +
            ', cont = ' + QuotedStr(cont)+ ', prop_mode = ' + QuotedStr(PropMode) + ', satellite = ' + QuotedStr(Satellite)+
            ', rxfreq = ' + rx_freq + ', stx = ' + QuotedStr(stx)+ ', stx_string = ' + QuotedStr(stx_string) + ', srx = ' + QuotedStr(srx)+
@@ -1569,7 +1569,7 @@ const
   C_INS = 'insert into notes (callsign, longremarks) values (%s, %s)';
   C_UPD = 'update notes set longremarks = %s where callsign = %s';
 begin
-  text := Trim(text);
+  text := UTF8Trim(text);
   if fDebugLevel >=1 then Writeln('Note:',text);
   qComment.Close;
   if trComment.Active then trComment.Rollback;
@@ -1957,9 +1957,9 @@ begin
     if qProfiles.RecordCount > 0 then
     begin
       tmp := IntToStr(qProfiles.Fields[1].AsInteger)+'|';
-      tmp := tmp + trim(qProfiles.Fields[2].AsString)+'|';
-      tmp := tmp + trim(qProfiles.Fields[3].AsString)+'|';
-      tmp := tmp + trim(qProfiles.Fields[4].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[2].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[3].AsString)+'|';
+      tmp := tmp + UTF8trim(qProfiles.Fields[4].AsString)+'|';
       Result := tmp
     end
   finally
@@ -2587,12 +2587,13 @@ var
 
   procedure HandleRecord;
    Begin
-        Myloc := Q.Fields[0].AsString;
-        if length(Myloc) = 4 then Myloc := Myloc +'MM';
-        loc := Q.Fields[1].AsString;
-        if length(loc) = 4 then loc := loc +'MM';
-        dmUtils.DistanceFromLocator(dmUtils.CompleteLoc(Myloc),loc,qrb,qrc);
-        if StrToIntDef(qrb,0) > LongestDist then  LongestDist := StrToIntDef(qrb,0);
+        qrb:='';
+        Myloc := dmUtils.CompleteLoc( Q.Fields[0].AsString);
+        loc := dmUtils.CompleteLoc( Q.Fields[1].AsString);
+        if ((dmUtils.IsLocOK(Myloc)) and (dmUtils.IsLocOK(loc))) then
+            dmUtils.DistanceFromLocator(dmUtils.CompleteLoc(Myloc),loc,qrb,qrc);
+        if StrToIntDef(qrb,0) > LongestDist then
+            LongestDist := StrToIntDef(qrb,0);
         SumDist:= SumDist + StrToIntDef(qrb,0);
   end;
 
@@ -2650,6 +2651,7 @@ begin
       trQ.RollBack
     end
 end;
+
 function TdmData.GetQSOCount : Integer;
 begin
   Q.Close;
@@ -2913,7 +2915,8 @@ var
   err : Boolean = False;
   max : Integer;
 begin
-  if fDebugLevel>=1 then Writeln('[UpgradeMainDatabase] Old version: ', old_version,  '  cDB_MAIN_VER: ', cDB_MAIN_VER);
+  if fDebugLevel>=1 then
+                    Writeln('[UpgradeMainDatabase] Old version: ', old_version,  '  cDB_MAIN_VER: ', cDB_MAIN_VER);
 
   if old_version < cDB_MAIN_VER then
   begin
@@ -3414,32 +3417,20 @@ begin
         trQ1.Commit
       end;
 
-      if TableExists('view_cqrlog_main_by_callsign') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_callsign';
-        if fDebugLevel>=1 then  Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
+      //if TableExists('view_cqrlog_main_by_callsign') then
+      //we can give up testing TableExists as MariaDB has "drop view if exist" that can be used here
 
-      if TableExists('view_cqrlog_main_by_qsodate') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate';
-        if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
-
-      if TableExists('view_cqrlog_main_by_qsodate_asc') then
-      begin
-        trQ1.StartTransaction;
-        Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate_asc';
-        if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
-        Q1.ExecSQL;
-        trQ1.Commit
-      end;
+      trQ1.StartTransaction;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_callsign';
+      if fDebugLevel>=1 then  Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate';
+      if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      Q1.SQL.Text := 'drop view if exists view_cqrlog_main_by_qsodate_asc';
+      if fDebugLevel>=1 then Writeln(Q1.SQL.Text);
+      Q1.ExecSQL;
+      trQ1.Commit;
 
       CreateViews;
 

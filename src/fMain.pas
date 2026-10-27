@@ -89,6 +89,8 @@ type
     acCreateLoadFilter: TAction;
     acCounty: TAction;
     aceQSLImage: TAction;
+    acShowProfile: TAction;
+    acShowDistance: TAction;
     acToggleOnTop: TAction;
     acUploadAllToLoTW: TAction;
     acUploadToAll: TAction;
@@ -150,6 +152,8 @@ type
     MenuItem109: TMenuItem;
     MenuItem110: TMenuItem;
     MenuItem15: TMenuItem;
+    mnuShowDistance: TMenuItem;
+    mnuShowProfile: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem_MarkAllQrz: TMenuItem;
     MenuItem_QrzLog: TMenuItem;
@@ -369,6 +373,8 @@ type
     procedure acMarkAllHrdLogExecute(Sender: TObject);
     procedure acMarkAllUDPLogExecute(Sender: TObject);
     procedure acMarkAllQrzLogExecute(Sender: TObject);
+    procedure acShowProfileExecute(Sender: TObject);
+    procedure acShowDistanceExecute(Sender: TObject);
     procedure acToggleOnTopExecute(Sender: TObject);
     procedure acUploadToQrzLogExecute(Sender: TObject);
     procedure acPnlDetailsExecute(Sender: TObject);
@@ -490,6 +496,7 @@ type
     WhatUpNext : TWhereToUpload;
     DistColumnIndex :integer;
     procedure ChechkSelRecords;
+    procedure SetAllPanelHeight;
     { private declarations }
   public
     ShowWidths : Boolean;
@@ -961,6 +968,7 @@ begin
     toolMain.Visible := True;
     mnuShowToolBar.Checked := True;
   end;
+  cqrini.WriteBool('Main', 'Toolbar', toolMain.Visible);
 end;
 
 procedure TfrmMain.acButtonsExecute(Sender: TObject);
@@ -975,6 +983,7 @@ begin
     pnlButtons.Visible     := True;
     mnuShowButtons.Checked := True;
   end;
+  cqrini.WriteBool('Main', 'Buttons', pnlButtons.Visible);
 end;
 
 procedure TfrmMain.acQSLMgrExecute(Sender: TObject);
@@ -1004,6 +1013,7 @@ begin
     exit;
   try
     InRefresh := True;
+    sbMain.Panels[3].Text:=''; //refresh clears Ctrl+Mouse/Shift+arrows selection and should clear also status panel
     //if user push refresh data very quickly again and again, program may crash
     idx := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger;
     dmData.qCQRLOG.Close;
@@ -1079,7 +1089,7 @@ begin
        else lastid := dmData.qCQRLOG.FieldByName('id_cqrlog_main').AsInteger
    end;
 
-  if Application.MessageBox('Update names from previous QSOs?','Question ...',mb_YesNo + mb_IconQuestion) = idYes then
+  if Application.MessageBox('Update Name from previous QSOs?'+LineEnding+'(I.E. not use Name from Callbook)','Question ...',mb_YesNo + mb_IconQuestion) = idYes then
     prenames := True;
 
   frmDatabaseUpdate := TfrmDatabaseUpdate.Create(self);
@@ -1643,17 +1653,19 @@ end;
 
 procedure TfrmMain.acPnlDetailsExecute(Sender: TObject);
 begin
-  if pnlAllDetails.Visible then
+  if pnlDetails.Visible then
   begin
-    pnlAllDetails.Visible   := False;
     mnuShowDetails.Checked := False;
+    pnlDetails.Visible  := False;
+    SetAllPanelHeight;
   end
   else
   begin
-    pnlAllDetails.Visible   := True;
+    pnlDetails.Visible  := True;
     mnuShowDetails.Checked := True;
     ReloadGrid;
   end;
+  cqrini.WriteBool('Main', 'Details', pnlDetails.Visible);
 end;
 
 procedure TfrmMain.acQRZExecute(Sender: TObject);
@@ -2142,9 +2154,6 @@ begin
   dmUtils.SaveDBGridInForm(Self);
   dmUtils.SaveWindowPos(Self);
 
-  cqrini.WriteBool('Main', 'Toolbar', toolMain.Visible);
-  cqrini.WriteBool('Main', 'Buttons', pnlButtons.Visible);
-  cqrini.WriteBool('Main', 'Details', pnlDetails.Visible);
   cqrini.SaveToDisk;
   if dmData.DebugLevel>=1 then Writeln('Closing QSO list window')
 end;
@@ -2512,16 +2521,12 @@ begin
 
   sbMain.Panels[1].Text := 'Ver. ' + dmData.VersionString;
   tmrTime.Enabled := True;
-
-  ShowFields;
-
   {
   if dmData.Ascening then
     dmData.qCQRLOG.Last
   else
     dmData.qCQRLOG.First;
   }
-  RefreshQSODXCCCount;
 
   Repaint;
   sbMain.Visible := False;  //without this workaround statusbar was hidden
@@ -2531,16 +2536,18 @@ begin
   pnlButtons.Visible := cqrini.ReadBool('Main', 'Buttons', True);
   pnlDetails.Visible := cqrini.ReadBool('Main', 'Details', True);
   pnlProfile.Visible := cqrini.ReadBool('Main', 'Profile', True);
-
-  if pnlProfile.Visible then
-    lblProf.Constraints.MaxWidth:=Self.Width - lblProfile.Width -20;
-
-  dmUtils.LoadWindowPos(Self);
-
-  CheckAttachment;
+  pnlDistance.Visible := cqrini.ReadBool('Main', 'Distance', True);
   mnuShowButtons.Checked := pnlButtons.Visible;
   mnuShowToolBar.Checked := toolMain.Visible;
   mnuShowDetails.Checked := pnlDetails.Visible;
+  mnuShowProfile.Checked := pnlProfile.Visible;
+  mnuShowDistance.Checked:= pnlDistance.Visible;
+
+  dmUtils.LoadWindowPos(Self);
+  CheckAttachment;
+  ReloadGrid;
+
+
   //Sets AutoSizeColumns to saved value
   acAutoSizeColumnsExecute(nil);
   acToggleOnTopExecute(nil);
@@ -2694,13 +2701,7 @@ procedure TfrmMain.ShowFields;
   end;
 
 begin
-  pnlAllDetails.Height:= 1+pnlDetails.Height;
-  pnlDistance.Visible := cqrini.ReadBool('Columns', 'Distance', False);
-  pnlProfile.Visible := cqrini.ReadBool('Columns', 'Profile', False);
-  if pnlProfile.Visible then
-                           pnlAllDetails.Height:=pnlAllDetails.Height+pnlProfile.Height+1;
-  if pnlDistance.Visible then
-                           pnlAllDetails.Height:=pnlAllDetails.Height +pnlDistance.Height+1;
+  SetAllPanelHeight;
 
   dbgrdMain.DataSource := dmData.dsrMain;
   dbgrdMain.ResetColWidths;
@@ -2847,35 +2848,37 @@ begin
   if not dmData.qCQRLOG.Active then
     exit;
   if dmData.qCQRLOG.RecordCount = 0 then
-  begin
-    acAttach.Enabled   := False;
-    acQSLImage.Enabled := False
-  end
-  else begin
+   begin
+     acAttach.Enabled   := False;
+     acQSLImage.Enabled := False
+   end
+  else
+   begin
     if DirectoryExists(dmUtils.GetCallAttachDir(dmData.qCQRLOG.Fields[4].AsString)) then
       acAttach.Enabled := True
     else
       acAttach.Enabled := False;
+
     if dmUtils.QSLFrontImageExists(dmUtils.GetCallForAttach(dmData.qCQRLOG.Fields[4].AsString)) <> '' then
       acQSLImage.Enabled := True
     else
-      acQSLImage.Enabled := False;                                                                  
-    if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
-      qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
-      lblProf.Caption:=qrb;
-    end;
+      acQSLImage.Enabled := False;
 
-  if pnlProfile.Visible then
-    if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
-      qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
-      lblProf.Caption:=qrb;
+    if pnlProfile.Visible then
+      begin
+      if dmData.qCQRLOG.Fields[26].AsInteger > -1 then
+        qrb:=dmData.GetCompleteProfileText(dmData.qCQRLOG.Fields[26].AsInteger);        // dmData.GetCompleteProfileText(
+        lblProf.Caption:=qrb;
+      end;
 
-  if pnlDistance.Visible then
-   begin
-      qrb := CalcQrb(dmData.qCQRLOG.Fields[19].AsString,dmData.qCQRLOG.Fields[18].AsString,True);
-      lblDistance.Visible:=(qrb<>'') and (sbMain.Panels[3].Text = '');
-      lblDist.Caption := qrb
-   end
+      if pnlDistance.Visible then
+       begin
+        qrb := CalcQrb(dmData.qCQRLOG.Fields[19].AsString,dmData.qCQRLOG.Fields[18].AsString,True);
+        lblDistance.Visible:=(qrb<>'') and (sbMain.Panels[3].Text = '');
+        lblDist.Caption := qrb
+       end;
+   end;
+
 end;
 
 
@@ -2904,9 +2907,64 @@ begin
   dmLogUpload.MarkAsUploaded(C_QRZLOG)
 end;
 
+procedure TfrmMain.acShowProfileExecute(Sender: TObject);
+begin
+   if pnlProfile.Visible then
+  begin
+    pnlProfile.Visible   := False;
+    mnuShowProfile.Checked := False;
+    SetAllPanelHeight;
+  end
+  else
+  begin
+    pnlProfile.Visible   := True;
+    mnuShowProfile.Checked := True;
+    SetAllPanelHeight;
+  end;
+  cqrini.WriteBool('Main', 'Profile', pnlProfile.Visible);
+end;
+
+procedure TfrmMain.acShowDistanceExecute(Sender: TObject);
+begin
+  begin
+   if pnlDistance.Visible then
+  begin
+    pnlDistance.Visible   := False;
+    mnuShowDistance.Checked := False;
+    SetAllPanelHeight;
+  end
+  else
+  begin
+    pnlDistance.Visible   := True;
+    mnuShowDistance.Checked := True;
+    SetAllPanelHeight;
+  end;
+  end;
+  cqrini.WriteBool('Main', 'Distance', pnlDistance.Visible);
+end;
+
 procedure TfrmMain.acUploadToQrzLogExecute(Sender: TObject);
 begin
   frmLogUploadStatus.UploadDataToQrzLog
 end;
+procedure TfrmMain.SetAllPanelHeight;
+var
+ h :integer;
+Begin
+  h:=1; //base value
+  if pnlProfile.Visible then
+                       begin
+                        h:=h+pnlProfile.Height+1;
+                        lblProf.Constraints.MaxWidth:=Self.Width - lblProfile.Width -20;
+                       end;
+  if pnlDistance.Visible then
+                         h:=h+pnlDistance.Height+1;
+  if pnlDetails.Visible then
+                         h:=h+pnlDetails.Height+1;
+  pnlAllDetails.Height:=h;
+
+end;
+
+
 end.
 

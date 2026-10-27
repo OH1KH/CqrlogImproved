@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
   Left = 159
-  Height = 409
+  Height = 334
   Top = 83
   Width = 940
   HelpType = htKeyword
@@ -10,7 +10,7 @@ object frmMain: TfrmMain
   ActiveControl = pnlCounts
   AutoScroll = True
   Caption = 'Cqrlog_Improved for Linux'
-  ClientHeight = 409
+  ClientHeight = 334
   ClientWidth = 940
   Constraints.MinHeight = 148
   Constraints.MinWidth = 536
@@ -14996,7 +14996,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Side = asrBottom
     Left = 0
     Height = 19
-    Top = 390
+    Top = 315
     Width = 940
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
@@ -15027,7 +15027,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = sbMain
     Left = 0
     Height = 46
-    Top = 338
+    Top = 263
     Width = 940
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 6
@@ -15256,7 +15256,7 @@ object frmMain: TfrmMain
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlAllDetails
     Left = 0
-    Height = 158
+    Height = 83
     Top = 70
     Width = 940
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -15574,7 +15574,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = pnlButtons
     Left = 0
     Height = 110
-    Top = 228
+    Top = 153
     Width = 940
     Anchors = [akLeft, akRight, akBottom]
     ClientHeight = 110
@@ -16081,6 +16081,18 @@ object frmMain: TfrmMain
       object mnuShowDetails: TMenuItem
         Action = acPnlDetails
         OnClick = acPnlDetailsExecute
+      end
+      object mnuShowProfile: TMenuItem
+        Action = acShowProfile
+        Caption = 'Show profile panel'
+        Checked = True
+        OnClick = acShowProfileExecute
+      end
+      object mnuShowDistance: TMenuItem
+        Action = acShowDistance
+        Caption = 'Show distance panel'
+        Checked = True
+        OnClick = acShowDistanceExecute
       end
     end
     object MenuItemFilter: TMenuItem
@@ -17032,6 +17044,14 @@ object frmMain: TfrmMain
       Caption = 'ToggleOnTop'
       ImageIndex = 17
       OnExecute = acToggleOnTopExecute
+    end
+    object acShowProfile: TAction
+      Caption = 'acShowProfile'
+      OnExecute = acShowProfileExecute
+    end
+    object acShowDistance: TAction
+      Caption = 'acShowDistance'
+      OnExecute = acShowDistanceExecute
     end
   end
   object tmrTime: TTimer

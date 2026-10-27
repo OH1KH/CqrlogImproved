@@ -1461,7 +1461,7 @@ var
    Begin
    //get current state of flags
    t.SQL.Text     := 'select ignorelog from log_changes where id='+IntToStr(id);
-   //if debug then
+   if debug then
          Writeln(t.SQL.Text);
    tr.StartTransaction;
    t.Open;
@@ -1470,16 +1470,16 @@ var
    tr.Rollback;
 
    //set new flag
-   //if debug then
+   if debug then
          Write('Logs was: ',IntToBin(IgnLog,5,0), ' Log to set is :',IntToBin(log,5,0));
    IgnLog:=(IgnLog OR log);
-   //if debug then
+   if debug then
          Writeln(' Logs Now: ',IntToBin(IgnLog,5,0));
 
 
    //set current flag
    t.SQL.Text := 'update log_changes set ignorelog='+IntToStr(IgnLog)+' where id='+IntToStr(id);
-   //if debug then
+   if debug then
          Writeln(t.SQL.Text);
    t.ExecSQL;
    end;
@@ -1493,27 +1493,27 @@ var
      b:=%00001;
      if log>0 then
         b:= b shl log;
-     //if  debug then
+     if  debug then
                 writeln('Log in process: ',logignore,' ',IntToBin(b,5,0),' Operation to ignore: ',ops[what],' ',IntToBin(what,3,0));
 
     case what of
       1  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
               Begin
-               //if debug then
+               if debug then
                 writeln('Ignore LoTW,eQSL:',logIgnore);
                SetLogIgnoreFlagToLog(LastId,b);
               end;
 
       2  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
               Begin
-               //if debug then
+               if debug then
                 writeln('Ignore QSL:',logIgnore);
                SetLogIgnoreFlagToLog(LastId,b);
               end;
 
       4  : if (cqrini.ReadInteger('OnlineLog',logIgnore,0) and what) = what then
               Begin
-               //if debug then
+               if debug then
                 writeln('Ignore Edit:',logIgnore);
                SetLogIgnoreFlagToLog(LastId,b);
               end;
@@ -1530,7 +1530,7 @@ Begin
    t.DataBase     := dmData.MainCon;
    tr.DataBase    := dmData.MainCon;
    t.SQL.Text     := 'select id from log_changes order by id desc limit 1';
-   //if debug then
+   if debug then
          Writeln(t.SQL.Text);
    tr.StartTransaction;
    t.Open;

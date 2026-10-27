@@ -39,7 +39,9 @@ type
     procedure cbKeepSelectChange(Sender: TObject);
     procedure cmbFieldChange(Sender: TObject);
     procedure cmbValueChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure Affects;
   private
     { private declarations }
     WhereTo: String;
@@ -113,8 +115,9 @@ begin
          end;
    end;
    pnlGrpEdt.Color:=$005C5CFF;
-   lblInfo.Caption := 'Backup your log! Operations can not be undone!';
+   Affects;
    btnCancel.Caption:='Cancel';
+   btnApply.Enabled:=True;
    pnlGrpEdt.Repaint;
    lblInfo.Repaint;
 end;
@@ -134,6 +137,11 @@ begin
   end;
 end;
 
+procedure TfrmGroupEdit.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  frmMain.acRefresh.Execute;
+end;
+
 procedure TfrmGroupEdit.FormShow(Sender: TObject);
 begin
   dmUtils.LoadFontSettings(self);
@@ -141,19 +149,7 @@ begin
   cbKeepSelect.Visible:=false;
   cbKeepSelect.Enabled:=true;
   cbKeepSelect.Checked:=false;
-  if Selected then
-     begin
-      WhereTo := 'to selected qsos';
-      cbKeepSelect.Visible:=true;
-     end
-    else
-     if dmData.IsFilter then
-       WhereTo := 'to filtered qsos'
-      else
-       WhereTo := 'to whole log';
-  lblInfo.Caption := 'Apply will afftect '+WhereTo;
-  pnlGrpEdt.Repaint;
-  lblInfo.Repaint;
+  Affects;
 end;
 
 procedure TfrmGroupEdit.btnApplyClick(Sender: TObject);
@@ -164,8 +160,6 @@ var
   nr            : Integer = 0;
   i             : Integer = 0;
   aid           : Array of LongInt;
-
-
 //------------------------------------------------------------------------------------------------------
   procedure ChangeQSO(idx : LongInt);
   begin
@@ -641,15 +635,15 @@ begin
   finally
     dmData.qCQRLOG.EnableControls;
     if not cbKeepSelect.Checked then
-                                frmMain.acRefresh.Execute
+      frmMain.acRefresh.Execute;
   end;
+  cmbField.ItemIndex:=-1;
+  cmbValue.ItemIndex:=-1;
+  cmbValue.Text:='';
   lblInfo.Caption := 'Group edit done '+WhereTo;
-  if not cbKeepSelect.Checked then
-     Begin
-      btnCancel.Caption:= 'Close';
-      btnApply.Enabled:=False;
-     end;
   pnlGrpEdt.Color:= clLime;
+  btnCancel.Caption:= 'Close';
+  btnApply.Enabled:=False;
   pnlGrpEdt.Repaint;
   lblInfo.Repaint;
 end;
@@ -664,6 +658,22 @@ begin
       cbKeepSelect.Enabled:=false;
       frmMain.acRefresh.Execute
      end;
+end;
+procedure TfrmGroupEdit.Affects;
+begin
+if Selected then
+   begin
+    WhereTo := 'to selected qsos';
+    cbKeepSelect.Visible:=true;
+   end
+  else
+   if dmData.IsFilter then
+     WhereTo := 'to filtered qsos'
+    else
+     WhereTo := 'to whole log';
+lblInfo.Caption := 'Apply will afftect '+WhereTo;
+pnlGrpEdt.Repaint;
+lblInfo.Repaint;
 end;
 
 end.

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, httpsend, inifiles, process, lcltype;
+  ExtCtrls, StdCtrls, httpsend, inifiles, process, lcltype, LazUTF8;
 
 type
 
@@ -92,6 +92,7 @@ var
   tmp       : String;
   CallCount : integer;
 
+//------------------------------------------------------
   procedure DoUpgrade;
   begin
     dbCall   := dmData.qCallBook.FieldByName('callsign').AsString;
@@ -126,12 +127,14 @@ var
       dmData.Q.Close;
       dmData.Q.SQL.Text := 'select max(id_cqrlog_main),callsign,name from cqrlog_main where name <> '+QuotedStr('')+
                            ' and callsign = '+QuotedStr(dbCall)+' group by callsign,name';
-      if dmData.DebugLevel>=1 then Writeln(dmData.Q.SQL.Text);
+      if dmData.DebugLevel>=1 then
+                              Writeln(dmData.Q.SQL.Text);
       dmData.trQ.StartTransaction;
       dmData.Q.Open();
       dbName := dmData.Q.Fields[2].AsString;
       dmData.trQ.RollBack
-    end;
+    end
+      else dbName:='';
 
     if dmData.DebugLevel >= 1 then
     begin
@@ -251,13 +254,13 @@ var
       end
     end;
 
-    dbName   := copy(dbName, 1, 40);
-    dbQTH    := copy(dbQTH, 1, 60);
-    dbQSLVia := copy(dbQSLVia, 1, 30);
-    dbAward  := copy(dbAward, 1, 50);
-    dbCounty := copy(dbCounty, 1, 30);
-    dbState  := copy(dbState, 1, 4);
-    dbRemQSO := copy(dbRemQSO, 1, 200);
+    dbName   := UTF8copy(dbName, 1, 40);
+    dbQTH    := UTF8copy(dbQTH, 1, 60);
+    dbQSLVia := UTF8copy(dbQSLVia, 1, 30);
+    dbAward  := UTF8copy(dbAward, 1, 50);
+    dbCounty := UTF8copy(dbCounty, 1, 30);
+    dbState  := UTF8copy(dbState, 1, 4);
+    dbRemQSO := UTF8copy(dbRemQSO, 1, 200);
 
     if (c_waz<>'') then
       dbWAZ := c_waz;
@@ -266,34 +269,40 @@ var
       dbITU := c_itu;
 
     tmp:='';
-    if   dbName      <>'' then tmp:='name='+QuotedStr(dbName);
-    if   dbQTH       <>'' then tmp:=tmp+',qth='+ QuotedStr(dbQTH);
-    if   dbQSLVia    <>'' then tmp:=tmp+',qsl_via='+ QuotedStr(dbQSLVia);
-    if   dbCounty    <>'' then tmp:=tmp+',county='+ QuotedStr(dbCounty);
-    if   dbAward     <>'' then tmp:=tmp+',award='+ QuotedStr(dbAward);
-    if   dbState     <>'' then tmp:=tmp+',state ='+ QuotedStr(dbState);
-    if   dbRemQSO    <>'' then tmp:=tmp+',remarks='+ QuotedStr(dbRemQSO);
-    if   dbIota      <>'' then tmp:=tmp+',iota='+QuotedStr(dbIota);
-    if   dbWAZ       <>'' then tmp:=tmp+',waz='+QuotedStr(dbWAZ);
-    if   dbITU       <>'' then tmp:=tmp+',itu='+QuotedStr(dbITU);
+    if   dbName      <>'' then tmp:='name='+QuotedStr(UTF8Copy(dbName,1,40));
+    if   dbQTH       <>'' then tmp:=tmp+',qth='+ QuotedStr(UTF8Copy(dbQTH,1,60));
+    if   dbGrid      <>'' then tmp:=tmp+',loc='+ QuotedStr(UTF8Copy(dbGrid,1,10));
+    if   dbQSLVia    <>'' then tmp:=tmp+',qsl_via='+ QuotedStr(UTF8Copy(dbQSLVia,1,40));
+    if   dbCounty    <>'' then tmp:=tmp+',county='+ QuotedStr(UTF8Copy(dbCounty,1,30));
+    if   dbAward     <>'' then tmp:=tmp+',award='+ QuotedStr(UTF8Copy(dbAward,1,50));
+    if   dbState     <>'' then tmp:=tmp+',state ='+ QuotedStr(UTF8Copy(dbState,1,4));
+    if   dbRemQSO    <>'' then tmp:=tmp+',remarks='+ QuotedStr(UTF8Copy(dbRemQSO,1,200));
+    if   dbIota      <>'' then tmp:=tmp+',iota='+QuotedStr(UTF8Copy(dbIota,1,6));
+    if   dbWAZ       <>'' then tmp:=tmp+',waz='+dbWAZ;  //these are integer(11) in log database
+    if   dbITU       <>'' then tmp:=tmp+',itu='+dbITU;
 
     if tmp<>'' then
      Begin
-      if tmp[1]=',' then tmp:=copy(tmp,2,length(tmp));  //starts always without comma
-      dmData.Q1.SQL.Text := 'update cqrlog_main set '
-      +tmp
-      +' where id_cqrlog_main = ' + IntToStr(dbId);
-      dmData.trQ1.StartTransaction;
-      if dmData.DebugLevel >= 1 then
-          Writeln(dmData.Q1.SQL.Text);
-      dmData.Q1.ExecSQL;
-      dmData.trQ1.Commit;
-      dmData.trQ1.Rollback;
+        if tmp[1]=',' then tmp:=UTF8copy(tmp,2,UTF8length(tmp));  //starts always without comma
+        try
+          dmData.Q1.SQL.Text := 'update cqrlog_main set '+tmp
+                                +' where id_cqrlog_main = ' + IntToStr(dbId);
+          if dmData.DebugLevel >= 1 then
+              Writeln(dmData.Q1.SQL.Text);
+          dmData.Q1.ExecSQL;
+        except
+          on E: Exception do
+            ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+        end;
     end;
-  end;
+end;
+//------------------procedure DoUpgrade;--------------------
+
+
 
 begin
   FreeOnTerminate:= True;
+  if(Terminated=TRUE) then exit;
   c_running := True;
   CallCount:=0;
   try
@@ -310,7 +319,7 @@ begin
     MvToRem    := cqrini.ReadBool('NewQSO', 'MvToRem', True);
     c_SyncText := 'Working ...';
     Synchronize(@frmDatabaseUpdate.SynCallBook);
-    sleep(5100);
+    sleep(1000);
     while not dmData.qCallBook.EOF do
     begin
       inc(CallCount);
@@ -358,8 +367,8 @@ begin
           pnlQRZ.Caption := 'Updating filtered QSOs'
          else
              Begin
-              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs?';
-              tmrQRZ.Interval:=5000;
+              pnlQRZ.Caption := 'Really update ALL '+IntToStr(dmData.GetQSOCount)+' QSOs? (Starting in 3 seconds...)';
+              tmrQRZ.Interval:=3000;
               CanCancelAtStart:=True;
              end;
   pnlQRZ.Repaint;

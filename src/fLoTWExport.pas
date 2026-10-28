@@ -22,6 +22,7 @@ type
     btnHelp: TButton;
     btnHelp1: TButton;
     btnUpload: TButton;
+    chkAutoUp: TCheckBox;
     chkFileMarkAfterExport: TCheckBox;
     edtTqsl: TEdit;
     edtFileName: TEdit;
@@ -116,7 +117,7 @@ var
   acc  : integer;
 begin
   btnUpload.Enabled:=false; //allow only one click
-  btnExportSign.Enabled:=True;
+  btnExportSign.Enabled:=False;
   mStat.Lines.Add('');
   Bound := IntToHex(Random(MaxInt), 8) + '_Synapse_boundary';
   FileName := ChangeFileExt(Filename,'.tq8');
@@ -260,22 +261,34 @@ begin
       OutputLines.Free;
     end;
 
+    mStat.Lines.Add('---------');
+    mStat.Lines.Add(' ');
+
     if Aprocess.ExitCode = 0 then
       begin
        mStat.Lines.Add('Signed ...');
-       mStat.Lines.Add('If you did not see any errors, you can send signed file to LoTW website by' +
-                      ' pressing Upload button');
-       btnUpload.Enabled := True;
-       btnUpload.Font.Style:=[fsBold,fsItalic];
-       btnUpload.Repaint;
+       if not chkAutoUp.Checked then
+        begin
+         mStat.Lines.Add('If you did not see any errors, you can send signed file to LoTW website by' +
+                        ' pressing Upload button');
+         btnUpload.Enabled := True;
+         btnUpload.Font.Style:=[fsBold,fsItalic];
+         btnUpload.Repaint;
+        end
+       else
+        begin
+         sleep(100);
+         Application.ProcessMessages;
+         btnUploadClick(nil);
+        end;
       end
      else
       Begin
         mStat.Lines.Add('Sign failed somehow. The exit code was '+IntToStr(Aprocess.ExitCode)+ ' it should be 0 (zero)');
         mStat.Lines.Add('Try to find reason for this!');
+        chkAutoUp.Checked := False;
       end;
-    mStat.Lines.Add('---------');
-    mStat.Lines.Add(' ');
+
 
     grbWebExport.Enabled := True;
     grbTqsl.Enabled      := True;
@@ -307,10 +320,11 @@ begin
 end;
 
 procedure TfrmLoTWExport.FormShow(Sender: TObject);
+
 begin
   dlgSave.InitialDir := dmData.HomeDir;
   dmUtils.LoadWindowPos(Self);
-
+  chkAutoUp.Checked := cqrini.ReadBool('LoTWExp','AutoExportAndSign',False);
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
     rbWebExportNotExported.SetFocus
@@ -324,7 +338,7 @@ begin
     exit
   end;
   dmUtils.SaveWindowPos(Self);
-
+  cqrini.WriteBool('LoTWExp','AutoExportAndSign',chkAutoUp.Checked);
   cqrini.WriteString('LoTWExp','cmd',edtTqsl.Text);
   AProcess.Free;
   dmData.Q1.Close
@@ -538,6 +552,8 @@ begin
     if nr=1 then
     begin
       mStat.Lines.Add('Nothing to export ...');
+      btnClose.Font.Style:=[fsBold,fsItalic];
+      btnClose.Repaint;
       Result := 1
     end
   finally

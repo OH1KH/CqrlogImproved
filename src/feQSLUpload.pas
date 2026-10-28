@@ -94,7 +94,8 @@ begin
   dmData.Q.First;
   if dmData.Q.RecordCount = 0 then
   begin
-    Application.MessageBox('Nothing to export ... ','Info ...',mb_Ok+mb_IconInformation);
+    mStat.Lines.Add('Nothing to export ... ');
+    btnUpload.Enabled:=False;
     dmData.Q.Close;
     dmData.trQ.Rollback;
     Result := False;

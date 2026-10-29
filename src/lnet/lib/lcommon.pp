@@ -463,14 +463,11 @@ end;
 
 function TZSeconds: Integer; inline;
 begin
-  { this fails with Fedora44 / FPC 3.2.3 / Lazarus 4.8  !!
-{$IF FPC_FULLVERSION >= 30301}
-  Result := TZInfo.Seconds;
+{$IF FPC_FULLVERSION > 30202}
+  Result := unix.TZSeconds;
 {$ELSE}
   Result := unixutil.TZSeconds;
 {$ENDIF}
-}
- Result := TZInfo.Seconds;
 end;
 
 //Fix by Github/suve for: FPC 3.2.4 moves TZSeconds from the 'UnixUtil' unit to 'Unix'.

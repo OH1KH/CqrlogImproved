@@ -22,7 +22,7 @@ type
     btnHelp: TButton;
     btnHelp1: TButton;
     btnUpload: TButton;
-    chkAutoExportAndSign: TCheckBox;
+    chkAutoUp: TCheckBox;
     chkFileMarkAfterExport: TCheckBox;
     edtTqsl: TEdit;
     edtFileName: TEdit;
@@ -50,7 +50,7 @@ type
     tabLocalFile: TTabSheet;
     tabUpload: TTabSheet;
     tmrLoTW: TTimer;
-    procedure chkAutoExportAndSignClick(Sender: TObject);
+    procedure chkAutoUpChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnExportSignClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -118,7 +118,7 @@ var
   acc  : integer;
 begin
   btnUpload.Enabled:=false; //allow only one click
-  btnExportSign.Enabled:=True;
+  btnExportSign.Enabled:=False;
   mStat.Lines.Add('');
   Bound := IntToHex(Random(MaxInt), 8) + '_Synapse_boundary';
   FileName := ChangeFileExt(Filename,'.tq8');
@@ -172,9 +172,7 @@ begin
       if dmData.DebugLevel >= 1 then Writeln(l.Text);
     end
     else begin
-      mStat.Lines.Add('Error: '+IntToStr(http.Sock.LastError));
-      chkAutoExportAndSign.Checked:=False;
-      cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
+      mStat.Lines.Add('Error: '+IntToStr(http.Sock.LastError))
     end;
     if suc then
     begin
@@ -264,32 +262,34 @@ begin
       OutputLines.Free;
     end;
 
+    mStat.Lines.Add('---------');
+    mStat.Lines.Add(' ');
+
     if Aprocess.ExitCode = 0 then
       begin
        mStat.Lines.Add('Signed ...');
-       mStat.Lines.Add('If you did not see any errors, you can send signed file to LoTW website by' +
-                      ' pressing Upload button');
-       btnUpload.Enabled := True;
-       btnUpload.Font.Style:=[fsBold,fsItalic];
-       btnUpload.Repaint;
-       if  cqrini.ReadBool('LoTWExp', 'AutoExportAndSign', False) then
-         begin
-          if (pos('Success(0)',mStat.Text)>0) then
-             btnUploadClick(nil)
-            else
-             Begin
-              chkAutoExportAndSign.Checked:=False;
-              cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
-             end
-         end
+       if not chkAutoUp.Checked then
+        begin
+         mStat.Lines.Add('If you did not see any errors, you can send signed file to LoTW website by' +
+                        ' pressing Upload button');
+         btnUpload.Enabled := True;
+         btnUpload.Font.Style:=[fsBold,fsItalic];
+         btnUpload.Repaint;
+        end
+       else
+        begin
+         sleep(100);
+         Application.ProcessMessages;
+         btnUploadClick(nil);
+        end;
       end
      else
       Begin
         mStat.Lines.Add('Sign failed somehow. The exit code was '+IntToStr(Aprocess.ExitCode)+ ' it should be 0 (zero)');
         mStat.Lines.Add('Try to find reason for this!');
+        chkAutoUp.Checked := False;
       end;
-    mStat.Lines.Add('---------');
-    mStat.Lines.Add(' ');
+
 
     grbWebExport.Enabled := True;
     grbTqsl.Enabled      := True;
@@ -321,14 +321,18 @@ begin
 end;
 
 procedure TfrmLoTWExport.FormShow(Sender: TObject);
+
 begin
   dlgSave.InitialDir := dmData.HomeDir;
   dmUtils.LoadWindowPos(Self);
-
+  chkAutoUp.Checked := cqrini.ReadBool('LoTWExp','AutoExportAndSign',False);
+  if  chkAutoUp.Checked then
+      btnExportSign.Caption:='Exp && Sign && Up'
+    else
+      btnExportSign.Caption:='Export && Sign';
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
-    rbWebExportNotExported.SetFocus;
-  chkAutoExportAndSign.Checked := cqrini.ReadBool('LoTWExp', 'AutoExportAndSign', False);
+    rbWebExportNotExported.SetFocus
 end;
 
 procedure TfrmLoTWExport.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -339,7 +343,7 @@ begin
     exit
   end;
   dmUtils.SaveWindowPos(Self);
-
+  cqrini.WriteBool('LoTWExp','AutoExportAndSign',chkAutoUp.Checked);
   cqrini.WriteString('LoTWExp','cmd',edtTqsl.Text);
   AProcess.Free;
   dmData.Q1.Close
@@ -415,10 +419,12 @@ begin
   AProcess := TProcess.Create(nil)
 end;
 
-procedure TfrmLoTWExport.chkAutoExportAndSignClick(Sender: TObject);
+procedure TfrmLoTWExport.chkAutoUpChange(Sender: TObject);
 begin
-     chkAutoExportAndSign.Checked:= not chkAutoExportAndSign.Checked;
-     cqrini.WriteBool('LoTWExp', 'AutoExportAndSign', chkAutoExportAndSign.Checked);
+    if  chkAutoUp.Checked then
+      btnExportSign.Caption :='Exp && Sign && Up'
+    else
+      btnExportSign.Caption:='Export && Sign';
 end;
 
 function TfrmLoTWExport.ExportToAdif : Word;
@@ -559,6 +565,8 @@ begin
     if nr=1 then
     begin
       mStat.Lines.Add('Nothing to export ...');
+      btnClose.Font.Style:=[fsBold,fsItalic];
+      btnClose.Repaint;
       Result := 1
     end
   finally

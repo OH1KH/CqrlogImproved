@@ -15248,8 +15248,8 @@ object frmLoTWExport: TfrmLoTWExport
           Left = 12
           Height = 34
           Top = 48
-          Width = 315
-          Caption = '"your qth name" means the qth which you have '#10'defined in tqsl QTH profile'
+          Width = 344
+          Caption = '"your qth name" means the qth name that you have '#10'defined in tqsl/QTH profile'
           ParentColor = False
         end
         object edtTqsl: TEdit
@@ -15274,21 +15274,18 @@ object frmLoTWExport: TfrmLoTWExport
           BorderSpacing.Top = 15
           ParentColor = False
         end
-        object chkAutoExportAndSign: TCheckBox
+        object chkAutoUp: TCheckBox
           AnchorSideLeft.Control = Label3
           AnchorSideTop.Control = Label3
           AnchorSideTop.Side = asrBottom
           Left = 12
           Height = 21
-          Hint = 'If "Export & Sign" passes OK starts upload automated without "Upload" button'
           Top = 88
-          Width = 238
+          Width = 277
           BorderSpacing.Top = 6
-          Caption = 'AutoUpload after "Export && Sign"'
-          ParentShowHint = False
-          ShowHint = True
+          Caption = 'AutoUpload if Export && Sign succeeded'
           TabOrder = 1
-          OnClick = chkAutoExportAndSignClick
+          OnChange = chkAutoUpChange
         end
       end
       object GroupBox6: TGroupBox
@@ -15357,7 +15354,7 @@ object frmLoTWExport: TfrmLoTWExport
             Width = 130
             Anchors = [akTop, akRight]
             BorderSpacing.Right = 2
-            Caption = 'Export && sign'
+            Caption = 'Export && Sign'
             TabOrder = 0
             OnClick = btnExportSignClick
           end

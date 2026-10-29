@@ -3,8 +3,8 @@ object frmeQSLUpload: TfrmeQSLUpload
   Height = 520
   Top = 273
   Width = 520
-  HorzScrollBar.Page = 372
-  VertScrollBar.Page = 308
+  HorzScrollBar.Page = 371
+  VertScrollBar.Page = 320
   AutoScroll = True
   Caption = 'Upload QSO to eQSL.cc'
   ClientHeight = 520
@@ -14983,16 +14983,16 @@ object frmeQSLUpload: TfrmeQSLUpload
     Top = 0
     Width = 520
     Align = alTop
-    ClientHeight = 86
-    ClientWidth = 518
+    ClientHeight = 84
+    ClientWidth = 516
     TabOrder = 0
     object rbWebExportAll: TRadioButton
       AnchorSideLeft.Control = grbWebExport
       AnchorSideTop.Control = grbWebExport
       Left = 12
-      Height = 23
+      Height = 21
       Top = 6
-      Width = 131
+      Width = 128
       BorderSpacing.Left = 12
       BorderSpacing.Top = 6
       Caption = ' Export all QSOs'
@@ -15003,9 +15003,9 @@ object frmeQSLUpload: TfrmeQSLUpload
       AnchorSideTop.Control = rbWebExportAll
       AnchorSideTop.Side = asrBottom
       Left = 12
-      Height = 23
-      Top = 32
-      Width = 358
+      Height = 21
+      Top = 30
+      Width = 355
       BorderSpacing.Top = 3
       Caption = 'Export only QSOs which have never been uploaded'
       Checked = True
@@ -15019,16 +15019,16 @@ object frmeQSLUpload: TfrmeQSLUpload
     Top = 88
     Width = 520
     Align = alTop
-    ClientHeight = 87
-    ClientWidth = 518
+    ClientHeight = 85
+    ClientWidth = 516
     TabOrder = 1
     object Label1: TLabel
       AnchorSideTop.Control = edtQTH
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = edtQTH
-      Left = 6
+      Left = 5
       Height = 17
-      Top = 15
+      Top = 10
       Width = 102
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 12
@@ -15040,8 +15040,8 @@ object frmeQSLUpload: TfrmeQSLUpload
       AnchorSideLeft.Control = GroupBox1
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = GroupBox1
-      Left = 109
-      Height = 34
+      Left = 108
+      Height = 25
       Top = 6
       Width = 300
       BorderSpacing.Top = 6
@@ -15051,9 +15051,9 @@ object frmeQSLUpload: TfrmeQSLUpload
       AnchorSideLeft.Control = Label1
       AnchorSideTop.Control = edtQTH
       AnchorSideTop.Side = asrBottom
-      Left = 6
+      Left = 5
       Height = 1
-      Top = 58
+      Top = 49
       Width = 1
       BorderSpacing.Top = 18
       ParentColor = False
@@ -15066,14 +15066,14 @@ object frmeQSLUpload: TfrmeQSLUpload
     Width = 520
     Align = alClient
     Caption = ' Upload '
-    ClientHeight = 325
-    ClientWidth = 518
+    ClientHeight = 324
+    ClientWidth = 516
     TabOrder = 2
     object mStat: TMemo
       Left = 0
-      Height = 275
+      Height = 274
       Top = 0
-      Width = 518
+      Width = 516
       Align = alClient
       Lines.Strings = (
         ''
@@ -15087,19 +15087,19 @@ object frmeQSLUpload: TfrmeQSLUpload
       AnchorSideRight.Side = asrBottom
       Left = 0
       Height = 50
-      Top = 275
-      Width = 518
+      Top = 274
+      Width = 516
       Align = alBottom
       BevelOuter = bvNone
       ClientHeight = 50
-      ClientWidth = 518
+      ClientWidth = 516
       TabOrder = 1
       object btnUpload: TButton
         AnchorSideLeft.Control = pnlUpload
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = pnlUpload
         AnchorSideTop.Side = asrCenter
-        Left = 109
+        Left = 108
         Height = 25
         Top = 13
         Width = 300
@@ -15112,7 +15112,7 @@ object frmeQSLUpload: TfrmeQSLUpload
         AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = pnlUpload
         AnchorSideRight.Side = asrBottom
-        Left = 416
+        Left = 414
         Height = 25
         Top = 13
         Width = 96

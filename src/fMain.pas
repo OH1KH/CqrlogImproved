@@ -496,7 +496,6 @@ type
     WhatUpNext : TWhereToUpload;
     DistColumnIndex :integer;
     procedure ChechkSelRecords;
-    procedure SetAllPanelHeight;
     { private declarations }
   public
     ShowWidths : Boolean;
@@ -509,6 +508,7 @@ type
     procedure CheckAttachment;
     function  CalcQrb(Myloc,loc:string;showUnits:boolean):string;
     procedure eQSLView(QSODate,QSOTime,CallsignFrom,QSOBand,QSOMode:String);
+    procedure SetAllPanelHeight;
     { public declarations }
   end;
 

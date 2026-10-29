@@ -25,6 +25,7 @@ unit lCommon;
 
 {$mode objfpc}{$H+}
 {$inline on}
+{$macro on}
 
 interface
 
@@ -466,21 +467,10 @@ begin
 {$IF FPC_FULLVERSION > 30202}
   Result := unix.TZSeconds;
 {$ELSE}
-  Result := unixutil.TZSeconds;
+  Result := TZInfo.Seconds;
+  //if compile fails try to change "TZInfo.Seconds" to "unixutil.Tzseconds"
 {$ENDIF}
 end;
-
-//Fix by Github/suve for: FPC 3.2.4 moves TZSeconds from the 'UnixUtil' unit to 'Unix'.
-//Take in use later if needed
-//
-//function TZSeconds: Integer; inline;
-//begin
-//{$IF FPC_FULLVERSION > 30202}
-//  Result := unix.TZSeconds;
-//{$ELSE}
-//  Result := unixutil.TZSeconds;
-//{$ENDIF}
-//end;
 
 
 {$ENDIF}

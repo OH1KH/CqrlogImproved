@@ -50,6 +50,7 @@ type
     tabLocalFile: TTabSheet;
     tabUpload: TTabSheet;
     tmrLoTW: TTimer;
+    procedure chkAutoUpChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnExportSignClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -325,6 +326,10 @@ begin
   dlgSave.InitialDir := dmData.HomeDir;
   dmUtils.LoadWindowPos(Self);
   chkAutoUp.Checked := cqrini.ReadBool('LoTWExp','AutoExportAndSign',False);
+  if  chkAutoUp.Checked then
+      btnExportSign.Caption:='Exp && Sign && Up'
+    else
+      btnExportSign.Caption:='Export && Sign';
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
     rbWebExportNotExported.SetFocus
@@ -412,6 +417,14 @@ end;
 procedure TfrmLoTWExport.FormCreate(Sender: TObject);
 begin
   AProcess := TProcess.Create(nil)
+end;
+
+procedure TfrmLoTWExport.chkAutoUpChange(Sender: TObject);
+begin
+    if  chkAutoUp.Checked then
+      btnExportSign.Caption :='Exp && Sign && Up'
+    else
+      btnExportSign.Caption:='Export && Sign';
 end;
 
 function TfrmLoTWExport.ExportToAdif : Word;

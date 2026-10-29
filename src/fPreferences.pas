@@ -1365,12 +1365,20 @@ begin
   cqrini.WriteBool('Columns', 'Locator', chkLoc.Checked);
   cqrini.WriteBool('Columns', 'MyLoc', chkMyLoc.Checked);
   cqrini.WriteBool('Columns', 'Operator', chkOperator.Checked);
+
   cqrini.WriteBool('Main', 'Distance', chkDistance.Checked);    //changed to Main section affects QsoList/View/Show distance
   cqrini.WriteBool('Main', 'Profile', chkProfile.Checked);      //changed to Main section affects QsoList/View/Show profile
   cqrini.WriteBool('Main', 'Details', chkDetails.Checked);
-  frmMain.acShowDistanceExecute(Self);
-  frmMain.acShowProfileExecute(Self);
-  frmMain.acPnlDetailsExecute(Self);
+  frmMain.pnlDistance.Visible     := chkDistance.Checked;
+  frmMain.mnuShowDistance.Checked := chkDistance.Checked;
+  frmMain.pnlProfile.Visible      := chkProfile.Checked;
+  frmMain.mnuShowProfile.Checked  := chkProfile.Checked;
+  frmMain.pnlDetails.Visible      := chkDetails.Checked;
+  frmMain.mnuShowDetails.Checked  := chkDetails.Checked;
+  frmMain.SetAllPanelHeight;
+  if frmMain.pnlDetails.Visible then
+                                 frmMain.ReloadGrid;
+
   cqrini.WriteBool('Columns', 'IOTA', chkIOTA.Checked);
   cqrini.WriteBool('Columns', 'Award', chkAward.Checked);
   cqrini.WriteBool('Columns', 'Power', chkPower.Checked);

@@ -1,17 +1,17 @@
 object frmMain: TfrmMain
   Left = 159
-  Height = 334
+  Height = 280
   Top = 83
-  Width = 940
+  Width = 921
   HelpType = htKeyword
   HelpKeyword = 'help/index.html'
   HorzScrollBar.Page = 695
-  VertScrollBar.Page = 301
+  VertScrollBar.Page = 280
   ActiveControl = pnlCounts
   AutoScroll = True
   Caption = 'Cqrlog_Improved for Linux'
-  ClientHeight = 334
-  ClientWidth = 940
+  ClientHeight = 280
+  ClientWidth = 921
   Constraints.MinHeight = 148
   Constraints.MinWidth = 536
   Icon.Data = {
@@ -14995,9 +14995,9 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 19
-    Top = 315
-    Width = 940
+    Height = 21
+    Top = 282
+    Width = 921
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
     Panels = <    
@@ -15027,12 +15027,12 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = sbMain
     Left = 0
     Height = 46
-    Top = 263
-    Width = 940
+    Top = 230
+    Width = 921
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 6
     ClientHeight = 46
-    ClientWidth = 940
+    ClientWidth = 921
     ParentColor = False
     TabOrder = 0
     OnClick = pnlButtonsClick
@@ -15040,7 +15040,7 @@ object frmMain: TfrmMain
       AnchorSideLeft.Control = pnlButtons
       AnchorSideTop.Control = pnlButtons
       Left = 10
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acNewQSO
@@ -15058,7 +15058,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       Left = 150
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acView
@@ -15073,8 +15073,8 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideRight.Control = pnlButtons
       AnchorSideRight.Side = asrBottom
-      Left = 800
-      Height = 33
+      Left = 781
+      Height = 27
       Top = 5
       Width = 130
       Action = acClose
@@ -15090,8 +15090,8 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = btnClose
-      Left = 660
-      Height = 33
+      Left = 641
+      Height = 27
       Top = 5
       Width = 130
       Action = acDeleteQSO
@@ -15107,8 +15107,8 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = btnDeleteQSO
-      Left = 520
-      Height = 33
+      Left = 501
+      Height = 27
       Top = 5
       Width = 130
       Action = acSort
@@ -15126,7 +15126,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       Left = 290
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acEditQSO
@@ -15142,13 +15142,13 @@ object frmMain: TfrmMain
     Left = 0
     Height = 39
     Top = 31
-    Width = 940
+    Width = 921
     Align = alTop
     AutoSize = True
     BorderSpacing.Top = 5
     BorderSpacing.InnerBorder = 5
     ClientHeight = 39
-    ClientWidth = 940
+    ClientWidth = 921
     TabOrder = 1
     object lblQSOInLog: TLabel
       AnchorSideLeft.Control = pnlCounts
@@ -15187,7 +15187,7 @@ object frmMain: TfrmMain
       AnchorSideLeft.Control = pnlCounts
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = lblQSOInLog
-      Left = 450
+      Left = 440
       Height = 17
       Top = 11
       Width = 41
@@ -15201,7 +15201,7 @@ object frmMain: TfrmMain
       AnchorSideLeft.Side = asrBottom
       AnchorSideBottom.Control = lblDXCCWorked
       AnchorSideBottom.Side = asrBottom
-      Left = 501
+      Left = 491
       Height = 17
       Top = 11
       Width = 27
@@ -15216,7 +15216,7 @@ object frmMain: TfrmMain
     object lblDXCCConfirmed: TLabel
       AnchorSideTop.Control = lblQSOInLog
       AnchorSideRight.Control = lblDXCCCmf
-      Left = 792
+      Left = 773
       Height = 17
       Top = 11
       Width = 74
@@ -15234,7 +15234,7 @@ object frmMain: TfrmMain
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Control = lblDXCCConfirmed
       AnchorSideBottom.Side = asrBottom
-      Left = 876
+      Left = 857
       Height = 17
       Top = 11
       Width = 53
@@ -15256,9 +15256,9 @@ object frmMain: TfrmMain
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlAllDetails
     Left = 0
-    Height = 83
+    Height = 50
     Top = 70
-    Width = 940
+    Width = 921
     Anchors = [akTop, akLeft, akRight, akBottom]
     CellHintPriority = chpAll
     Color = clWindow
@@ -15280,7 +15280,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 26
     Top = 0
-    Width = 940
+    Width = 921
     BorderWidth = 4
     EdgeOuter = esRaised
     Flat = False
@@ -15574,11 +15574,11 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = pnlButtons
     Left = 0
     Height = 110
-    Top = 153
-    Width = 940
+    Top = 120
+    Width = 921
     Anchors = [akLeft, akRight, akBottom]
     ClientHeight = 110
-    ClientWidth = 940
+    ClientWidth = 921
     TabOrder = 5
     object pnlDetails: TPanel
       AnchorSideLeft.Control = pnlAllDetails
@@ -15588,10 +15588,10 @@ object frmMain: TfrmMain
       Left = 1
       Height = 56
       Top = 1
-      Width = 938
+      Width = 919
       Anchors = [akTop, akLeft, akRight]
       ClientHeight = 56
-      ClientWidth = 938
+      ClientWidth = 919
       TabOrder = 0
       object lblCommentForQSO: TLabel
         AnchorSideLeft.Control = pnlDetails
@@ -15650,7 +15650,7 @@ object frmMain: TfrmMain
         ParentColor = False
       end
       object pnlQSL: TPanel
-        Left = 517
+        Left = 498
         Height = 54
         Top = 1
         Width = 210
@@ -15718,7 +15718,7 @@ object frmMain: TfrmMain
         end
       end
       object pnlLoTW: TPanel
-        Left = 727
+        Left = 708
         Height = 54
         Top = 1
         Width = 210
@@ -15804,11 +15804,11 @@ object frmMain: TfrmMain
       Left = 1
       Height = 27
       Top = 84
-      Width = 938
+      Width = 919
       Align = alCustom
       Anchors = [akTop, akLeft, akRight]
       ClientHeight = 27
-      ClientWidth = 938
+      ClientWidth = 919
       TabOrder = 1
       Visible = False
       object lblDistance: TLabel
@@ -15845,7 +15845,7 @@ object frmMain: TfrmMain
         AnchorSideRight.Control = pnlDistance
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Side = asrBottom
-        Left = 860
+        Left = 841
         Height = 17
         Top = 5
         Width = 67
@@ -15858,7 +15858,7 @@ object frmMain: TfrmMain
         AnchorSideTop.Control = lblDistance
         AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = lblLongest
-        Left = 767
+        Left = 748
         Height = 17
         Top = 5
         Width = 87
@@ -15872,7 +15872,7 @@ object frmMain: TfrmMain
         AnchorSideTop.Control = lblDistance
         AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = lblSumDist
-        Left = 330
+        Left = 320
         Height = 17
         Top = 5
         Width = 94
@@ -15887,7 +15887,7 @@ object frmMain: TfrmMain
         AnchorSideTop.Control = lblDistance
         AnchorSideTop.Side = asrCenter
         AnchorSideBottom.Side = asrBottom
-        Left = 430
+        Left = 420
         Height = 17
         Top = 5
         Width = 79
@@ -15904,11 +15904,11 @@ object frmMain: TfrmMain
       Left = 1
       Height = 27
       Top = 57
-      Width = 938
+      Width = 919
       Align = alCustom
       Anchors = [akTop, akLeft, akRight]
       ClientHeight = 27
-      ClientWidth = 938
+      ClientWidth = 919
       TabOrder = 2
       Visible = False
       object lblProfile: TLabel

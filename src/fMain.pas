@@ -492,13 +492,14 @@ type
     procedure tmrTimeTimer(Sender: TObject);
   //  procedure tmrUploadAllTimer(Sender: TObject);
   private
+    { private declarations }
     InRefresh  : Boolean;
     WhatUpNext : TWhereToUpload;
     DistColumnIndex :integer;
     procedure ChechkSelRecords;
-    procedure SetAllPanelHeight;
-    { private declarations }
+
   public
+    { public declarations }
     ShowWidths : Boolean;
     idlist     :string;
     eQSLImageName : String;
@@ -509,7 +510,8 @@ type
     procedure CheckAttachment;
     function  CalcQrb(Myloc,loc:string;showUnits:boolean):string;
     procedure eQSLView(QSODate,QSOTime,CallsignFrom,QSOBand,QSOMode:String);
-    { public declarations }
+    procedure SetAllPanelHeight;
+
   end;
 
 var
@@ -1649,23 +1651,6 @@ begin
   MinNewQSO     := False;
   MinQSODetails := False;
   WhatUpNext    := upHamQTH
-end;
-
-procedure TfrmMain.acPnlDetailsExecute(Sender: TObject);
-begin
-  if pnlDetails.Visible then
-  begin
-    mnuShowDetails.Checked := False;
-    pnlDetails.Visible  := False;
-    SetAllPanelHeight;
-  end
-  else
-  begin
-    pnlDetails.Visible  := True;
-    mnuShowDetails.Checked := True;
-    ReloadGrid;
-  end;
-  cqrini.WriteBool('Main', 'Details', pnlDetails.Visible);
 end;
 
 procedure TfrmMain.acQRZExecute(Sender: TObject);
@@ -2905,6 +2890,23 @@ function TfrmMain.CalcQrb(Myloc,loc:string;showUnits:boolean):string;
 procedure TfrmMain.acMarkAllQrzLogExecute(Sender: TObject);
 begin
   dmLogUpload.MarkAsUploaded(C_QRZLOG)
+end;
+
+procedure TfrmMain.acPnlDetailsExecute(Sender: TObject);
+begin
+  if pnlDetails.Visible then
+  begin
+    pnlDetails.Visible  := False;
+    mnuShowDetails.Checked := False;
+    SetAllPanelHeight;
+  end
+  else
+  begin
+    pnlDetails.Visible  := True;
+    mnuShowDetails.Checked := True;
+    ReloadGrid;
+  end;
+  cqrini.WriteBool('Main', 'Details', pnlDetails.Visible);
 end;
 
 procedure TfrmMain.acShowProfileExecute(Sender: TObject);

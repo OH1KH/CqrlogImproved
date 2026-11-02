@@ -224,6 +224,13 @@ begin
   mStat.SelLength:=0;
   mStat.Refresh;
   Application.ProcessMessages;
+  if ((command='Auto') and suc) then
+     Begin
+       ModalResult:=mrCancel;
+       Close;
+     end;
+
+
 end;
 
 procedure TfrmLoTWExport.mStatChange(Sender: TObject);
@@ -332,7 +339,10 @@ begin
       btnExportSign.Caption:='Export && Sign';
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
-    rbWebExportNotExported.SetFocus
+    rbWebExportNotExported.SetFocus;
+  if ((command='Auto') and chkAutoUp.Checked )then  // 'Auto' is set at frmMain: right click of upload button
+     btnExportSignClick(nil);
+
 end;
 
 procedure TfrmLoTWExport.FormCloseQuery(Sender: TObject; var CanClose: boolean);

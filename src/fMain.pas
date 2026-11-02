@@ -490,6 +490,8 @@ type
     procedure mnuSMDClick(Sender: TObject);
     procedure pnlButtonsClick(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
+    procedure ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   //  procedure tmrUploadAllTimer(Sender: TObject);
   private
     InRefresh  : Boolean;
@@ -712,6 +714,15 @@ begin
   sDate := '';
   dmUtils.DateInRightFormat(now , tmp, sDate);
   sbMain.Panels[0].Text :=uVersion.cBUILD_DATE;
+end;
+
+procedure TfrmMain.ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  If Button=mbRight then
+    Begin
+     acUploadQSOToLoTWWebExecute(nil);
+    end;
 end;
 
 procedure TfrmMain.acNewQSOExecute(Sender: TObject);
@@ -1307,6 +1318,8 @@ procedure TfrmMain.acUploadQSOToLoTWWebExecute(Sender: TObject);
 begin
   with TfrmLoTWExport.Create(self) do
   try
+    if Sender=nil then
+                    command :='Auto';
     pgLoTWExport.ActivePage := tabUpload;
     ShowModal
   finally

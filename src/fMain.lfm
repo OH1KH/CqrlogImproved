@@ -1,16 +1,16 @@
 object frmMain: TfrmMain
   Left = 159
-  Height = 334
+  Height = 307
   Top = 83
   Width = 940
   HelpType = htKeyword
   HelpKeyword = 'help/index.html'
   HorzScrollBar.Page = 695
-  VertScrollBar.Page = 301
+  VertScrollBar.Page = 303
   ActiveControl = pnlCounts
   AutoScroll = True
   Caption = 'Cqrlog_Improved for Linux'
-  ClientHeight = 334
+  ClientHeight = 307
   ClientWidth = 940
   Constraints.MinHeight = 148
   Constraints.MinWidth = 536
@@ -14995,8 +14995,8 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 19
-    Top = 315
+    Height = 21
+    Top = 286
     Width = 940
     Align = alNone
     Anchors = [akLeft, akRight, akBottom]
@@ -15027,7 +15027,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = sbMain
     Left = 0
     Height = 46
-    Top = 263
+    Top = 234
     Width = 940
     Anchors = [akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 6
@@ -15040,7 +15040,7 @@ object frmMain: TfrmMain
       AnchorSideLeft.Control = pnlButtons
       AnchorSideTop.Control = pnlButtons
       Left = 10
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acNewQSO
@@ -15058,7 +15058,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       Left = 150
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acView
@@ -15074,7 +15074,7 @@ object frmMain: TfrmMain
       AnchorSideRight.Control = pnlButtons
       AnchorSideRight.Side = asrBottom
       Left = 800
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acClose
@@ -15091,7 +15091,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = btnClose
       Left = 660
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acDeleteQSO
@@ -15108,7 +15108,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = btnDeleteQSO
       Left = 520
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acSort
@@ -15126,7 +15126,7 @@ object frmMain: TfrmMain
       AnchorSideTop.Control = btnNewQSO
       AnchorSideTop.Side = asrCenter
       Left = 290
-      Height = 33
+      Height = 27
       Top = 5
       Width = 130
       Action = acEditQSO
@@ -15256,7 +15256,7 @@ object frmMain: TfrmMain
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlAllDetails
     Left = 0
-    Height = 83
+    Height = 54
     Top = 70
     Width = 940
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -15457,6 +15457,7 @@ object frmMain: TfrmMain
       ImageIndex = 23
       ParentShowHint = False
       ShowHint = True
+      OnMouseUp = ToolButton24MouseUp
     end
     object ToolButton25: TToolButton
       Left = 433
@@ -15574,7 +15575,7 @@ object frmMain: TfrmMain
     AnchorSideBottom.Control = pnlButtons
     Left = 0
     Height = 110
-    Top = 153
+    Top = 124
     Width = 940
     Anchors = [akLeft, akRight, akBottom]
     ClientHeight = 110

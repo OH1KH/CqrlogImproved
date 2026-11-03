@@ -492,6 +492,12 @@ type
     procedure tmrTimeTimer(Sender: TObject);
     procedure ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure ToolButton25MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ToolButton34MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ToolButton35MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   //  procedure tmrUploadAllTimer(Sender: TObject);
   private
     InRefresh  : Boolean;
@@ -720,9 +726,28 @@ procedure TfrmMain.ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   If Button=mbRight then
-    Begin
      acUploadQSOToLoTWWebExecute(nil);
-    end;
+end;
+
+procedure TfrmMain.ToolButton25MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  If Button=mbRight then
+   acDownloadDataFromLoTWExecute(nil);
+end;
+
+procedure TfrmMain.ToolButton34MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  If Button=mbRight then
+      aceQSLUpExecute(nil)
+end;
+
+procedure TfrmMain.ToolButton35MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+   If Button=mbRight then
+       aceQSLDwnExecute(nil);
 end;
 
 procedure TfrmMain.acNewQSOExecute(Sender: TObject);
@@ -1119,17 +1144,6 @@ begin
   end
 end;
 
-procedure TfrmMain.acDownloadDataFromLoTWExecute(Sender: TObject);
-begin
-  with TfrmImportLoTWWeb.Create(self) do
-  try
-    ShowModal
-  finally
-    Free;
-    acRefreshExecute(nil)
-  end
-end;
-
 procedure TfrmMain.acExportToLocalFileExecute(Sender: TObject);
 begin
   with TfrmLoTWExport.Create(self) do
@@ -1312,20 +1326,6 @@ begin
   if dbgrdMain.SelectedRows.CurrentRowSelected then
     dbgrdMain.SelectedRows.CurrentRowSelected := False;
   ChechkSelRecords;
-end;
-
-procedure TfrmMain.acUploadQSOToLoTWWebExecute(Sender: TObject);
-begin
-  with TfrmLoTWExport.Create(self) do
-  try
-    if Sender=nil then
-                    command :='Auto';
-    pgLoTWExport.ActivePage := tabUpload;
-    ShowModal
-  finally
-    Free;
-    acRefreshExecute(nil)
-  end
 end;
 
 procedure TfrmMain.acWACCfmExecute(Sender: TObject);
@@ -1796,25 +1796,56 @@ begin
   end
 end;
 
-procedure TfrmMain.aceQSLDwnExecute(Sender : TObject);
+procedure TfrmMain.acUploadQSOToLoTWWebExecute(Sender: TObject);
 begin
-  frmeQSLDownload := TfrmeQSLDownload.Create(nil);
+  with TfrmLoTWExport.Create(self) do
   try
-    frmeQSLDownload.ShowModal
+    if Sender=nil then
+                    command :='Auto';
+    pgLoTWExport.ActivePage := tabUpload;
+    ShowModal
   finally
-    FreeAndNil(frmeQSLDownload);
-    acRefresh.Execute
+    Free;
+    acRefreshExecute(nil)
+  end
+end;
+
+procedure TfrmMain.acDownloadDataFromLoTWExecute(Sender: TObject);
+begin
+  with TfrmImportLoTWWeb.Create(self) do
+  try
+    if Sender=nil then
+                   command :='Auto';
+    ShowModal
+  finally
+    Free;
+    acRefreshExecute(nil)
   end
 end;
 
 procedure TfrmMain.aceQSLUpExecute(Sender : TObject);
 begin
-  frmeQSLUpload := TfrmeQSLUpload.Create(frmMain);
+  with TfrmeQSLUpload.Create(self) do
   try
-    frmeQSLUpload.ShowModal
+    if Sender=nil then
+                   command :='Auto';
+    ShowModal
   finally
-    FreeAndNil(frmeQSLUpload);
-    acRefresh.Execute
+    Free;
+    acRefreshExecute(nil)
+  end
+end;
+
+procedure TfrmMain.aceQSLDwnExecute(Sender : TObject);
+begin
+  with TfrmeQSLDownload.Create(self) do
+  try
+    if Sender=nil then
+                   command :='Auto';
+    ShowModal
+  finally
+    Free;
+    acRefreshExecute(nil)
   end
 end;
 

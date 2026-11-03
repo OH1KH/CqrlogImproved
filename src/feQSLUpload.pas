@@ -29,11 +29,14 @@ type
     procedure btnPreferencesClick(Sender : TObject);
     procedure btnUploadClick(Sender : TObject);
     procedure FormClose(Sender : TObject; var CloseAction : TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender : TObject);
     procedure mStatChange(Sender: TObject);
+
   private
     FileSize     : Int64;
     QSOCount     : Integer;
+    suc          : Boolean;
     function  ExportData(const FileName : String) : Boolean;
     function  HttpPostFile(const URL, FieldName, FileName: string;
                 const Data: TStream; const ResultData: TStrings; var err : String): Boolean;
@@ -41,8 +44,9 @@ type
 
     procedure Upload(const FileName : String);
     procedure SockCallBack(Sender: TObject; Reason:  THookSocketReason; const  Value: string);
-  public
 
+  public
+    command   :string;
 
 end;
 
@@ -228,7 +232,10 @@ begin
       rbWebExportAll.Caption:='Export all QSOs in log';
       rbWebExportNotExported.Checked:=true;
     end;
-
+  if ((command='Auto') and rbWebExportNotExported.Checked) then
+    Begin
+       btnUploadClick(nil);
+    end;
 end;
 
 procedure TfrmeQSLUpload.mStatChange(Sender: TObject);
@@ -252,10 +259,16 @@ begin
   cqrini.WriteString('eQSL','QTH',edtQTH.Text)
 end;
 
+procedure TfrmeQSLUpload.FormCreate(Sender: TObject);
+begin
+  command:='';
+end;
+
 procedure TfrmeQSLUpload.btnUploadClick(Sender : TObject);
 var
   FileName : String;
 begin
+  suc := False;
   btnClose.Font.Style:=[];
   btnClose.Repaint;
   mStat.Clear;
@@ -371,10 +384,10 @@ var
   url : String = '';
   res  : Boolean;
   l    : TStringList;
-  suc  : Boolean = False;
   err  : String;
   date : String;
 begin
+  suc := False;
   lblInfo.Caption := '';
   Application.ProcessMessages;
   mStat.Lines.Add('');
@@ -435,6 +448,11 @@ begin
         dmData.trQ.Rollback;
         lblInfo.Caption := 'Upload complete!';
         btnUpload.Enabled:=false;
+        if ((command='Auto') and suc) then
+                                      begin
+                                        ModalResult:=mrClose;
+                                        Close;
+                                      end
       end
     end
   finally

@@ -14976,6 +14976,7 @@ object frmeQSLUpload: TfrmeQSLUpload
   }
   LCLVersion = '4.8.0.0'
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   object grbWebExport: TGroupBox
     Left = 0

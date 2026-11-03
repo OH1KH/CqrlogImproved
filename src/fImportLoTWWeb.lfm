@@ -3,8 +3,8 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
   Height = 520
   Top = 142
   Width = 520
-  HorzScrollBar.Page = 465
-  VertScrollBar.Page = 319
+  HorzScrollBar.Page = 467
+  VertScrollBar.Page = 331
   ActiveControl = pnlSettings
   AutoScroll = True
   Caption = 'Import from LoTW web site'
@@ -14992,16 +14992,16 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
     BorderSpacing.Right = 1
     BorderSpacing.Bottom = 1
     Caption = 'Progress'
-    ClientHeight = 266
-    ClientWidth = 516
+    ClientHeight = 265
+    ClientWidth = 514
     TabOrder = 0
     object mStat: TMemo
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Side = asrBottom
       Left = 1
-      Height = 264
+      Height = 263
       Top = 1
-      Width = 514
+      Width = 512
       Align = alClient
       BorderSpacing.Left = 1
       BorderSpacing.Top = 1
@@ -15042,8 +15042,8 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
       BorderSpacing.Right = 1
       BorderSpacing.Bottom = 1
       Caption = 'Settings'
-      ClientHeight = 163
-      ClientWidth = 514
+      ClientHeight = 162
+      ClientWidth = 512
       TabOrder = 0
       object lblReturnQsl: TLabel
         AnchorSideLeft.Control = gbSettings
@@ -15063,8 +15063,8 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideTop.Control = lblReturnQsl
         AnchorSideTop.Side = asrCenter
         Left = 269
-        Height = 34
-        Top = 3
+        Height = 25
+        Top = 8
         Width = 190
         BorderSpacing.Left = 3
         TabOrder = 0
@@ -15074,9 +15074,9 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideTop.Control = chkChangeDate
         AnchorSideTop.Side = asrBottom
         Left = 6
-        Height = 23
-        Top = 103
-        Width = 383
+        Height = 21
+        Top = 88
+        Width = 380
         BorderSpacing.Top = 3
         Caption = 'Show new comfirmed QSOs after download and import'
         TabOrder = 1
@@ -15088,7 +15088,7 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideRight.Control = edtDateFrom
         Left = 221
         Height = 17
-        Top = 46
+        Top = 37
         Width = 45
         Anchors = [akTop, akRight]
         BorderSpacing.Right = 3
@@ -15101,8 +15101,8 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideTop.Control = edtDateFrom
         AnchorSideTop.Side = asrBottom
         Left = 269
-        Height = 34
-        Top = 37
+        Height = 25
+        Top = 33
         Width = 190
         BorderSpacing.Left = 3
         TabOrder = 2
@@ -15112,9 +15112,9 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideTop.Control = chkShowNew
         AnchorSideTop.Side = asrBottom
         Left = 6
-        Height = 23
-        Top = 129
-        Width = 439
+        Height = 21
+        Top = 112
+        Width = 436
         BorderSpacing.Top = 3
         Caption = 'Import station information from LoTW if it is not set during qso.'
         Checked = True
@@ -15127,9 +15127,9 @@ object frmImportLoTWWeb: TfrmImportLoTWWeb
         AnchorSideTop.Control = edtCall
         AnchorSideTop.Side = asrBottom
         Left = 6
-        Height = 23
-        Top = 77
-        Width = 424
+        Height = 21
+        Top = 64
+        Width = 421
         BorderSpacing.Top = 6
         Caption = 'Set Rcvd date to be current date -1 after succesfull download'
         TabOrder = 4

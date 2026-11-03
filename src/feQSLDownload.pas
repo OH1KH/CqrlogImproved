@@ -38,6 +38,7 @@ type
     FileSize : Int64;
     procedure SockCallBack (Sender: TObject; Reason: THookSocketReason; const  Value: string);
   public
+    command  : String;
   end;
 
 var
@@ -60,6 +61,8 @@ begin
   chkChangeDate.Checked:=cqrini.ReadBool('eQSLImp','ChangeDate',False);
   btnClose.Font.Style:=[];
   btnClose.Repaint;
+  if command='Auto' then
+                 btnDownloadClick(nil);
 end;
 
 procedure TfrmeQSLDownload.mStatChange(Sender: TObject);
@@ -274,7 +277,12 @@ begin
     btnDownload.Enabled := True;
     btnPreferences.Enabled := True;
     edtDateFrom.Enabled    := True
-  end
+  end;
+  if ((command='Auto') and Done) then
+                       begin
+                        ModalResult:=mrClose;
+                        Close;
+                       end
 end;
 
 procedure TfrmeQSLDownload.btnPreferencesClick(Sender : TObject);

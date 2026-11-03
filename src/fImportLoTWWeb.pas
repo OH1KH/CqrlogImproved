@@ -43,6 +43,7 @@ type
     procedure SockCallBack (Sender: TObject; Reason:  THookSocketReason; const  Value: string);
   public
     { public declarations }
+    command : String;
   end; 
 
 var
@@ -212,7 +213,12 @@ begin
     btnPreferences.Enabled := True;
     edtDateFrom.Enabled    := True;
     edtCall.Enabled        := True
-  end
+  end;
+  if ((command='Auto') and Done) then
+                           Begin
+                            ModalResult:=mrClose;
+                            //Close;
+                           end
 end;
 
 procedure TfrmImportLoTWWeb.FormShow(Sender: TObject);
@@ -227,6 +233,8 @@ begin
   Done := False;
   btnClose.Font.Style:=[];
   btnClose.Repaint;
+  if command='Auto' then
+                    btnDownloadClick(nil);
 end;
 
 procedure TfrmImportLoTWWeb.FormCloseQuery(Sender: TObject;

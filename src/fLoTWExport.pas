@@ -226,7 +226,7 @@ begin
   Application.ProcessMessages;
   if ((command='Auto') and suc) then
      Begin
-       ModalResult:=mrCancel;
+       ModalResult:=mrClose;
        Close;
      end;
 
@@ -340,7 +340,7 @@ begin
   edtTqsl.Text := cqrini.ReadString('LoTWExp','cmd','/usr/bin/tqsl -d -l "your qth name" %f -x');
   if pgLoTWExport.ActivePageIndex = 1 then
     rbWebExportNotExported.SetFocus;
-  if ((command='Auto') and chkAutoUp.Checked )then  // 'Auto' is set at frmMain: right click of upload button
+  if ((command='Auto') and chkAutoUp.Checked )then  // 'Auto' is set at frmMain(acExecute): right click of upload button
      btnExportSignClick(nil);
 
 end;

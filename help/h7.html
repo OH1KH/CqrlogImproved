@@ -29,17 +29,17 @@
 <p align="center"><img src="img/line.png"></p><a name="bh4"></a><br><b><h2>LoTW support</h2></b>
 <p><h3>Preparation</h3></p>
 <div align=justify>We assume that you have a working LoTW Account. If you are new to LoTW,
-    carefully read the instructions provided by the ARRL and set up your account.<br><br>
+    carefully read the instructions provided by the ARRL and set up your account.<br>
     Most important is the certificate. ARRL issues certificates (.tq8) which are bound to
-    a particular machine and cannot be transferred to another place. If you receive a
-    .tq8 certificate, it is <b>absolutely essential to convert it to more usual .p12</b>
-    format which <strong>can</strong> be transferred. Do this immediately!<br><br>
+    a particular machine and cannot be transferred to another place. 
+    <br>If you receive a.tq8 certificate, it is <b>absolutely essential to convert it to more usual .p12</b>
+    format which <strong>can</strong> be transferred. Do this immediately!<br>
     Download and install the latest LoTW utilities (<em>tqsl</em> and <em>tqslcert</em>).
     <p><h3>Setup</h3></p>
     <img src="img/h76.png"><br><br>
     <div align=justify>If you didn't do it already in the 'Preferences' setup procedure,
         provide your user name for LoTW and the password (this is <strong>not</strong> the
-        password sent to US amateurs via postcard!).<br><br>
+        password sent to US amateurs via postcard!).<br>
         Now you need to select a certificate corresponding to the QTH you used while making
         the QSOs you want to confirm. Check the certificates available by opening tqslcert
         which displays all certificates.
@@ -72,21 +72,33 @@
         <blockquote>
             <strong>I. Export the selected records</strong> to a local ADIF file. This is useful
             if you don't want (or it is impossible) to upload your log to LoTW.
-            Go to <em>QSL->LoTW->Export->Export QSOs to LoTW adif file</em><br><br>
+            Go to <em>QSL->LoTW->Export->Export QSOs to LoTW adif file</em><br>
+            <strong>II. export, signing and upload your log to LoTW from CQRLOG</strong> You can use
+            menu or quick too buttons.<br>
+            Tool buttons have two actions:<br>
+            <ul><li> Click with mouse left and it works same as open from menu. Note: you can set settings by this way</li>
+            <li> Click with mouse right and the operation is automatic, if you have also checked AutoUpload checkbox (see later)</li>
+            <ul><br>
+            
             <img src="img/h82.png"><br><br>
             <div align=justify>Provide a file name in the <em>Export to:</em> field.</div>
-            <br>
+            <br><strong>I. Export the selected records</strong><br>
             <img src="img/h83.png"><br><br>
             <div align=justify>If you want to mark the exported QSO records, do it now. Click
                 the <em>Export</em> button and go to <em>Upload to LoTW menu</em> item. The ADIF file
-                can be signed and uploaded later.<br><br>The other option is export, signing and upload
-                your log to LoTW in a single step.<br><br>
-                <strong>II. export, signing and upload your log to LoTW from CQRLOG</strong><br><br>
-                Go to Upload to LoTW dialog and choose the QSO records which should be exported:
+                can be signed and uploaded later.<br><br>
+                <strong>II. Export, signing and upload your log to LoTW from CQRLOG</strong><br>
+                The other option is export, signing and upload your log to LoTW in a single step.<br>
+                Choose the QSO records which should be exported.<br><br>
+                Check "AutoUpload if Export & Sign succeeded" if you want that upload starts automated after
+                succesful sign.
+                <br> Otherwise you have to press first "Export & Sign" and see that it went ok
+                and then press "Upload".
+                <br>Checkbox has to be checked also if you want that right mouse click of upload toolbutton does all actions automated.<br>
             </div>
             <br>
             <img src="img/h84.png"><br><br>
-            <div align=justify>Click the <em>Export & sign</em> button. You should see:<br>
+            <div align=justify>Click the <strong>Export & sign</strong> button. You should see:<br>
 <pre>Signing adif file ...
 Signed ...
 If you did not see any errors, you can send signed file to LoTW
@@ -109,8 +121,11 @@ Uploading was succesful<br></pre>
     <div align=justify>The main purpose of the LoTW file processing (also download) is to
         mark existing QSO records as confirmed via LoTW. Files can be downloaded directly
         into CQRLOG or an already downloaded ADIF files can be processed.
+        <br>Also here you can use menu or quick too buttons. With buttons you have same two options from download & process:
+        <ul><li> Click with mouse left and operation is same as from menu. Note: you can do settings with this.</li>
+        <li> Click with mouse right and operation is automated. Settings must be done before usage!</li>
+        
     </div>
-    <br>
     <img src="img/h85.png"><br><br>
     <div align=justify>Both options are shown here. If the <em>Import local LoTW ADIF
         file</em> (already downloaded from the LoTW site) is processed, a simple progress

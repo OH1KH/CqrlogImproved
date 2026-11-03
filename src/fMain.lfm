@@ -15451,7 +15451,7 @@ object frmMain: TfrmMain
     end
     object ToolButton24: TToolButton
       Left = 410
-      Hint = 'Upload data to LoTW'
+      Hint = 'Upload data to LoTW (See: Help!)'
       Top = 2
       Action = acUploadQSOToLoTWWeb
       ImageIndex = 23
@@ -15461,6 +15461,7 @@ object frmMain: TfrmMain
     end
     object ToolButton25: TToolButton
       Left = 433
+      Hint = 'Download data from LoTW (See: Help!)'
       Top = 2
       Action = acDownloadDataFromLoTW
       ImageIndex = 24
@@ -15531,6 +15532,7 @@ object frmMain: TfrmMain
     end
     object ToolButton34: TToolButton
       Left = 464
+      Hint = 'Upload QSO to eQSL.cc (See: Help!)'
       Top = 2
       Action = aceQSLUp
       ParentShowHint = False
@@ -15539,6 +15541,7 @@ object frmMain: TfrmMain
     end
     object ToolButton35: TToolButton
       Left = 487
+      Hint = 'Download QSL from eQSL.cc (See: Help!)'
       Top = 2
       Action = aceQSLDwn
       ParentShowHint = False

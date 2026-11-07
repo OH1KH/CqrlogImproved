@@ -152,6 +152,7 @@ type
     MenuItem109: TMenuItem;
     MenuItem110: TMenuItem;
     MenuItem15: TMenuItem;
+    mnuAllQsos: TMenuItem;
     mnuShowDistance: TMenuItem;
     mnuShowProfile: TMenuItem;
     MenuItem2: TMenuItem;
@@ -432,6 +433,7 @@ type
     procedure MenuItem107Click(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
+    procedure mnuAllQsosClick(Sender: TObject);
     procedure mnueQSLViewClick(Sender: TObject);
     procedure mnuIK3AQRClick(Sender: TObject);
     procedure mnuHelpIndexClick(Sender: TObject);
@@ -950,6 +952,10 @@ procedure TfrmMain.popWebSearchPopup(Sender: TObject);
 begin
     mnueQSLView.Visible :=  ((pos('E',dmData.qCQRLOG.FieldByName('eqsl_qsl_rcvd').AsString)>0)
                              and (dbgrdMain.SelectedRows.Count = 1));
+    mnuAllQsos.Visible  :=  ((dmData.qCQRLOG.FieldByName('callsign').AsString<>'')
+                             and (dbgrdMain.SelectedRows.Count = 1));
+    if mnuAllQsos.Visible then
+                             mnuAllQsos.Caption:=mnuAllQsos.Caption+' '+dmData.qCQRLOG.FieldByName('callsign').AsString;
     if dmData.DebugLevel>=1 then writeln( dbgrdMain.SelectedRows.Count,' ',
                                          dmData.qCQRLOG.FieldByName('callsign').AsString,' ',
                                          dmData.qCQRLOG.FieldByName('eqsl_qsl_rcvd').AsString );
@@ -1478,6 +1484,22 @@ if dmData.DebugLevel>=1 then
            writeln(idlist);
   acExADIFExecute(nil);
   idlist:='';
+end;
+
+procedure TfrmMain.mnuAllQsosClick(Sender: TObject);
+begin
+  with TfrmSearch.Create(self) do
+  try
+    edtText.Text:=dmData.qCQRLOG.FieldByName('callsign').AsString;
+    chkInclude.Checked:=False;
+    cmbSearch.ItemIndex:=1;
+    ex:=True;
+    ShowModal
+  finally
+    Free
+  end
+
+    //dmData.qCQRLOG.FieldByName('callsign').AsString;
 end;
 
 procedure TfrmMain.mnueQSLViewClick(Sender: TObject);

@@ -37,6 +37,7 @@ type
     mHelp: TMemo;
     Panel1: TPanel;
     procedure FormCloseQuery(Sender : TObject; var CanClose : boolean);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
     procedure cmbSearchChange(Sender: TObject);
@@ -46,6 +47,7 @@ type
     procedure SaveSettings;
   public
     { public declarations }
+    ex       :Boolean;   //execute when opens
   end; 
 
 var
@@ -75,12 +77,19 @@ begin
     Height := Height+90;
     chkSortByDate.Enabled := False;
     chkSortByDate.Checked := False;
-  end
+  end;
+  if ex then
+     btnSearchClick(nil);
 end;
 
 procedure TfrmSearch.FormCloseQuery(Sender : TObject; var CanClose : boolean);
 begin
   SaveSettings
+end;
+
+procedure TfrmSearch.FormCreate(Sender: TObject);
+begin
+  ex :=false;
 end;
 
 procedure TfrmSearch.btnSearchClick(Sender: TObject);

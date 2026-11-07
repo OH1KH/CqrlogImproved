@@ -145,6 +145,7 @@ type
     procedure tmrCqPeriodTimer(Sender: TObject);
     procedure tmrStartupDoneTimer(Sender: TObject);
     procedure tmrFollowTimer(Sender: TObject);
+
   private
     CqState   : string;  //use in map mode to join state and Cqdir
     FileFilter  : TStringList;
@@ -154,7 +155,7 @@ type
     procedure decodetest(i: boolean);
     procedure PrintCall(Pcall: string;PCB:Boolean=false);  // prints colored call
     procedure PrintLoc(PLoc, tTa, mT: string;PCB:Boolean=false);  // prints colored loc
-    function isItACall(Call: string): boolean;
+
     procedure SendQsoInit(reply: string);
     procedure TryCallAlert(S: string);
     procedure TryAlerts;
@@ -191,6 +192,7 @@ type
     procedure BufDebug(MyHeader,MyBuf:string);
     function HexStrToStr(const HexStr: string): string;
     function StrToHexStr(const S: string): string;
+    function isItACall(Call: string): boolean;
     { public declarations }
   end;
 

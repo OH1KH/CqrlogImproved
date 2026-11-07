@@ -506,6 +506,8 @@ type
     WhatUpNext : TWhereToUpload;
     DistColumnIndex :integer;
     procedure ChechkSelRecords;
+    function GetRefCall(call:String):String;
+
     { private declarations }
   public
     ShowWidths : Boolean;
@@ -536,7 +538,7 @@ uses fNewQSO, fPreferences, dUtils, dData, dDXCC, dDXCluster, fMarkQSL, fDXCCSta
   fImportLoTWWeb, fLoTWExport, fGroupEdit, fCustomStat, fSQLConsole, fCallAttachment,
   fEditDetails, fQSLViewer, uMyIni, fRebuildMembStat, fAbout, fBigSquareStat,
   feQSLUpload, feQSLDownload, fSOTAExport, fEDIExport, fCabrilloExport, fRotControl,
-  fLogUploadStatus, fExportPref,uVersion, fCountyStat;
+  fLogUploadStatus, fExportPref,uVersion, fCountyStat, fMonWsjtx;
 
 procedure TfrmMain.ReloadGrid;
 begin
@@ -949,13 +951,15 @@ begin
 end;
 
 procedure TfrmMain.popWebSearchPopup(Sender: TObject);
+
 begin
     mnueQSLView.Visible :=  ((pos('E',dmData.qCQRLOG.FieldByName('eqsl_qsl_rcvd').AsString)>0)
                              and (dbgrdMain.SelectedRows.Count = 1));
     mnuAllQsos.Visible  :=  ((dmData.qCQRLOG.FieldByName('callsign').AsString<>'')
                              and (dbgrdMain.SelectedRows.Count = 1));
     if mnuAllQsos.Visible then
-                             mnuAllQsos.Caption:=mnuAllQsos.Caption+' '+dmData.qCQRLOG.FieldByName('callsign').AsString;
+                               mnuAllQsos.Caption:='Find all qsos with  '+GetRefCall(dmData.qCQRLOG.FieldByName('callsign').AsString);
+
     if dmData.DebugLevel>=1 then writeln( dbgrdMain.SelectedRows.Count,' ',
                                          dmData.qCQRLOG.FieldByName('callsign').AsString,' ',
                                          dmData.qCQRLOG.FieldByName('eqsl_qsl_rcvd').AsString );
@@ -1490,8 +1494,8 @@ procedure TfrmMain.mnuAllQsosClick(Sender: TObject);
 begin
   with TfrmSearch.Create(self) do
   try
-    edtText.Text:=dmData.qCQRLOG.FieldByName('callsign').AsString;
-    chkInclude.Checked:=False;
+    edtText.Text:=GetRefCall(dmData.qCQRLOG.FieldByName('callsign').AsString);
+    chkInclude.Checked:=True;
     cmbSearch.ItemIndex:=1;
     ex:=True;
     ShowModal
@@ -3030,7 +3034,26 @@ Begin
   pnlAllDetails.Height:=h;
 
 end;
-
+function TfrmMain.GetRefCall(call:String):String;
+var
+ A: Array of String;
+ f: integer;
+begin
+    Result:=call;
+    if pos('/',call)> 0  then
+      Begin
+         A:=SplitString(call,'/');
+         for f:=Low(A) to High(A) do
+          begin
+           //Writeln(low(A),' ',High(A),' ',A[f],' ',frmMonWsjtx.isItACall(A[f]));
+           if  frmMonWsjtx.isItACall(A[f]) then
+             Begin
+               Result:=A[f];
+               break;
+             end;
+          end;
+      end;
+end;
 
 end.
 

@@ -492,6 +492,8 @@ type
     procedure mnuSMDClick(Sender: TObject);
     procedure pnlButtonsClick(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
+    procedure ToolButton11MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure ToolButton25MouseUp(Sender: TObject; Button: TMouseButton;
@@ -724,6 +726,13 @@ begin
   sDate := '';
   dmUtils.DateInRightFormat(now , tmp, sDate);
   sbMain.Panels[0].Text :=uVersion.cBUILD_DATE;
+end;
+
+procedure TfrmMain.ToolButton11MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if (Button = mbRight) and (dmData.IsFilter) then
+                        acCancelFilterExecute(nil);
 end;
 
 procedure TfrmMain.ToolButton24MouseUp(Sender: TObject; Button: TMouseButton;

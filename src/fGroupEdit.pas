@@ -91,7 +91,7 @@ begin
            cmbValue.Style:=csDropDownList;
          end;
     20 : begin
-           dmData.InsertProfiles(cmbValue,False);
+           dmData.InsertProfiles(cmbValue,True);
            cmbValue.ItemIndex := 0;
            cmbValue.Style:=csDropDownList;
          end;

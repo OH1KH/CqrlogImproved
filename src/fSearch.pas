@@ -88,6 +88,8 @@ begin
   cmbSearch.Items.Add('Callsign');
   cmbSearch.Items.Add('Name');
   cmbSearch.Items.Add('QTH');
+  cmbSearch.Items.Add('Locator');
+
 end;
 
 procedure TfrmSearch.btnSearchClick(Sender: TObject);
@@ -202,7 +204,31 @@ begin
             if chkSortByDate.Checked then
               sql := sql + ' order by qsodate'
           end
-        end
+        end;
+    4 : begin
+          if dmData.IsFilter and (not dmData.IsSFilter) then
+          begin
+            if dmData.QueryLocate(dmData.qCQRLOG,'loc',edtText.Text,False,not chkInclude.Checked) then
+            begin
+              frmMain.sbMain.Panels[2].Text := 'FSearch is ACTIVE!';
+              Close;
+              exit
+            end
+            else
+              NoneFound
+          end
+          else begin
+            if chkInclude.Checked then
+             if ((pos('%',edtText.Text)>0) or (pos('_',edtText.Text)>0)) then
+                    sql := sql + ' where upper(loc) like '+ QuotedStr(UpCase(edtText.Text))
+                  else
+                    sql := sql + ' where (upper(loc) like ''%' + UpCase(edtText.Text) + '%'')'
+            else
+              sql := sql + ' where upper(loc) = '+ QuotedStr(UpCase(edtText.Text));
+            if chkSortByDate.Checked then
+              sql := sql + ' order by qsodate'
+          end
+        end;
   end; //case
 
   if sql<>'' then

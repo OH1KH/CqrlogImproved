@@ -1273,14 +1273,22 @@ function TdmUtils.StdFormatLocator(loc:string):String;
 // Check TEdit CharCase to be ecNormal, othewise you get runtime error!
 var
   s :String;
+  i :integer;
 begin
-  Result := loc;
-  if loc = '' then exit;
-  s :=  Upcase(loc);
-  //NOTE2:
-  //s :=  Upcase(copy(loc,1,4));
-  //s:= s + lowercase(copy(loc,5,6));   //max loc length 10 in database
-  Result := trim(s);
+ Result := loc;
+ if loc<>'' then
+      begin
+        s:= '';
+        for i:=1 to length(loc) do
+          begin
+            case loc[i] of
+              'A'..'Z' : s:=s+ loc[i];
+              'a'..'z' : s:=s+ UpCase(loc[i]);
+              '0'..'9' : s:=s+ loc[i];
+           end;
+          end;
+        Result:=s;
+      end;
 end;
 
 procedure TdmUtils.GetCoordinate(pfx: string; var latitude, longitude: currency);

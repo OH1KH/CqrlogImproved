@@ -162,7 +162,6 @@ type
     procedure edtDateFromButtonClick(Sender: TObject);
     procedure edtDateToButtonClick(Sender: TObject);
     procedure edtLocatorChange(Sender: TObject);
-    procedure edtMyLocChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
@@ -240,9 +239,9 @@ begin
   if (edtLocator.Text <> '') then
                                   begin
                                     if rbExactlyLoc.Checked then
-                                      tmp := tmp + ' (loc = ' + QuotedStr(edtLocator.Text)+') AND'
+                                      tmp := tmp + ' (upper(loc) = ' + QuotedStr(UpCase(edtLocator.Text))+') AND'
                                     else
-                                      tmp := tmp + ' (loc LIKE ''%' + edtLocator.Text + '%'') AND';
+                                      tmp := tmp + ' (upper(loc) LIKE ''%' + UpCase(edtLocator.Text) + '%'') AND';
                                   end;
   if (edtQTH.Text <> '') then
                                   begin
@@ -310,9 +309,9 @@ begin
   if (edtMyLoc.Text <> '') then
                                   begin
                                     if rbExactlyMyLoc.Checked then
-                                      tmp := tmp + ' (my_loc = ' + QuotedStr(edtMyLoc.Text)+') AND'
+                                      tmp := tmp + ' (upper(my_loc) = ' + QuotedStr(UpCase(edtMyLoc.Text))+') AND'
                                      else
-                                      tmp := tmp + ' (my_loc LIKE ''%' + edtMyLoc.Text + '%'') AND';
+                                      tmp := tmp + ' (upper(my_loc) LIKE ''%' + UpCase(edtMyLoc.Text) + '%'') AND';
                                   end;
 
   if (edtWAZ.Text <> '') then  tmp := tmp + ' (waz = ' + edtWAZ.Text + ') AND';
@@ -641,54 +640,11 @@ procedure TfrmFilter.edtLocatorChange(Sender: TObject);
 var i:    integer;
     s:    string;
 begin
-   if rbExactlyLoc.Checked then
-   Begin
-     edtLocator.Text:=dmUtils.StdFormatLocator(edtLocator.Text);
-     edtLocator.SelStart := Length(edtLocator.Text);
-   end;
-   begin
-     if edtLocator.Text<>'' then
-      begin
-        s:= '';
-        for i:=1 to length(edtLocator.Text) do
-          begin
-            case edtLocator.Text[i] of
-              'A'..'Z' : s:=s+ edtLocator.Text[i];
-              'a'..'z' : s:=s+ edtLocator.Text[i];
-              '0'..'9' : s:=s+ edtLocator.Text[i];
-           end;
-          end;
-        edtLocator.Text:=s;
-        edtLocator.SelStart := Length(edtLocator.Text);
-      end;
-   end;
-end;
-
-procedure TfrmFilter.edtMyLocChange(Sender: TObject);
-var i:    integer;
-    s:    string;
-begin
-  if rbExactlyMyLoc.Checked then
-   Begin
-     edtMyLoc.Text:=dmUtils.StdFormatLocator(edtMyLoc.Text);
-     edtMyLoc.SelStart := Length(edtMyLoc.Text);
-   end;
-   begin
-     if edtMyLoc.Text<>'' then
-      begin
-        s:= '';
-        for i:=1 to length(edtMyLoc.Text) do
-          begin
-            case edtMyLoc.Text[i] of
-              'A'..'Z' : s:=s+ edtMyLoc.Text[i];
-              'a'..'z' : s:=s+ edtMyLoc.Text[i];
-              '0'..'9' : s:=s+ edtMyLoc.Text[i];
-           end;
-          end;
-        edtMyLoc.Text:=s;
-        edtMyLoc.SelStart := Length(edtMyLoc.Text);
-      end;
-   end;
+   if (sender is Tedit) then
+     begin
+      (Sender as Tedit).Text:=dmUtils.StdFormatLocator( (Sender as Tedit).Text);
+      (Sender as Tedit).SelStart := Length( (Sender as Tedit).Text);
+     end;
 end;
 
 procedure TfrmFilter.FormKeyUp(Sender: TObject; var Key: Word;

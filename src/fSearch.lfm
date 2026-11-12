@@ -15069,8 +15069,10 @@ object frmSearch: TfrmSearch
     Width = 288
     Align = alTop
     Lines.Strings = (
-      'Search will show only records, which meet your filter criteria. If you want to see all of them, you must go Filter menu and choose Cancel filter.'
+      'Search seeks only records which meet your filter criteria.'
+      'If you want to seek from whole log you must Cancel filter from Filter menu.'
     )
+    ScrollBars = ssAutoHorizontal
     TabOrder = 2
     Visible = False
   end

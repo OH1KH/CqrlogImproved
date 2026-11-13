@@ -580,6 +580,9 @@ begin
 end;
 
 procedure TfrmMain.acPreferencesExecute(Sender: TObject);
+var
+I: Integer;
+
 begin
   with TfrmPreferences.Create(self) do
   try
@@ -587,16 +590,14 @@ begin
     if ModalResult = mrOk then
     begin
       ShowFields;
-      if frmNewQSO.Showing then
-        dmUtils.LoadFontSettings(frmNewQSO);
-      dmUtils.LoadFontSettings(frmMain);
-      if frmTRXControl.Showing then
-        dmUtils.LoadFontSettings(frmTRXControl);
-      if frmRotControl.Showing then
-        dmUtils.LoadFontSettings(frmRotControl);
-      if frmQSODetails.Showing then
-        frmQSODetails.LoadFonts;
-
+      //walk through all active forms
+      for I := 0 to Screen.FormCount - 1 do
+      begin
+        if Screen.Forms[I] <> nil then
+        begin
+          dmUtils.LoadFontSettings(Screen.Forms[I]);
+        end;
+      end;
       dmData.LoadQSODateColorSettings
     end
   finally

@@ -5543,25 +5543,22 @@ begin
 end;
 
 procedure TfrmNewQSO.acPreferencesExecute(Sender: TObject);
+var
+   I : integer;
 begin
   with TfrmPreferences.Create(self) do
   try
     ShowModal;
     if ModalResult = mrOK then
     begin
-      dmUtils.LoadFontSettings(frmNewQSO);
-      if frmMain.Showing then
-        dmUtils.LoadFontSettings(frmMain);
-      if frmTRXControl.Showing then
-        dmUtils.LoadFontSettings(frmTRXControl);
-      if frmQSODetails.Showing then
-        frmQSODetails.LoadFonts;
-      if (frmRbnMonitor <> nil) and frmRbnMonitor.Showing then
-        dmUtils.LoadFontSettings(frmRbnMonitor);
-      if (frmPropDK0WCY <> nil) and frmPropDK0WCY.Showing then
-        dmUtils.LoadFontSettings(frmPropDK0WCY);
-      if (frmMonWsjtx <> nil) and frmMonWsjtx.Showing then
-                         dmUtils.LoadFontSettings(frmMonWsjtx);
+      //walk through all active forms
+      for I := 0 to Screen.FormCount - 1 do
+      begin
+        if Screen.Forms[I] <> nil then
+        begin
+          dmUtils.LoadFontSettings(Screen.Forms[I]);
+        end;
+      end;
       dmData.LoadQSODateColorSettings;
     end;
     ChangeCallBookCaption

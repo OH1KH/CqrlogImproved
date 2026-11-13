@@ -1892,13 +1892,13 @@ begin
   cqrini.SaveToDisk;
   dmData.SaveConfigFile;
   frmDXCluster.ReloadSettings;
-  ModalResult := mrOk;
   dmUtils.LoadBandLabelSettins;
   dmUtils.LoadBandsSettings;
   dmData.LoadClubsSettings;
   dmData.LoadZipSettings;
   dmUtils.UpdateHelpBrowser;
   cqrini.SetCache(False);
+  ModalResult := mrOk;
 end;
 
 procedure TfrmPreferences.FormCreate(Sender: TObject);

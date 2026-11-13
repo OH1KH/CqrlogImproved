@@ -14988,9 +14988,9 @@ object frmDXCluster: TfrmDXCluster
     Height = 428
     Top = 0
     Width = 716
-    ActivePage = tabWeb
+    ActivePage = tabTelnet
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tabWeb: TTabSheet
       AnchorSideLeft.Control = pgDXCluster
@@ -14999,15 +14999,15 @@ object frmDXCluster: TfrmDXCluster
       AnchorSideBottom.Control = pgDXCluster
       Caption = 'Web'
       ClientHeight = 397
-      ClientWidth = 706
+      ClientWidth = 712
       object Panel4: TPanel
         Left = 0
         Height = 36
         Top = 361
-        Width = 706
+        Width = 712
         Align = alBottom
         ClientHeight = 36
-        ClientWidth = 706
+        ClientWidth = 712
         TabOrder = 0
         object lblInfo: TLabel
           Left = 10
@@ -15021,7 +15021,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = Panel4
           AnchorSideRight.Side = asrBottom
-          Left = 615
+          Left = 621
           Height = 25
           Top = 6
           Width = 84
@@ -15037,7 +15037,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Panel4
           AnchorSideTop.Side = asrCenter
-          Left = 491
+          Left = 494
           Height = 25
           Top = 6
           Width = 84
@@ -15051,7 +15051,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideTop.Control = Panel4
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = btnFont
-          Left = 221
+          Left = 224
           Height = 25
           Top = 6
           Width = 84
@@ -15067,7 +15067,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Control = Panel4
           AnchorSideTop.Side = asrCenter
-          Left = 311
+          Left = 314
           Height = 25
           Top = 6
           Width = 84
@@ -15080,7 +15080,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Panel4
           AnchorSideTop.Side = asrCenter
-          Left = 401
+          Left = 404
           Height = 25
           Top = 6
           Width = 84
@@ -15098,7 +15098,7 @@ object frmDXCluster: TfrmDXCluster
         Left = 0
         Height = 361
         Top = 0
-        Width = 706
+        Width = 712
         Align = alClient
         Alignment = taLeftJustify
         BevelInner = bvLowered
@@ -15118,17 +15118,17 @@ object frmDXCluster: TfrmDXCluster
       AnchorSideBottom.Control = pgDXCluster
       Caption = 'Telnet'
       ClientHeight = 397
-      ClientWidth = 706
+      ClientWidth = 712
       OnMouseWheel = tabTelnetMouseWheel
       object pnlBottom: TPanel
         Left = 0
         Height = 34
         Top = 363
-        Width = 706
+        Width = 712
         Align = alBottom
         BevelOuter = bvNone
         ClientHeight = 34
-        ClientWidth = 706
+        ClientWidth = 712
         TabOrder = 0
         object lblCommand: TLabel
           AnchorSideTop.Control = pnlBottom
@@ -15146,8 +15146,8 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideTop.Control = pnlBottom
           AnchorSideTop.Side = asrCenter
           Left = 79
-          Height = 34
-          Top = 0
+          Height = 25
+          Top = 5
           Width = 266
           BorderSpacing.Left = 2
           TabOrder = 0
@@ -15159,7 +15159,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideRight.Side = asrBottom
           AnchorSideBottom.Control = pnlBottom
           AnchorSideBottom.Side = asrCenter
-          Left = 615
+          Left = 621
           Height = 25
           Top = 4
           Width = 85
@@ -15174,7 +15174,7 @@ object frmDXCluster: TfrmDXCluster
           AnchorSideTop.Control = pnlBottom
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = btnHlp
-          Left = 539
+          Left = 545
           Height = 25
           Top = 5
           Width = 70
@@ -15209,32 +15209,30 @@ object frmDXCluster: TfrmDXCluster
         Left = 0
         Height = 40
         Top = 0
-        Width = 706
+        Width = 712
         Align = alTop
-        BevelOuter = bvNone
         ClientHeight = 40
-        ClientWidth = 706
+        ClientWidth = 712
         TabOrder = 1
         object edtTelAddress: TEdit
           AnchorSideLeft.Control = pnlTop
           AnchorSideTop.Control = pnlTop
-          AnchorSideTop.Side = asrCenter
-          Left = 6
-          Height = 34
-          Top = 3
+          Left = 21
+          Height = 25
+          Top = 4
           Width = 189
-          BorderSpacing.Left = 6
+          BorderSpacing.Left = 20
           BorderSpacing.Top = 3
           TabOrder = 0
         end
         object btnSelect: TButton
           AnchorSideLeft.Control = edtTelAddress
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Control = edtTelAddress
           AnchorSideTop.Side = asrCenter
-          Left = 207
+          Left = 222
           Height = 25
-          Top = 8
+          Top = 4
           Width = 75
           BorderSpacing.Left = 12
           BorderSpacing.InnerBorder = 4
@@ -15245,11 +15243,11 @@ object frmDXCluster: TfrmDXCluster
         object btnTelConnect: TButton
           AnchorSideLeft.Control = btnSelect
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Control = edtTelAddress
           AnchorSideTop.Side = asrCenter
-          Left = 288
+          Left = 303
           Height = 25
-          Top = 8
+          Top = 4
           Width = 87
           BorderSpacing.Left = 6
           BorderSpacing.InnerBorder = 4
@@ -15260,34 +15258,96 @@ object frmDXCluster: TfrmDXCluster
         object btnPreferences: TButton
           AnchorSideLeft.Control = btnTelConnect
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = pnlTop
+          AnchorSideTop.Control = edtTelAddress
           AnchorSideTop.Side = asrCenter
-          Left = 381
+          Left = 396
           Height = 25
-          Top = 8
+          Top = 4
           Width = 104
           BorderSpacing.Left = 6
           Caption = 'Preferences'
           TabOrder = 3
           OnClick = btnPreferencesClick
         end
+        object lblNewCountry: TLabel
+          AnchorSideLeft.Control = lblNew
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblNew
+          AnchorSideTop.Side = asrCenter
+          Left = 540
+          Height = 17
+          Top = 8
+          Width = 55
+          BorderSpacing.Left = 1
+          Caption = 'Country,'
+        end
+        object lblNewBand: TLabel
+          AnchorSideLeft.Control = lblNewCountry
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblNew
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Side = asrBottom
+          Left = 596
+          Height = 17
+          Top = 8
+          Width = 37
+          BorderSpacing.Left = 1
+          Caption = 'Band,'
+        end
+        object lblNewMode: TLabel
+          AnchorSideLeft.Control = lblNewBand
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblNew
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Side = asrBottom
+          Left = 633
+          Height = 17
+          Top = 8
+          Width = 40
+          Caption = 'Mode,'
+        end
+        object lblNeedQSL: TLabel
+          AnchorSideLeft.Control = lblNewMode
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblNew
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Side = asrBottom
+          Left = 674
+          Height = 17
+          Top = 8
+          Width = 35
+          BorderSpacing.Left = 1
+          Caption = 'QSL!!'
+        end
+        object lblNew: TLabel
+          AnchorSideLeft.Control = btnPreferences
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = btnPreferences
+          AnchorSideTop.Side = asrCenter
+          Left = 506
+          Height = 17
+          Top = 8
+          Width = 33
+          BorderSpacing.Left = 6
+          Caption = 'New:'
+        end
       end
       object pnlTelnet: TPanel
         Left = 0
         Height = 323
         Top = 40
-        Width = 706
+        Width = 712
         Align = alClient
         BevelOuter = bvNone
         ClientHeight = 323
-        ClientWidth = 706
+        ClientWidth = 712
         ParentColor = False
         TabOrder = 2
         object pnlChat: TPanel
           Left = 0
           Height = 2
           Top = 0
-          Width = 706
+          Width = 712
           Align = alTop
           BevelOuter = bvNone
           ParentColor = False
@@ -15302,7 +15362,7 @@ object frmDXCluster: TfrmDXCluster
       AnchorSideBottom.Control = pgDXCluster
       Caption = 'F-keys'
       ClientHeight = 397
-      ClientWidth = 706
+      ClientWidth = 712
       OnShow = tabFkeysShow
       object lblF1: TLabel
         AnchorSideLeft.Control = tabFkeys
@@ -15310,7 +15370,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 32
+        Top = 27
         Width = 24
         BorderSpacing.Left = 12
         BorderSpacing.Top = 12
@@ -15323,7 +15383,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 66
+        Top = 52
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F2 :'
@@ -15335,7 +15395,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 100
+        Top = 77
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F3 :'
@@ -15347,7 +15407,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 134
+        Top = 102
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F4 :'
@@ -15359,7 +15419,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 168
+        Top = 127
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F5 :'
@@ -15371,7 +15431,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 202
+        Top = 152
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F6 :'
@@ -15383,7 +15443,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 236
+        Top = 177
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F7 :'
@@ -15395,7 +15455,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 270
+        Top = 202
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F8 :'
@@ -15407,7 +15467,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 304
+        Top = 227
         Width = 24
         BorderSpacing.Top = 6
         Caption = 'F9 :'
@@ -15419,7 +15479,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Side = asrCenter
         Left = 12
         Height = 17
-        Top = 338
+        Top = 252
         Width = 32
         BorderSpacing.Top = 6
         Caption = 'F10 :'
@@ -15431,7 +15491,7 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = lblShift
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
+        Height = 25
         Top = 23
         Width = 500
         BorderSpacing.Left = 12
@@ -15444,8 +15504,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF1
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 57
+        Height = 25
+        Top = 48
         Width = 500
         TabOrder = 1
         OnExit = edtFExit
@@ -15455,8 +15515,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF2
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 91
+        Height = 25
+        Top = 73
         Width = 500
         TabOrder = 2
         OnExit = edtFExit
@@ -15466,8 +15526,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF3
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 125
+        Height = 25
+        Top = 98
         Width = 500
         TabOrder = 3
         OnExit = edtFExit
@@ -15477,8 +15537,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF4
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 159
+        Height = 25
+        Top = 123
         Width = 500
         TabOrder = 4
         OnExit = edtFExit
@@ -15488,8 +15548,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF5
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 193
+        Height = 25
+        Top = 148
         Width = 500
         TabOrder = 5
         OnExit = edtFExit
@@ -15499,8 +15559,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF6
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 227
+        Height = 25
+        Top = 173
         Width = 500
         TabOrder = 6
         OnExit = edtFExit
@@ -15510,8 +15570,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF7
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 261
+        Height = 25
+        Top = 198
         Width = 500
         TabOrder = 7
         OnExit = edtFExit
@@ -15521,8 +15581,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF8
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 295
+        Height = 25
+        Top = 223
         Width = 500
         TabOrder = 8
         OnExit = edtFExit
@@ -15532,8 +15592,8 @@ object frmDXCluster: TfrmDXCluster
         AnchorSideTop.Control = edtF9
         AnchorSideTop.Side = asrBottom
         Left = 48
-        Height = 34
-        Top = 329
+        Height = 25
+        Top = 248
         Width = 500
         TabOrder = 9
       end
@@ -15592,6 +15652,7 @@ object frmDXCluster: TfrmDXCluster
     end
     object MenuItem3: TMenuItem
       Action = acFont
+      Caption = 'Spot Font'
     end
     object MenuItem8: TMenuItem
       Caption = '-'

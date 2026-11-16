@@ -3755,7 +3755,7 @@ begin
   edtCbQRZCQUser.Text   := cqrini.ReadString('CallBook', 'CbQRZCQUser', '');
   edtCbQRZCQPass.Text   := cqrini.ReadString('CallBook', 'CbQRZCQPass', '');
   edtCbHamQTHAddr.Text  := cqrini.ReadString('CallBook', 'CbHamQTHAddr', 'https://www.hamqth.com' );
-  edtCbQRZAddr.Text     := cqrini.ReadString('CallBook', 'CbQRZAddr', 'https://xml.qrz.com');
+  edtCbQRZAddr.Text     := cqrini.ReadString('CallBook', 'CbQRZAddr', 'https://xmldata.qrz.com');
   edtCbQRZCQAddr.Text   := cqrini.ReadString('CallBook', 'CbQRZCQAddr', 'https://ssl.qrzcq.com' );
   rbHamQTH.Checked      := cqrini.ReadBool('Callbook', 'HamQTH', True);
   rbQRZ.Checked         := cqrini.ReadBool('Callbook', 'QRZ', False);

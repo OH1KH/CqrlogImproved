@@ -1107,6 +1107,13 @@ begin
                        fPollCount :=  fPollTimeout*10   //give time for rig to wake up
                      else
                        fPollCount :=  fPollTimeout;
+                  if (pos('w \',cmd)>0) then
+                       begin
+                         if fDebugMode then
+                            writeln('Detected a binary command "w \". Sleep 500ms, do not expect RPRT-response!');
+                         sleep(500);
+                         AllowCommand:=1; //do not wait answer
+                       end;
                end
             else
               AllowCommand :=0;

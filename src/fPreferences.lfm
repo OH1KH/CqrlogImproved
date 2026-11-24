@@ -1,18 +1,18 @@
 object frmPreferences: TfrmPreferences
   Left = 158
-  Height = 628
+  Height = 609
   Top = 0
-  Width = 969
+  Width = 1084
   HelpType = htKeyword
   HelpKeyword = 'help/h1.html'
-  HorzScrollBar.Page = 969
-  VertScrollBar.Page = 628
+  HorzScrollBar.Page = 1084
+  VertScrollBar.Page = 609
   ActiveControl = lbPreferences
   AutoScroll = True
   BorderIcons = [biSystemMenu]
   Caption = 'Preferences'
-  ClientHeight = 628
-  ClientWidth = 969
+  ClientHeight = 609
+  ClientWidth = 1084
   Constraints.MinHeight = 200
   Constraints.MinWidth = 300
   Icon.Data = {
@@ -14990,11 +14990,11 @@ object frmPreferences: TfrmPreferences
     Height = 997
     Top = 0
     Width = 840
-    ActivePage = tabProgram
+    ActivePage = tabCWInterface
     Align = alClient
     ParentShowHint = False
     ShowHint = True
-    TabIndex = 0
+    TabIndex = 19
     TabOrder = 0
     OnChange = pgPreferencesChange
     object tabProgram: TTabSheet
@@ -22719,7 +22719,7 @@ object frmPreferences: TfrmPreferences
         BorderSpacing.Left = 18
         BorderSpacing.Top = 12
         Caption = ' WinKeyer'
-        ClientHeight = 156
+        ClientHeight = 141
         ClientWidth = 493
         TabOrder = 3
         object lblWinPort: TLabel
@@ -22885,7 +22885,7 @@ object frmPreferences: TfrmPreferences
         Width = 497
         BorderSpacing.Top = 6
         Caption = ' cwdaemon '
-        ClientHeight = 138
+        ClientHeight = 123
         ClientWidth = 493
         TabOrder = 4
         object lblCWAddr: TLabel
@@ -23070,7 +23070,7 @@ object frmPreferences: TfrmPreferences
         Width = 497
         BorderSpacing.Top = 6
         Caption = 'K3NG Key'
-        ClientHeight = 138
+        ClientHeight = 123
         ClientWidth = 493
         TabOrder = 5
         object lblK3NGPort: TLabel
@@ -23239,7 +23239,7 @@ object frmPreferences: TfrmPreferences
         Width = 497
         BorderSpacing.Top = 6
         Caption = 'HamLib'
-        ClientHeight = 138
+        ClientHeight = 123
         ClientWidth = 493
         TabOrder = 6
         object lblHamLibSpeed: TLabel
@@ -23372,6 +23372,18 @@ object frmPreferences: TfrmPreferences
           ShowHint = True
           TabOrder = 4
           OnChange = cmbIfaceTypeChange
+        end
+        object chkWfvEmuCw: TCheckBox
+          AnchorSideLeft.Control = lblHamlib
+          AnchorSideTop.Control = chkHamForceSpace
+          AnchorSideTop.Side = asrCenter
+          Left = 6
+          Height = 21
+          Hint = 'Cheking this does not care if rig has reported NOT to be able to send CW.'#10'Wfview emulator can not do +\dump_caps and so does not tell that it can'#10'emulate also "b" (send morse). How ever there are some limitations with emulator.'
+          Top = 25
+          Width = 201
+          Caption = 'Hamlib is Wfview emulator'
+          TabOrder = 5
         end
       end
       object cbNoKeyerReset: TCheckBox

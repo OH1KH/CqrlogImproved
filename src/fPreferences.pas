@@ -107,6 +107,7 @@ type
     cb30cm: TCheckBox;
     cgLimit: TCheckGroup;
     cbNoKeyerReset: TCheckBox;
+    chkWfvEmuCw: TCheckBox;
     chkDetails: TCheckBox;
     chkKeepMin: TCheckBox;
     chkgClub: TCheckGroup;
@@ -4093,7 +4094,7 @@ Begin
   edtHamMinSpeed.Value   := cqrini.ReadInteger('CW'+nr, 'HamLib_min', 5);
   edtHamMaxSpeed.Value   := cqrini.ReadInteger('CW'+nr, 'HamLib_max', 60);
   chkHamForceSpace.checked:=cqrini.ReadBool('CW'+nr, 'UseHamlibForceSpace', False);
-
+  chkWfvEmuCw.checked    := cqrini.ReadBool('CW'+nr, 'HamlibIsWfview',false);
 
   CWifLoaded := RigNr;
   if (cqrini.ReadString('TRX'+nr, 'model', '')='') then
@@ -4137,6 +4138,7 @@ Begin
   cqrini.WriteInteger('CW'+nr, 'HamLib_min', edtHamMinSpeed.Value);
   cqrini.WriteInteger('CW'+nr, 'HamLib_max', edtHamMaxSpeed.Value);
   cqrini.WriteBool('CW'+nr, 'UseHamlibForceSpace', chkHamForceSpace.checked);
+  cqrini.WriteBool('CW'+nr, 'HamlibIsWfview', chkWfvEmuCw.checked);
 end;
 
 procedure TfrmPreferences.InitRigCmb(SetUsedRig:boolean=false);    //initialize radio selectors in TRXControl, CW and Modes

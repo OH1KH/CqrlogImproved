@@ -7852,7 +7852,8 @@ begin
         end;
     4 : begin
           if assigned(frmTRXControl.radio) then    //if radio can not send CW do not init
-            if not frmTRXControl.radio.Morse then exit;
+            if not (frmTRXControl.radio.Morse
+               or cqrini.ReadBool('CW'+n, 'HamlibIsWfview',false)) then exit;
 
           CWint        := TCWHamLib.Create;
           if dmData.DebugLevel < 0 then

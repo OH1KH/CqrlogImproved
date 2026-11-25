@@ -39,7 +39,8 @@
     You can set up to 10 predefined messages in two sets.<br>
     Set1 <b>"S&P"</b> is always default. Set2 <b>"Run"</b> is active when contest window is opened and checkbox "S&P" is <b>NOT</b> checked.<br>
     Use buttons <b>Save</b> and <b>Load</b> for save/load both sets to/from file.<br><br>
-    <img src=img/h97.png><br><br><a name="predef">
+    <a name=mk0><img src=img/h97.png></a><br><br>
+    <a name="predef">
     There are some predefined macros which you can use in your messages:</a><br><br>
     <table border="0" cellpadding="5" cellspacing="2" width="50%">
         <tbody>
@@ -103,27 +104,31 @@
         <li><strong>word mode</strong> - when a whole word is typed sending starts when pressing the spacebar
         <li><strong>line mode</strong> - when a whole line is typed sending starts when pressing the enter key. It makes easy to prepare your next over while listening.
     </ul>
-    <br>
+      <strong>Shortcut keys:</strong>
+      <ul>
+      <li><strong>PgUp</strong> and <strong>PgDn</strong> changes keying speed with WPM steps defined in Preferences/CW keying.
+       Current speed is always displayed in the status line.
+       </li><li><strong>ESC </strong>key stops running transmit. This may not be supported in all keyers and rigs and is mainly usefull when using word mode or pasted/dropped text.
+       </li><li><strong>ALT+N</strong> toggles between text sending modes.
+       </li><li><strong>ALT+C</strong> clears text typing area.
+       </li><li><strong>ALT+S</strong> switches memory sets. See:<a href="h26.html#mk0">CW Messages</a>
+       </li></ul>
     CWTyping area allows paste (copy in editor/paste to CWType) and drop (select in editor and drag with mouse left button pressed and drop on CWType area).<br><br>
     <strong>NOTE!: </strong> CW sending has limited buffer space depending keyer type and rig model. Be aware that pasting a very long text to CWType area may lead to CW keyer buffer overflow. When Hamlib keying is in use it will send words under 10 characters as one command, but if text to be sent is longer it will send all letter by letter (1 chr per one command).
      This is tested to work with IC7300. Same should happen with other rigs and HamLib keying, but this is not tested and may not work in same way.
-      
-      <br><br> <strong>Warning with manual typing in word mode:</strong> If your typing speed is faster than cw sending you may hit send buffer limit sooner or later.
-      <br><strong>Warning with line mode:</strong> It is very easy to fill send buffer with this mode. In case of Hamlib keyer consider to use Hamlib 1k buffer if you use this mode. <a href="h1.html#ch1">Preferences/CWinterface/Hamlib keyer</a>
-      <br><br> <strong>Switching radios </strong>while CW sending is going on can cause unexpected results !
-      <br><strong>Always wait</strong> that CW message has finshed before switching radios as it will also switch CW keyers.
-      <br><strong>Always wait</strong> that selected radio shows frequency in TRXControl before sending a CW message or start using CW Type.
-      <br><br>
+    <br><strong>NOTE!</strong> Some special characters like Ä (A with dots) etc. May not be supported in CWType direct from keypress. 
+    <br>For example Hamlib keying with Icom rig sends A with dots when typing 3 characters ^AA. Same can be used with ^SK ^AR ^BK etc.
+    <br>You have to find out the way suitable for your setup.
+     <br><br><strong>WARNINGS:</strong>
+      <ul>
+      <li><strong>Warning with manual typing in word mode:</strong> If your typing speed is faster than cw sending you may hit send buffer limit sooner or later.
+      </li><li>Warning with line mode:</strong> It is very easy to fill send buffer with this mode. In case of Hamlib keyer consider to use Hamlib 1k buffer if you use this mode. <a href="h1.html#ch1">Preferences/CWinterface/Hamlib keyer</a>
+      </li><li><strong>Switching radios </strong>while CW sending is going on can cause unexpected results !
+      </li><li><strong>Always wait</strong> that CW message has finshed before switching radios as it will also switch CW keyers.
+      </li><li><strong>Always wait</strong> that selected radio shows frequency in TRXControl before sending a CW message or start using CW Type.
+      </ul>
 
-    The <strong>keying speed</strong> can be changed with PgUp (QRQ) and PgDn (QRS) keys
-    in 2 WPM steps when <strong>NewQSO</strong>-form is active. In the <strong>CW type</strong>-form when cursor is in text typing area same PgUP/PgDN keys work. Speed can also be changed with the small arrow
-    buttons to the right of the speed display. The actual speed is always displayed in the status line of the <strong>New QSO</strong>-form and in <strong>CWType</strong>-forms speed selector.<br><br>
-    The<strong> ESC </strong>key stops running transmit. This may not be supported in all keyers and rigs and is mainly usefull when using word mode or pasted/dropped text.
-    <br>
-    With HamLib keyer ESC sends hex byte 0xFF as message. Icom rigs halt CW with this. An empty message with Kenwood rigs should use this to stop sending.
-    <br>Be aware that this has tested very little.
-    <br><br>
-    <strong>NOTE!</strong> Some special characters like Ä (A with dots) etc. May not be supported in CWType direct from keypress. For example Hamlib keying with Icom rig sends A with dots when typing 3 characters ^AA and you have to find out the way suitable for your setup.<br><br>
+<br>
     <img src=img/h99.png><br><br>
     Setup howtos for both <a href=cwd.html><strong>cwdaemon</strong></a> and
     <a href=wkusb.html><strong>Winkey USB</strong></a> are available.<br><br>

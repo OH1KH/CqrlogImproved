@@ -14984,7 +14984,7 @@ object frmCWType: TfrmCWType
   object pnlBottom: TPanel
     Left = 0
     Height = 35
-    Hint = 'Right click to select CW mode or press Alt+N to scroll through CW modes'
+    Hint = 'Right click to open text sending mode selection menu'#10'Shotcut keys:'#10'ESC stop sending'#10'ARROW UP/DN set CW speed'#10'Alt+N to scroll through text sending modes'#10'ALT+C to clear text area'#10'F1 .. F10 send memory text'#10'ALT+S to switch memory set'
     Top = 372
     Width = 870
     Align = alBottom

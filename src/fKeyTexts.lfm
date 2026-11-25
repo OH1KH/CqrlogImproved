@@ -15062,10 +15062,10 @@ object frmKeyTexts: TfrmKeyTexts
       TabIndex = 1
       TabOrder = 0
       object tabSeP: TTabSheet
-        Hint = 'Default memories when Contest window is closed.'#10'S&P memories when COntest window is open.'
+        Hint = 'Default memories when Contest window is closed.'#10'S&P memories when Contest window is open.'
         Caption = 'S&&P (default)'
         ClientHeight = 478
-        ClientWidth = 604
+        ClientWidth = 610
         ParentShowHint = False
         ShowHint = True
         object GroupBox1: TGroupBox
@@ -15078,8 +15078,8 @@ object frmKeyTexts: TfrmKeyTexts
           BorderSpacing.Left = 6
           BorderSpacing.Top = 6
           Caption = ' F1 '
-          ClientHeight = 86
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 0
           object Label1: TLabel
             AnchorSideLeft.Control = GroupBox1
@@ -15087,7 +15087,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15099,7 +15099,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15109,8 +15109,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF1
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15119,7 +15119,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox1
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15139,8 +15139,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F10 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 9
           object Label35: TLabel
             AnchorSideLeft.Control = GroupBox10
@@ -15148,7 +15148,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15160,7 +15160,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15170,8 +15170,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF10
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15180,7 +15180,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox10
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15200,8 +15200,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F9 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 8
           object Label33: TLabel
             AnchorSideLeft.Control = GroupBox9
@@ -15209,7 +15209,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15221,7 +15221,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15231,8 +15231,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF9
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15241,7 +15241,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox9
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15261,8 +15261,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F8 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 7
           object Label15: TLabel
             AnchorSideLeft.Control = GroupBox8
@@ -15270,7 +15270,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15282,7 +15282,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15292,8 +15292,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF8
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15302,7 +15302,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox8
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15322,8 +15322,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F7 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 6
           object Label13: TLabel
             AnchorSideLeft.Control = GroupBox7
@@ -15331,7 +15331,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15343,7 +15343,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15353,8 +15353,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF7
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15363,7 +15363,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox7
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15383,8 +15383,8 @@ object frmKeyTexts: TfrmKeyTexts
           BorderSpacing.Top = 6
           BorderSpacing.Right = 6
           Caption = ' F6 '
-          ClientHeight = 86
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 5
           object Label11: TLabel
             AnchorSideLeft.Control = GroupBox6
@@ -15392,7 +15392,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15404,7 +15404,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15414,8 +15414,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF6
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15424,7 +15424,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox6
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15444,8 +15444,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F5 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 4
           object Label9: TLabel
             AnchorSideLeft.Control = GroupBox5
@@ -15453,7 +15453,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15465,7 +15465,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15475,8 +15475,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF5
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15485,7 +15485,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox5
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15505,8 +15505,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F4 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 3
           object Label7: TLabel
             AnchorSideLeft.Control = GroupBox4
@@ -15514,7 +15514,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15526,7 +15526,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15536,8 +15536,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF4
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15546,7 +15546,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox4
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15566,8 +15566,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F3 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 2
           object Label5: TLabel
             AnchorSideLeft.Control = GroupBox3
@@ -15575,7 +15575,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15587,7 +15587,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15597,8 +15597,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF3
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15607,7 +15607,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox3
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15627,8 +15627,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = ' F2 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 1
           object Label3: TLabel
             AnchorSideLeft.Control = GroupBox2
@@ -15636,7 +15636,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15648,7 +15648,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15658,8 +15658,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF2
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15668,7 +15668,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox2
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15677,10 +15677,10 @@ object frmKeyTexts: TfrmKeyTexts
         end
       end
       object tabRUN: TTabSheet
-        Hint = 'CW memories when COntest window is open and S6P is unchecked (Run mode)'
+        Hint = 'RUN memories when Contest window is open and S&P is unchecked (Run mode)'
         Caption = 'Run'
         ClientHeight = 478
-        ClientWidth = 604
+        ClientWidth = 610
         ParentShowHint = False
         ShowHint = True
         object GroupBox11: TGroupBox
@@ -15693,8 +15693,8 @@ object frmKeyTexts: TfrmKeyTexts
           BorderSpacing.Left = 6
           BorderSpacing.Top = 6
           Caption = ' F1 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 0
           object Label17: TLabel
             AnchorSideLeft.Control = GroupBox11
@@ -15702,7 +15702,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15714,7 +15714,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15724,8 +15724,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF11
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15734,7 +15734,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox11
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15752,8 +15752,8 @@ object frmKeyTexts: TfrmKeyTexts
           Width = 290
           BorderSpacing.Top = 6
           Caption = ' F2'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 1
           object Label37: TLabel
             AnchorSideLeft.Control = GroupBox12
@@ -15761,7 +15761,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15773,7 +15773,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15783,8 +15783,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF12
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15793,7 +15793,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox12
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15811,8 +15811,8 @@ object frmKeyTexts: TfrmKeyTexts
           Width = 290
           BorderSpacing.Top = 6
           Caption = ' F3'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 2
           object Label39: TLabel
             AnchorSideLeft.Control = GroupBox13
@@ -15820,7 +15820,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15832,7 +15832,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15842,8 +15842,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF13
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15852,7 +15852,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox13
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15870,8 +15870,8 @@ object frmKeyTexts: TfrmKeyTexts
           Width = 290
           BorderSpacing.Top = 6
           Caption = ' F4'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 3
           object Label19: TLabel
             AnchorSideLeft.Control = GroupBox14
@@ -15879,7 +15879,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15891,7 +15891,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15901,8 +15901,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF14
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15911,7 +15911,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox14
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15929,8 +15929,8 @@ object frmKeyTexts: TfrmKeyTexts
           Width = 290
           BorderSpacing.Top = 6
           Caption = ' F5'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 4
           object Label21: TLabel
             AnchorSideLeft.Control = GroupBox15
@@ -15938,7 +15938,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -15950,7 +15950,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -15960,8 +15960,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF15
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -15970,7 +15970,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox15
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -15989,8 +15989,8 @@ object frmKeyTexts: TfrmKeyTexts
           BorderSpacing.Left = 9
           BorderSpacing.Top = 6
           Caption = ' F6 '
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 5
           object Label23: TLabel
             AnchorSideLeft.Control = GroupBox16
@@ -15998,7 +15998,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -16010,7 +16010,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -16020,8 +16020,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF16
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -16030,7 +16030,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox16
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -16049,8 +16049,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akRight]
           BorderSpacing.Top = 6
           Caption = ' F7'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 6
           object Label25: TLabel
             AnchorSideLeft.Control = GroupBox17
@@ -16058,7 +16058,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -16070,7 +16070,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -16080,8 +16080,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF17
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -16090,7 +16090,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox17
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -16109,8 +16109,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akRight]
           BorderSpacing.Top = 6
           Caption = ' F8'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 7
           object Label27: TLabel
             AnchorSideLeft.Control = GroupBox18
@@ -16118,7 +16118,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -16130,7 +16130,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -16140,8 +16140,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF18
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -16150,7 +16150,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox18
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -16169,8 +16169,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akRight]
           BorderSpacing.Top = 6
           Caption = ' F9'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 8
           object Label29: TLabel
             AnchorSideLeft.Control = GroupBox19
@@ -16178,7 +16178,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -16190,7 +16190,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -16200,8 +16200,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF19
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -16210,7 +16210,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox19
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -16229,8 +16229,8 @@ object frmKeyTexts: TfrmKeyTexts
           Anchors = [akTop, akRight]
           BorderSpacing.Top = 6
           Caption = ' F10'
-          ClientHeight = 70
-          ClientWidth = 288
+          ClientHeight = 69
+          ClientWidth = 286
           TabOrder = 9
           object Label31: TLabel
             AnchorSideLeft.Control = GroupBox20
@@ -16238,7 +16238,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 9
+            Top = 4
             Width = 58
             BorderSpacing.Left = 12
             Caption = 'Caption: '
@@ -16250,7 +16250,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Side = asrCenter
             Left = 12
             Height = 17
-            Top = 43
+            Top = 29
             Width = 44
             Caption = 'Macro:'
             ParentColor = False
@@ -16260,8 +16260,8 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideTop.Control = edtCapF20
             AnchorSideTop.Side = asrBottom
             Left = 82
-            Height = 34
-            Top = 34
+            Height = 25
+            Top = 25
             Width = 176
             TabOrder = 1
           end
@@ -16270,7 +16270,7 @@ object frmKeyTexts: TfrmKeyTexts
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = GroupBox20
             Left = 82
-            Height = 34
+            Height = 25
             Top = 0
             Width = 88
             BorderSpacing.Left = 12
@@ -16306,15 +16306,15 @@ object frmKeyTexts: TfrmKeyTexts
         BorderSpacing.Left = 9
         BorderSpacing.Top = 3
         Caption = 'CW Messages'
-        ClientHeight = 70
-        ClientWidth = 296
+        ClientHeight = 69
+        ClientWidth = 294
         TabOrder = 1
         object SaveMsg: TButton
           AnchorSideLeft.Control = gbSaveLoad
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Control = gbSaveLoad
           AnchorSideRight.Side = asrBottom
-          Left = 104
+          Left = 103
           Height = 26
           Top = 6
           Width = 88
@@ -16330,7 +16330,7 @@ object frmKeyTexts: TfrmKeyTexts
           AnchorSideTop.Side = asrBottom
           AnchorSideRight.Side = asrBottom
           AnchorSideBottom.Side = asrBottom
-          Left = 104
+          Left = 103
           Height = 26
           Top = 35
           Width = 88
@@ -16360,8 +16360,8 @@ object frmKeyTexts: TfrmKeyTexts
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 70
-        ClientWidth = 291
+        ClientHeight = 69
+        ClientWidth = 289
         Items.Strings = (
           'repeats last (focused) memory '
           'is ignored'

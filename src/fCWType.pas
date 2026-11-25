@@ -145,6 +145,8 @@ end;
 
 procedure TfrmCWType.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  memset: Boolean;
 begin
   case Key of
    VK_F1 .. VK_F10 : frmNewQSO.FormKeyDown(Sender,Key,Shift);
@@ -160,6 +162,7 @@ begin
                       frmNewQSO.CWint.StopSending;
                       Key:=0;
                      end;
+   //keys with ALT key
    VK_N            :Begin
                       if (Shift = [ssALT]) then
                        begin
@@ -171,6 +174,22 @@ begin
                          UpdateTop;
                        end;
                     end;
+   VK_C            :Begin
+                     if (Shift = [ssALT]) then
+                       begin
+                          btnClearClick(nil);
+                          key:=0;
+                       end;
+                   end;
+   VK_S           :Begin
+                     if (Shift = [ssALT]) then
+                       begin
+                          memset:= not cqrini.ReadBool('CW','S&P',False);
+                          cqrini.WriteBool('CW','S&P',memset);
+                          frmNewQSO.UpdateFKeyLabels;
+                          key:=0;
+                       end;
+                   end;
    end;
 end;
 

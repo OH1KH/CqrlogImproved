@@ -1,6 +1,7 @@
 object frmCWKeys: TfrmCWKeys
   Left = 253
   Height = 95
+  Hint = 'Alt+S will switch between s&p and run of CW messages'
   Top = 106
   Width = 821
   Caption = 'Memory keys'
@@ -14972,6 +14973,7 @@ object frmCWKeys: TfrmCWKeys
     000F0000001F0000007F000000FF000001FF000007FF00001FFF0000FFFF
   }
   KeyPreview = True
+  ShowHint = True
   LCLVersion = '4.8.0.0'
   OnClose = FormClose
   OnKeyDown = FormKeyDown

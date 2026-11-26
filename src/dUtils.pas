@@ -3147,7 +3147,7 @@ begin
   myqth := cqrini.ReadString('Station', 'QTH', '');
   if key <> '' then
    Begin
-    if ((frmContest <> nil) and frmContest.Showing) and ( not (cqrini.ReadBool('CW','S&P',True))) then //if contest and run mode keys are F11-F20
+     if ( not (cqrini.ReadBool('CW','S&P',True))) then //run mode keys are F11-F20
      Begin
       if key='F10' then key:='F20'
        else

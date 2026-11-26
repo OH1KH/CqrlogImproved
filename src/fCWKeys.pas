@@ -43,7 +43,7 @@ procedure TfrmCWKeys.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
    mykey :char = #13;
-
+   memset:boolean;
 begin
    case Key of
    VK_F1 .. VK_F10,
@@ -51,6 +51,15 @@ begin
    34              : frmNewQSO.FormKeyDown(Sender,Key,Shift);
    VK_ESCAPE       : frmNewQSO.CWint.StopSending;
    13              : if (cqrini.ReadInteger('CW','EnterFunction',1)=2) then frmNewQSO.FormKeyPress(Sender,mykey);
+   VK_S            :Begin
+                     if (Shift = [ssALT]) then
+                       begin
+                          memset:= not cqrini.ReadBool('CW','S&P',False);
+                          cqrini.WriteBool('CW','S&P',memset);
+                          frmNewQSO.UpdateFKeyLabels;
+                          key:=0;
+                       end;
+                   end;
    end;
 end;
 

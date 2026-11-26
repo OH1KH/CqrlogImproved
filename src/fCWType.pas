@@ -187,6 +187,7 @@ begin
                           memset:= not cqrini.ReadBool('CW','S&P',False);
                           cqrini.WriteBool('CW','S&P',memset);
                           frmNewQSO.UpdateFKeyLabels;
+                          lblToShowMouseOverText.Caption:='';
                           key:=0;
                        end;
                    end;

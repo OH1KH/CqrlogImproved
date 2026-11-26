@@ -285,7 +285,7 @@ end;
 procedure TfraCWKeys.UpdateFKeyLabels;
 var n,f:integer;
 begin
-    if (frmContest <> nil) and (frmContest.Showing) and ( not (cqrini.ReadBool('CW','S&P',True))) then //if contest and run mode keys are F11-F20
+     if ( not (cqrini.ReadBool('CW','S&P',True))) then //run mode keys are F11-F20
       n:=11
      else
       n:=1;
@@ -308,7 +308,9 @@ begin
   inc(n);
   btnF9.Caption  := cqrini.ReadString('CW','CapF'+IntToStr(n),'F9');
   inc(n);
-  btnF10.Caption  := cqrini.ReadString('CW','CapF'+IntToStr(n),'F10')
+  btnF10.Caption  := cqrini.ReadString('CW','CapF'+IntToStr(n),'F10');
+
+  self.lblToShowMouseOverTextCwKeys.Caption:='';
 end;
 
 end.
